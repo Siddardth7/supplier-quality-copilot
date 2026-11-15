@@ -1,0 +1,147 @@
+[
+  {
+    "range": [
+      1,
+      500
+    ],
+    "eligible": 492,
+    "hits": {
+      "SUP-01": 100,
+      "SUP-02": 492,
+      "SUP-03": 492,
+      "SUP-04": 492,
+      "SUP-05": 492,
+      "SUP-06": 214,
+      "SUP-07": 90,
+      "SUP-08": 492,
+      "SUP-09": 492
+    },
+    "stories": {
+      "ACT-01": 492,
+      "ACT-02": 16,
+      "ACT-03": 492,
+      "ACT-04": 491,
+      "ACT-05": 486,
+      "ACT-06": 492
+    },
+    "joint": 0,
+    "diagnosis": {
+      "SUP-01": {
+        "decisions": {
+          "NOT APPROVED": 100,
+          "APPROVED": 392
+        },
+        "failed": {
+          "2.ctq_cpk": 13,
+          "4.cleanliness": 13,
+          "4.leak_test": 14,
+          "1.cert_current": 13,
+          "4.material_cert": 12,
+          "5.lot_trace": 13,
+          "4.burst_pressure": 13,
+          "1.cert_scope": 13,
+          "3.grr": 10
+        },
+        "totalUnder70": 0,
+        "requiredMissing": 49,
+        "requiredFailedTruth": 0,
+        "routingMiss": 0
+      },
+      "SUP-07": {
+        "decisions": {
+          "NOT APPROVED": 202,
+          "CONDITIONAL": 90,
+          "APPROVED": 200
+        },
+        "failed": {
+          "2.ctq_cpk": 169,
+          "4.cleanliness": 10,
+          "1.cert_current": 12,
+          "4.material_cert": 6,
+          "4.burst_pressure": 4,
+          "4.leak_test": 2,
+          "1.cert_scope": 4,
+          "3.grr": 5,
+          "5.lot_trace": 6
+        },
+        "totalUnder70": 0,
+        "requiredMissing": 22,
+        "requiredFailedTruth": 0,
+        "routingMiss": 0
+      }
+    }
+  },
+  {
+    "range": [
+      501,
+      1000
+    ],
+    "eligible": 500,
+    "hits": {
+      "SUP-01": 106,
+      "SUP-02": 500,
+      "SUP-03": 500,
+      "SUP-04": 500,
+      "SUP-05": 500,
+      "SUP-06": 240,
+      "SUP-07": 82,
+      "SUP-08": 500,
+      "SUP-09": 500
+    },
+    "stories": {
+      "ACT-01": 500,
+      "ACT-02": 21,
+      "ACT-03": 500,
+      "ACT-04": 500,
+      "ACT-05": 493,
+      "ACT-06": 500
+    },
+    "joint": 1,
+    "diagnosis": {
+      "SUP-01": {
+        "decisions": {
+          "APPROVED": 393,
+          "NOT APPROVED": 106,
+          "CONDITIONAL": 1
+        },
+        "failed": {
+          "2.ctq_cpk": 12,
+          "1.cert_scope": 16,
+          "4.material_cert": 12,
+          "4.leak_test": 19,
+          "3.grr": 12,
+          "1.cert_current": 13,
+          "4.cleanliness": 11,
+          "5.lot_trace": 11,
+          "4.burst_pressure": 12
+        },
+        "totalUnder70": 0,
+        "requiredMissing": 52,
+        "requiredFailedTruth": 0,
+        "routingMiss": 0
+      },
+      "SUP-07": {
+        "decisions": {
+          "NOT APPROVED": 189,
+          "APPROVED": 229,
+          "CONDITIONAL": 82
+        },
+        "failed": {
+          "4.leak_test": 10,
+          "2.ctq_cpk": 153,
+          "4.cleanliness": 8,
+          "5.lot_trace": 6,
+          "1.cert_scope": 9,
+          "3.grr": 9,
+          "4.burst_pressure": 5,
+          "4.material_cert": 5,
+          "1.cert_current": 2
+        },
+        "totalUnder70": 0,
+        "requiredMissing": 27,
+        "requiredFailedTruth": 0,
+        "routingMiss": 0
+      }
+    }
+  }
+]

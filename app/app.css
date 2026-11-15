@@ -1,0 +1,508 @@
+/* App shell layout only. Every colour and font comes from design/tokens.css via var(). No transitions here. */
+
+.app-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:20px}
+.brand{margin:0;font-size:15px;font-weight:600;letter-spacing:0;line-height:1.3}
+.brand a{display:inline-block}
+.brand small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.header-tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.chip-note{color:var(--amber)}
+.role{display:flex;align-items:center;gap:8px}
+.role-label{font-size:12px;color:var(--muted)}
+.role .pills{padding-bottom:0;gap:4px;overflow:visible}
+.role .pills button{min-height:24px;padding:4px 10px}
+.pills button[aria-checked=true]{background:var(--pressed);border-color:var(--line-active);color:var(--cyan)}
+.dev-note{flex-basis:100%;margin:0;font-family:var(--mono)}
+
+/* Shared labels and navigation stay together without assuming a header height (issue 47). */
+:root{scroll-padding-top:96px}
+.shell-bar{position:sticky;top:0;z-index:5;background:var(--bg)}
+.synthetic-label{padding-block:8px}
+.synthetic-label .badge{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.tab-bar{background:var(--bg);border-bottom:1px solid var(--line)}
+.tab-bar .tabs{border-bottom:0;overflow-x:auto}
+.tabs button{white-space:nowrap;min-height:24px}
+.tabs .num{font-family:var(--mono);color:var(--muted);margin-right:4px}
+.tabs button[aria-selected=true] .num{color:inherit}
+
+main{padding-block:40px}
+.view h2{margin-bottom:8px}
+.status{display:grid;gap:16px;max-width:760px;margin-top:28px}
+.status-line{margin:0;font:13px var(--mono);color:var(--ink-soft)}
+.status-problems{margin:8px 0 0;padding-left:18px;font-size:12px;line-height:1.7;color:var(--ink-soft)}
+.mono{font-family:var(--mono)}
+.error-panel{border-color:var(--bad);padding:16px 20px}
+.error-panel .eyebrow{color:var(--bad);margin-bottom:8px}
+.error-panel p{margin:0 0 6px;font-size:13px;overflow-wrap:anywhere}
+.error-panel p:last-child{margin-bottom:0}
+
+.app-footer{border-top:1px solid var(--line);padding-block:24px}
+.app-footer p{margin:0}
+
+/* Qualify: queue sidebar and detail (#39; DESIGN-SPEC 4.4, 4.9, 7) */
+.qualify{display:grid;grid-template-columns:300px minmax(0,1fr);gap:32px;align-items:start;margin-top:28px}
+.queue-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.queue-head .eyebrow{margin-bottom:12px}
+.queue .pills{flex-wrap:wrap;overflow:visible;padding-bottom:12px}
+.queue p.quiet{margin:0 0 12px}
+.queue .subtle-button{min-height:24px}
+.queue-cards{display:grid;gap:8px}
+.queue-cards .list-card{min-height:44px}
+.card-top{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.card-name{display:block;font-size:13px;overflow-wrap:anywhere}
+.card-meta{display:block}
+.qualify .mono{font-variant-numeric:tabular-nums}
+.badge.ok{color:var(--ok)} .badge.bad{color:var(--bad)} .badge.amber{color:var(--amber)} .badge.muted{color:var(--muted)}
+.detail .eyebrow{margin-bottom:8px}
+.detail h3{margin-bottom:8px;overflow-wrap:anywhere}
+.back-link{display:none;min-height:24px;padding-block:4px;margin-bottom:12px}
+/* Supplier detail (#40; DESIGN-SPEC 4.4, 7): header, knockout banner, headline values, sub-tabs, category bars */
+.detail-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:8px 24px;margin-bottom:20px}
+.detail-id{min-width:0}
+.sign-line{margin:0;font-size:12px} .sign-line[data-may-sign=true]{color:var(--ok)} .sign-line[data-may-sign=false]{color:var(--muted)}
+.detail h3 .mono{font-size:15px;color:var(--muted);letter-spacing:0;margin-left:6px}
+.detail-policy{display:grid;justify-items:start;gap:4px;min-width:0;overflow-wrap:anywhere}
+.detail-policy p{margin:0}
+.detail-policy .text-link{display:inline-block;min-height:24px;padding-block:4px}
+.knockout-banner{border-color:var(--bad);padding:16px 20px;margin-bottom:20px}
+.knockout-banner .eyebrow{color:var(--bad);margin-bottom:8px}
+.knockout-list{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13px;overflow-wrap:anywhere}
+.ko-state.bad{color:var(--bad)} .ko-state.amber{color:var(--amber)}
+.ko-effect{color:var(--ink-soft)}
+.detail-metrics{margin-bottom:8px}
+.detail-metrics .metric{min-width:0;overflow-wrap:anywhere}
+.detail-metrics .badge{display:inline-block}
+.detail-tabs{overflow-x:auto}
+.detail-panel{padding-top:20px;min-width:0;overflow-wrap:anywhere}
+.detail-panel p.quiet{margin:0 0 12px}
+.bars{list-style:none;margin:0;padding:0;display:grid;gap:10px;max-width:640px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:13px}
+.bar meter,.bar-zero{grid-column:1 / -1}
+.bar meter{width:100%;height:8px;appearance:none;background:var(--surface-3);border:1px solid var(--line);border-radius:2px}
+.bar meter::-webkit-meter-bar{background:var(--surface-3);border:0;border-radius:2px}
+.bar meter::-webkit-meter-optimum-value{background:var(--ink-soft);border-radius:2px}
+.bar meter::-moz-meter-bar{background:var(--ink-soft);border-radius:2px}
+/* Problems list and All requirements (#41; DESIGN-SPEC 4.4, 5, 6, 7): glyph + word chips, mono right-aligned numbers */
+.gap-group+.gap-group{margin-top:24px}
+.gap-group h4{margin:0 0 4px;font:11px var(--mono);letter-spacing:.9px;text-transform:uppercase;color:var(--muted);font-weight:400}
+.gap-table,.req-table{font-size:12px}
+.gap-table td,.req-table td{vertical-align:top}
+.cell-num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+/* Headers and numbers never split mid-word (the panel's overflow-wrap:anywhere is for long free text). */
+.gap-table th,.req-table th,.req-table td.mono,.cell-num{white-space:nowrap;overflow-wrap:normal}
+.gap-table .badge,.req-table .badge{display:inline-block;white-space:nowrap}
+.gap-note{display:block;margin-top:4px}
+.ko-star{color:var(--bad);margin-right:6px}
+.gap-table .text-link,.req-table .text-link{display:inline-block;min-height:24px;padding-block:4px}
+.req-cat{border-bottom:1px solid var(--line)}
+.req-cat summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;min-height:24px;padding-block:12px;cursor:pointer;font-size:13px}
+/* display:flex drops the native disclosure triangle, so draw the open/closed marker (hidden from screen readers, which read <details> state). */
+.req-cat summary::-webkit-details-marker{display:none}
+.req-cat summary::before{content:"▸" / "";color:var(--muted)}
+.req-cat[open]>summary::before{content:"▾" / ""}
+.req-cat table{margin-bottom:12px}
+.req-info{margin-top:12px}
+/* Drafts sub-tab (#43; DESIGN-SPEC 4.4, 4.9, 7): two .panel sections side by side, stacked below 1100 px */
+.drafts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.draft-panel{padding:16px 20px;min-width:0}
+.draft-panel .eyebrow{margin-bottom:8px}
+.draft-panel h4{margin:0 0 8px;font-size:15px;font-weight:600}
+.draft-items,.draft-plan{margin:0 0 12px;padding-left:20px;font-size:13px;line-height:1.7}
+.draft-plan li{white-space:pre-wrap}
+.draft-plan li+li{margin-top:8px}
+.draft-text{font:12px/1.7 var(--mono);color:var(--ink-soft);white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 8px;padding:12px;background:var(--surface-3);border:1px solid var(--line);border-radius:4px}
+.draft-text:focus-visible,.draft-plan:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.draft-warn{color:var(--amber);font-size:12px;line-height:1.7;margin:0 0 12px}
+.draft-panel .copy-button{min-height:24px;padding-inline:4px;font-size:12px;margin-right:8px}
+@media(max-width:699px){
+  /* Stack each row into labelled lines: no horizontal scroll at 390 px. Headers stay for screen readers. */
+  .gap-table thead,.req-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .gap-table tr,.req-table tr{display:block;padding-block:8px;border-bottom:1px solid var(--line-table)}
+  .gap-table td,.req-table td{display:block;padding:2px 0;border:0;text-align:left}
+  .gap-table td::before,.req-table td::before{content:attr(data-label);display:inline-block;min-width:88px;color:var(--muted);font:11px var(--mono)}
+}
+@media(max-width:1099px){
+  .qualify{grid-template-columns:minmax(0,1fr)}
+  .drafts{grid-template-columns:minmax(0,1fr)}
+  /* Tablet: one row of cards; the padding keeps the focus ring (2px + 4px offset) inside the scroller. */
+  .queue-cards{display:flex;overflow-x:auto;padding:6px 6px 12px}
+  .queue-cards .list-card{flex:0 0 220px}
+}
+@media(max-width:759px){
+  .queue-cards{display:grid;overflow:visible;padding:0}
+  .qualify[data-open=true] .queue{display:none}
+  .qualify[data-open=true] .back-link{display:inline-block}
+}
+/* + New supplier hand entry (issue 77; DESIGN-SPEC 4.4): step 1, then the checklist under a sticky live-score panel */
+.queue-actions{display:flex;flex-wrap:wrap;gap:0 12px;margin-bottom:12px}
+.queue-actions .subtle-button,.manual-actions .subtle-button,.entry .subtle-button{min-height:44px;min-width:44px;font-size:12px}
+.entry .button{min-height:44px}
+.manual-actions{margin-bottom:12px}
+.manual-actions+p.quiet{margin:0 0 12px}
+.entry-step{display:grid;gap:16px;max-width:480px}
+.entry-field{display:grid;gap:4px;font-size:12px;min-width:0}
+.entry-field p{margin:0}
+.entry-input{width:100%;min-height:44px;background:var(--bg);border:1px solid var(--line-active);border-radius:4px;padding:0 8px;font-size:13px}
+.entry-input[aria-invalid=true]{border-color:var(--bad)}
+.entry-input:disabled{opacity:.5}
+.entry-error{color:var(--bad);font-size:12px;line-height:1.6;margin:4px 0 0}
+.entry-error:empty{display:none}
+.entry-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-top:16px}
+.entry-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:8px 24px;margin-bottom:16px}
+.entry-name{margin:0;font-size:15px;overflow-wrap:anywhere}
+/* Only the headline strip sticks (DESIGN-SPEC 4.4, 7: `.metrics` sticky); top clears the 80 px shell bar (issue 47).
+   scroll-padding (bar + strip + margin) keeps a field focused or scrolled into view below the strip (WCAG 2.4.11).
+   Gaps and lists sit under it, static. */
+.entry-live{position:sticky;top:80px;z-index:1;padding:12px 20px;margin-bottom:20px;min-width:0;overflow-wrap:anywhere}
+.entry-live .detail-metrics{margin-bottom:0}
+:root:has(.entry-live){scroll-padding-top:232px}
+/* Native Tab scrolling must also bypass inherited smooth scrolling (issue 137). */
+:root:has(.entry:focus-within){scroll-behavior:auto}
+.entry-gaps{margin-bottom:20px;min-width:0;overflow-wrap:anywhere}
+.entry-gaps .drafts{margin-top:16px}
+.entry-cat{border-bottom:1px solid var(--line)}
+.entry-cat summary{min-height:24px;padding-block:12px;cursor:pointer;font-size:13px}
+.entry-row{border:0;border-top:1px solid var(--line-table);margin:0;padding:12px 0;min-width:0}
+.entry-row legend{float:left;width:100%;padding:0;font-size:13px;overflow-wrap:anywhere}
+.entry-row legend+*{clear:both}
+.entry-limit{margin:4px 0 0;font-size:12px;overflow-wrap:anywhere}
+.entry-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:end;gap:8px 12px;margin-top:8px}
+@media(max-width:1099px){.entry-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:759px){
+  .entry-live{position:static}
+  :root:has(.entry-live){scroll-padding-top:96px}  /* the strip is static here; only the shell bar sticks */
+  .entry-fields{grid-template-columns:minmax(0,1fr)}
+}
+/* Citation viewer (#42; DESIGN-SPEC 4.4, 4.9, 7): a native modal <dialog> sheet on the right, full-screen on phone */
+.sheet{margin:0 0 0 auto;padding:0;border:0;overflow:hidden;border-left:1px solid var(--line);width:min(560px,100%);max-width:none;height:100dvh;max-height:100dvh;background:var(--surface-1);color:var(--ink);display:flex;flex-direction:column}
+.sheet:not([open]){display:none}
+.sheet::backdrop{background:var(--scrim)}
+body:has(dialog[open]){overflow:hidden}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface-1)}
+.sheet-head>div{min-width:0}
+.sheet-head .viewer-label{margin:0 0 8px;white-space:normal;overflow-wrap:anywhere}
+.viewer-disclaimer{flex:none;margin:0;padding:12px 20px;border-top:1px solid var(--line)}
+.sheet-head .eyebrow{margin-bottom:4px}
+.sheet-head h2{font:15px/1.4 var(--mono);letter-spacing:0;overflow-wrap:anywhere}
+.sheet-head .subtle-button{flex:none;min-height:24px;padding-inline:4px;font-size:12px}
+.sheet-scroll{flex:1;min-height:0;overflow:auto;padding:16px 20px;scroll-behavior:auto}
+.sheet-scroll:focus-visible{outline:2px solid var(--cyan);outline-offset:-4px}
+/* Scrolling tables inside a packet are keyboard-focusable in Chrome; give them the app's cyan ring (#42 D3). */
+.packet :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.packet{overflow-wrap:anywhere;font-size:13px;line-height:1.7;color:var(--ink-soft)}
+.packet h3,.packet h4,.packet h5,.packet h6{color:var(--ink);letter-spacing:0;margin:20px 0 8px;line-height:1.35}
+.packet h3{font-size:20px;font-weight:500} .packet h4{font-size:15px;font-weight:600} .packet h5{font-size:13px;font-weight:600} .packet h6{font-size:12px;font-weight:600}
+.packet p{margin:0 0 12px} .packet ul,.packet ol{margin:0 0 12px;padding-left:20px}
+.packet blockquote{margin:0 0 12px;padding-left:12px;border-left:2px solid var(--line);color:var(--muted)}
+.packet blockquote p{margin:0}
+.packet hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+.packet code{font-family:var(--mono);font-size:12px}
+.packet .table-wrap{overflow-x:auto;margin:0 0 12px}
+.packet table{font-size:12px}
+.packet th,.packet td{vertical-align:top;overflow-wrap:normal}
+.packet .cited{background:var(--selected);border-left:3px solid var(--cyan);padding:4px 12px 4px 16px;margin:8px 0}
+.packet .cited>.sr-only+*{margin-top:8px}
+@media(max-width:759px){.sheet{width:100%;border-left:0}}
+/* Monitor tier table and detail (#44; DESIGN-SPEC 4.5, 4.9, 5, 6). Band and tier colors always sit beside a word. */
+.monitor{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-top:28px}
+.monitor .panel{padding:16px 20px;min-width:0}
+.monitor .panel .eyebrow{margin-bottom:8px}
+.monitor .table-wrap{position:relative;overflow-x:auto;padding:6px}  /* padding: room for the focus ring; relative: contains the .sr-only spans, which would widen the page */
+.tier-table,.scar-table{font-size:12px}
+.tier-table th,.tier-table td,.scar-table th,.scar-table td{white-space:nowrap}
+.tier-table .num,.scar-table .num{text-align:right;font-variant-numeric:tabular-nums}
+.tier-table td{height:44px}
+.tier-table tbody tr{cursor:pointer}
+.tier-table tbody tr:hover{background:var(--hover)}
+.tier-table tr.selected{background:var(--selected)}
+.tier-table .text-link{display:inline-block;min-width:24px;min-height:24px;padding-block:4px}
+.tier-table .badge,.monitor-detail .badge{display:inline-block;white-space:nowrap}
+.badge.ink{color:var(--ink)}
+.band.good{color:var(--ok)} .band.watch{color:var(--amber)} .band.bad{color:var(--bad)}
+.scar-table td.bad{color:var(--bad)}
+.scar-table .over{display:block}  /* second line, so the narrow side column fits without scrolling */
+.monitor-metrics{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:24px}
+.monitor-metrics .metric{min-width:0}
+.monitor-detail .back-link{display:inline-block}
+.monitor-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start;margin-bottom:20px}
+.monitor-side{display:grid;gap:16px;min-width:0}
+.detail-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.detail-actions .text-link{display:inline-block;min-height:24px;padding-block:4px}
+.button:disabled{background:var(--muted);border-color:var(--muted);opacity:.45;cursor:not-allowed}
+/* p-chart and alert list (#45; DESIGN-SPEC 4.5, 5, 6, 7, 9). SVG colours are token classes; amber always comes with a
+   shape (triangle, ring) and words (legend, aria-label, list label). The plot keeps a 600 px minimum and scrolls inside its
+   panel, so the 30-unit hit circles stay >= 24 px (decision 72). No transitions. */
+.pchart-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px}
+.pchart-head .subtle-button{min-height:24px;padding-inline:4px;font-size:12px}
+.pchart-summary{margin:0 0 8px;font-family:var(--mono);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.pchart-scroll{overflow-x:auto;padding-block:4px}
+.pchart-plot{position:relative;min-width:600px}
+.pchart-svg{display:block;width:100%;height:auto;background:var(--bg-plot)}
+/* SVG text is in viewBox units: 13.2 * 600 / 720 = 11 px at the 600 px minimum width (DS-NFR-02). */
+.pchart-svg text{font:13.2px var(--mono);font-variant-numeric:tabular-nums;fill:var(--muted)}
+.pc-grid{stroke:var(--line-table);stroke-width:1;vector-effect:non-scaling-stroke}
+.pc-base{fill:var(--cyan);fill-opacity:.07}
+.pc-pbar,.pc-ucl,.pc-line{fill:none;stroke-width:1.5;vector-effect:non-scaling-stroke}
+.pc-pbar{stroke:var(--muted)}
+.pc-ucl{stroke:var(--bad);stroke-dasharray:4 3}
+.pc-line{stroke:var(--cyan);stroke-opacity:.6}
+.pchart-svg .pc-label.ucl{fill:var(--bad)}
+.pc-dot{fill:var(--cyan);stroke:var(--bg-plot);stroke-width:1}
+.pc-dot.run{fill:var(--amber)}
+.pc-tri{fill:var(--amber);stroke:var(--bg-plot);stroke-width:1}
+.pc-ring{fill:none;stroke:var(--amber);stroke-width:2}
+.pc-sel{fill:none;stroke:var(--cyan);stroke-width:1.5}
+.pt{cursor:pointer;outline:none}
+.pt:hover{stroke:var(--cyan);stroke-width:1}
+.pt:focus-visible{stroke:var(--cyan);stroke-width:2}
+.pchart-tip{position:absolute;transform:translate(-50%,-125%);pointer-events:none;background:var(--panel);border:1px solid var(--line-active);padding:6px 8px;font:11px/1.5 var(--mono);color:var(--ink);white-space:pre;z-index:2}
+.pchart-tip.edge-l{transform:translate(-10%,-125%)}
+.pchart-tip.edge-r{transform:translate(-90%,-125%)}
+.pchart-tip.below{transform:translate(-50%,40%)}
+.pchart-tip.edge-l.below{transform:translate(-10%,40%)}
+.pchart-tip.edge-r.below{transform:translate(-90%,40%)}
+.pchart-legend{margin:8px 0 0}
+.pchart-table{font-size:12px}
+.pchart-table th,.pchart-table td{white-space:nowrap}
+.pchart-table .num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.pchart-table tr.selected{background:var(--selected)}
+.pchart-table tr:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}
+.escalate-line{margin:0 0 12px;font-size:12px;overflow-wrap:anywhere}
+.alert-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:12px;line-height:1.7}
+.alert-list li{overflow-wrap:anywhere}
+.alert-status{font:11px var(--mono);letter-spacing:.6px}
+strong.alert-status{color:var(--amber);font-weight:500}
+.alert-status.past{color:var(--muted)}
+.alert-detail{display:block;font-family:var(--mono)}
+.alert-list .text-link{display:inline-block;min-height:24px;padding-block:4px;font-size:12px}
+.alert-list .text-link[aria-current=true]{text-decoration:underline}
+.dot.muted{background:var(--muted)}
+.monitor-metrics .metric small.alert-mark{color:var(--amber)}
+@media(max-width:1099px){
+  .monitor-grid{grid-template-columns:minmax(0,1fr)}
+  .monitor-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:759px){
+  .tier-table .col-name,.tier-table .col-metric{display:none}
+  .monitor[data-open=true] .tier-panel{display:none}
+  .monitor-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tier-table td.col-alerts{white-space:normal}
+  .scar-table th,.scar-table td{white-space:normal}
+}
+/* Today (issue 107; DESIGN-SPEC 4.3): intro, counts, then Needs you and Escalate side by side. Focus ring: tokens.css a:focus-visible */
+.today{display:grid;gap:16px;margin-top:28px}
+.today .panel{padding:16px 20px;min-width:0}
+.today .panel .eyebrow{margin-bottom:12px}
+.today-intro p:not(.eyebrow){margin:0;color:var(--ink-lede)}
+.today p.quiet{margin:0}
+.today-list+p.quiet{margin-top:12px}
+.today-count-groups{display:flex;flex-wrap:wrap;gap:16px 48px}
+.today-counts dl{display:flex;flex-wrap:wrap;gap:8px 24px;margin:0}
+.today-count dt{font:11px var(--mono);letter-spacing:.6px;color:var(--muted)}
+.today-count dd{margin:4px 0 0;font-size:20px}
+.today .mono{font-variant-numeric:tabular-nums}
+.today-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.today-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+a.list-card.today-item{position:relative;display:block;text-decoration:none;color:inherit;min-height:44px;overflow-wrap:anywhere}  /* relative: contains the .sr-only spans */
+@media(max-width:759px){
+  .today-lists{grid-template-columns:minmax(0,1fr)}
+  .today-count-groups{display:grid;gap:16px}
+  .today-counts dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Compare (issue 108; DESIGN-SPEC 4.6, 4.9): acceptable bidders side by side, scrolling inside the panel; stacked below 760 px */
+.compare{display:grid;gap:16px;margin-top:28px}
+.compare .panel{padding:16px 20px;min-width:0}
+.compare .panel .eyebrow{margin:16px 0 12px}
+.compare .panel .eyebrow:first-child{margin-top:0}
+.compare p{margin:0 0 8px}
+.compare .mono{font-variant-numeric:tabular-nums}
+.compare-parts{display:flex;flex-wrap:wrap;gap:8px}
+.compare-parts a{display:inline-flex;align-items:center;min-height:24px;padding:4px 12px;border:1px solid var(--line);border-radius:5px;font-size:12px}
+.compare-parts a span{color:var(--muted);font:11px var(--mono);margin-left:9px}
+.compare-parts a:hover{border-color:var(--line-active)}
+.compare-parts a[aria-current=true]{background:var(--pressed);border-color:var(--line-active);color:var(--cyan)}
+.compare-part{font-size:15px}
+.compare-line{color:var(--ink-lede)}
+.compare .text-link{display:inline-block;min-height:24px;padding-block:4px}
+.compare-grid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:16px;overflow-x:auto;padding:6px}
+.compare-col{min-width:0;overflow-wrap:anywhere;display:grid;gap:8px;align-content:start;padding:12px;border:1px solid var(--line);border-radius:5px}
+.compare-col p,.compare-col h3{margin:0}
+.compare-name{font-size:15px}
+.compare-score strong{font-size:20px}
+.compare-rfi{margin:0;padding-left:18px;font-size:12px;line-height:1.7}
+.compare-rows{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.compare-rows li{position:relative;overflow-wrap:anywhere;font-size:13px}  /* relative: contains the .sr-only spans */
+.compare-rows .status-line{margin:4px 0 0}
+@media(max-width:759px){
+  .compare-grid{grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:minmax(0,1fr);overflow:visible;padding:0}
+}
+
+/* Standards (issue 109; DESIGN-SPEC 4.7, 4.9): POLICIES | editor | IMPACT; impact under the editor at 1099 px and below;
+   one column with the policy list as a select at 759 px and below. Every control is a 44 px target (DS-NFR-01). */
+.standards{display:grid;grid-template-columns:260px minmax(0,1fr) 300px;gap:16px;align-items:start;margin-top:28px}
+.standards .panel{padding:16px 20px;min-width:0;overflow-wrap:anywhere}
+.standards .panel>.eyebrow{margin-bottom:12px}
+.standards .mono{font-variant-numeric:tabular-nums}
+.standards button,.standards select,.std-input,.std-check,.std-rating input[type=range]{min-height:44px}
+.standards .subtle-button{font-size:12px;padding-inline:4px}
+.std-list{display:grid;gap:4px}
+.std-row{display:grid;gap:2px}
+.std-radio{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:5px;padding:8px 10px;font-size:13px}
+.std-radio:hover{background:var(--hover)}
+.std-radio[aria-checked=true]{background:var(--selected);border-color:var(--line-active);color:var(--cyan)}
+.std-radio .badge{display:inline-block;margin-left:4px}
+.std-row-actions,.std-confirm{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px;padding-left:10px;font-size:12px}
+.std-select{display:none}
+.std-select label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.std-select select{width:100%;background:var(--bg);border:1px solid var(--line-active);border-radius:4px;padding:0 8px}
+.std-new{display:block;margin-top:8px}
+.std-sheets-title{margin:24px 0 8px}
+.std-block{border:0;margin:0 0 24px;padding:0;min-width:0}
+.std-block legend{padding:0;margin-bottom:8px}
+.std-block p.quiet{margin:0 0 8px}
+.std-field{display:grid;gap:4px;margin-bottom:12px;min-width:0}
+.std-field label{font-size:12px}
+.std-input{width:100%;max-width:120px;background:var(--bg);border:1px solid var(--line-active);border-radius:4px;padding:0 8px;font-size:13px}
+.std-name .std-input{max-width:360px}
+.std-input[aria-invalid=true]{border-color:var(--bad)}
+.std-error{color:var(--bad);font-size:12px;line-height:1.6;margin:4px 0 0}
+.std-note{color:var(--amber);font-size:12px;margin:8px 0 0}
+.std-rating{display:grid;grid-template-columns:minmax(0,1fr) minmax(96px,160px) 16px 48px;align-items:center;gap:4px 12px;font-size:13px}
+.std-rating input[type=range]{width:100%;accent-color:var(--cyan)}
+.std-weight{text-align:right}
+.std-total{font-size:12px;color:var(--ink-soft);margin:8px 0 0}
+.std-pass{display:flex;flex-wrap:wrap;gap:0 24px}
+.std-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 16px}
+.std-check{display:flex;align-items:flex-start;gap:8px;padding-block:12px;font-size:12px;line-height:1.5}
+.std-check input{flex:none;width:18px;height:18px;margin:0;accent-color:var(--cyan)}
+.std-table-wrap{overflow-x:auto;padding:4px}
+.std-table{font-size:12px}
+.std-table th[scope=row]{font-weight:400;white-space:nowrap}
+.std-table td{white-space:nowrap}
+.std-table .std-input{display:inline-block;width:88px}
+.std-op{display:inline-block;min-width:3em;color:var(--muted);font-size:11px}
+.std-impact-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+a.list-card.std-impact-item{position:relative;display:block;text-decoration:none;color:inherit;min-height:44px}  /* relative: contains the .sr-only spans */
+.std-impact-item .card-meta{margin-top:4px}
+.std-impact-item .badge{display:inline-block}
+.std-count{margin:0;font-size:12px}
+.std-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:16px}
+.std-actions .button[aria-disabled=true]{opacity:.45}
+.std-link{font-size:11px;overflow-wrap:anywhere;margin:0;color:var(--ink-soft)}
+.std-status{font-size:12px;color:var(--ink-soft);margin:8px 0 0;min-height:1em}
+/* Requirement sheets (issue 110): plain links in the policies panel, the view-only viewer in the editor column. */
+.std-sheet-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.std-sheet-link{display:flex;align-items:center;gap:6px;min-height:44px;padding:8px 10px;border:1px solid transparent;border-radius:5px;font-size:13px;color:var(--cyan);text-decoration:none}
+.std-sheet-link:hover{background:var(--hover)}
+.std-sheet-link[aria-current=page]{background:var(--selected);border-color:var(--line-active)}
+.std-sheet-failed{padding:8px 10px;font-size:13px;color:var(--muted)}
+.std-sheet-select{margin-top:8px}
+.std-sheet h3{margin:0 0 4px}
+.std-sheet h4{margin:20px 0 8px;font-size:13px}
+.std-sheet .badge{display:inline-block}
+.std-sheet caption{text-align:left;padding-bottom:8px}
+.std-sheet tr.quiet{color:var(--muted)}
+.std-sheet p.quiet{margin:12px 0}
+.std-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px 24px;margin:16px 0}
+.std-facts dt{font-size:12px;color:var(--muted)}
+.std-facts dd{margin:2px 0 0;font-size:13px}
+.std-tests-title{margin:24px 0 0}
+@media(max-width:1099px){
+  .standards{grid-template-columns:240px minmax(0,1fr)}
+  .std-impact{grid-column:2}
+}
+@media(max-width:759px){
+  .standards{grid-template-columns:minmax(0,1fr)}
+  .std-impact{grid-column:auto}
+  .std-list,.std-sheet-list{display:none}
+  .std-select{display:block}
+  .std-rating{grid-template-columns:minmax(0,1fr) 16px 48px}
+  .std-rating label{grid-column:1 / -1}
+  .std-rating input[type=range]{grid-column:1}
+}
+
+/* Eval (issue 111; DESIGN-SPEC 4.8, 4.9): headline stats, per-world table, run list, miss list. Tables scroll inside their panel. */
+.eval{display:grid;gap:16px;margin-top:28px}
+.eval .panel{padding:16px 20px;min-width:0}
+.eval .panel .eyebrow{margin-bottom:12px}
+.eval p{margin:0 0 8px}
+.eval .mono{font-variant-numeric:tabular-nums}
+.eval .text-link{display:inline-block;min-height:24px;padding-block:4px}
+.eval .badge{display:inline-block;white-space:nowrap}
+.eval-empty{font-size:15px}
+.eval-method{color:var(--ink-lede)}
+.stats{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.stat{position:relative;min-width:0}  /* relative: contains the .sr-only span */
+.stat-body{display:grid;gap:4px;justify-items:start}
+.stat-label{font:11px var(--mono);letter-spacing:.6px;color:var(--muted)}
+.stat-value{font-size:24px}
+.stat-counts{font-size:12px;color:var(--muted)}
+.stat-target{font-size:12px;color:var(--ink-soft)}
+.eval-refused{margin:0;padding-left:18px;font-size:12px;line-height:1.7;color:var(--ink-soft);overflow-wrap:anywhere}
+.eval .table-wrap{position:relative;overflow-x:auto;padding:4px}  /* relative: contains the caption's .sr-only */
+.eval-table{font-size:12px}
+.eval-table th,.eval-table td{white-space:nowrap;vertical-align:top}
+.eval-table .num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eval-table small{color:var(--muted);margin-left:4px}
+.eval-worlds{min-width:560px}
+.eval-worlds thead th:not(:first-child){text-align:right}  /* every column after World is a number */
+.eval-misses{min-width:720px}
+.eval-worlds tbody.apart{border-top:2px solid var(--line-active)}
+.eval-runs{margin:0;padding-left:20px;display:grid;gap:8px;font-size:13px;overflow-wrap:anywhere}
+.eval-runs a[aria-current=true]{color:var(--cyan);text-decoration:underline}
+.eval-runs .badge{margin-left:6px}
+.eval-run-meta{display:block;font-size:12px;color:var(--ink-soft)}
+.eval-footer{text-align:right}
+.packet .packet-files{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.packet .packet-files .text-link{display:inline-block;min-height:24px;padding-block:4px;font-family:var(--mono)}
+@media(max-width:1099px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:759px){
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .eval-runs .text-link,.eval-misses .text-link,.packet .packet-files .text-link{min-height:44px;display:inline-flex;align-items:center}
+  .eval-footer{text-align:left}
+}
+/* Requirement sheet upload preview (issue 78); all colours use design tokens. */
+.sheet-upload{padding:24px;min-width:0;overflow-wrap:anywhere}
+.sheet-upload h3{margin-bottom:12px}
+.sheet-upload .std-table th{max-width:300px;overflow-wrap:anywhere;white-space:normal}
+.sheet-upload .std-input{width:100%;min-width:180px}
+.sheet-upload details{margin-block:20px}
+.sheet-upload summary{cursor:pointer;color:var(--cyan)}
+.sheet-json{display:block;width:100%;min-height:260px;margin-block:12px;padding:12px;background:var(--bg);color:var(--ink);border:1px solid var(--line-active);border-radius:4px;font:12px var(--mono)}
+.sheet-json:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+.sheet-unmatched{padding-left:20px}
+.sheet-unmatched pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px var(--mono)}
+.sheet-column{min-width:0}
+.sheet-column>.std-actions{margin-bottom:12px;flex-wrap:wrap}
+@media(max-width:759px){.sheet-upload{padding:16px}.sheet-upload .std-table th{min-width:150px}}
+
+/* Accessibility pass (issue 46). Row headers keep the cell look; the p-bar labels get a plot-coloured halo so a line
+   or dot behind them stays readable; textareas, focusable tab panels
+   (views, Qualify's sub-tab panel) and keyboard-scrollable table wrappers get the cyan ring the shared rule misses. */
+.tier-table th[scope=row],.scar-table th[scope=row]{font-weight:400}  /* like .std-table th[scope=row] */
+.pchart-svg .pc-label,.pchart-svg .pc-tick{paint-order:stroke;stroke:var(--bg-plot);stroke-width:3px;stroke-linejoin:round}
+textarea:focus-visible,[role=tabpanel][tabindex]:focus-visible,
+:is(.table-wrap,.std-table-wrap):focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}  /* Chrome makes an overflowing wrapper with no focusable child a tab stop */
+.entry-field p.quiet:empty{display:none}
+.std-sheet>p>a.text-link:only-child{display:inline-block;min-height:24px;padding-block:4px}  /* ← Policy editor: 24 px target */
+
+/* Readable text on paper even when print backgrounds are disabled (issue 47). */
+@media print{
+  :root{color-scheme:light;background:var(--ink)}
+  body,body:has(dialog[open]){overflow:visible}
+  body,body *{color:var(--bg)!important;background:transparent!important;box-shadow:none!important;text-shadow:none!important}
+  .shell-bar,.sheet-head{position:static}
+  .skip-link,.live-dot{display:none!important}
+  [hidden],.sheet:not([open]){display:none!important}
+  .synthetic-label .badge,.viewer-label,.app-footer p,.viewer-disclaimer{color:var(--bg)!important}
+  .app-footer,.viewer-disclaimer{break-inside:avoid}
+  /* An open packet prints as its own document, including both required labels. */
+  body:has(.sheet[open])>.app-header,body:has(.sheet[open])>.shell-bar,
+  body:has(.sheet[open])>main,body:has(.sheet[open])>.app-footer{display:none!important}
+  .sheet[open]{position:static;display:block;width:auto;height:auto;max-height:none;margin:0;border:0;overflow:visible}
+  .sheet[open]::backdrop{display:none}
+  .sheet-scroll{overflow:visible;height:auto;max-height:none}
+  .sheet-head .subtle-button{display:none}
+}

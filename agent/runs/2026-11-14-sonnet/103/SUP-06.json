@@ -1,0 +1,48 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-06",
+  "commodity": "optics_cable",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-05-13", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-06-QMS expiry date, as recorded" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, REG-SUP-06-QMS; type and manufacturing scope recorded as true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Internal audit program recorded as present" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Corrective-action program recorded as present" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Gauge calibration program recorded as present" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Manufacturing failure-mode analysis recorded as present" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Control plan lists cable length, ferrule protrusion, strain-relief length: all 3 rfq CTQs" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.7766562337180565, "citation": "capability_study.md §1.1", "note": "Lowest of 3 CTQs: strain-relief length, n=50 (length 2.1755, ferrule 2.3345)" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Statistical process monitoring recorded as present" },
+    { "id": "3.grr", "state": "verified", "value": 4.400562072832667, "citation": "msa.md §1.1", "note": "Highest %GRR of tolerance: ferrule protrusion (length 3.79, strain relief 3.97)" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.insertion_loss", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "IL 0.346 dB (limit <=0.5), RL 46.05 dB (limit >=35), 1310 nm, all channels tested" },
+    { "id": "4.workmanship_620", "state": "assumed", "value": null, "citation": "reliability_report.md §1.2", "note": "\"Our cable assemblies are built and inspected to the drawing classification.\" No inspection record or reject count" },
+    { "id": "4.bend_flex", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "1347 cycles (limit >=1000), radius 30 mm, post-flex IL 0.350 dB, RL 47.07 dB" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Lot traceability recorded as present" },
+    { "id": "5.records_retention", "state": "verified", "value": 13, "citation": "quality_manual.md §1.7", "note": "13 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.8", "note": "Nonconforming material segregation recorded as present" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.3796875, "citation": "capacity.md §9.1", "note": "Stated ratio; mean 2759.375 parts/week over 8 weeks vs peak demand 2000" },
+    { "id": "6.lead_time", "state": "assumed", "value": null, "citation": "capacity.md §1.1", "note": "\"We can deliver within the requested schedule.\" No quoted lead time in weeks (rfq need-by 8 weeks)" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Milestone date 2026-11-01, added output 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 115, "citation": "pcn_policy.md §1.1", "note": "115 days advance notice" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §9.1", "note": "Customer change authorization recorded as present" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Wakanda Design Group named" },
+    { "id": "8.flowdown", "state": "assumed", "value": null, "citation": "subtier.md §1.2", "note": "\"Our purchase instructions carry the customer requirements to outside suppliers.\" No flowdown record" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.3", "note": "Registration REG-SUB-001 on file" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §9.1", "note": "Recorded regional continuity exposure: low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §9.2", "note": "Recorded financial condition: healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["4.workmanship_620", "6.lead_time", "8.flowdown"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-OC-0006 Rack optical cable assembly — information request\n\nHello Stane International team,\n\nTo complete our review of your packet for SI-OC-0006, please send the following:\n\n1. 4.workmanship_620 — IPC/WHMA-A-620 workmanship: the inspection record showing assemblies built and inspected to the drawing class (Class 2), including the inspection reject count.\n2. 6.lead_time — Lead time: a quoted lead time in weeks for this part, to compare with our 8-week need-by.\n3. 8.flowdown — Sub-tier flowdown: evidence that Stark's requirements are flowed down to your critical outside supplier, for example the purchase instruction or flowdown record.\n\nThank you.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["4.workmanship_620", "6.lead_time", "8.flowdown"],
+    "audit_plan": [
+      { "criterion_id": "4.workmanship_620", "question": "Show IPC/WHMA-A-620 Class 2 inspection records for recent SI-OC-0006 lots, including the reject count and inspector qualification (claim at reliability_report.md §1.2 has no record)." },
+      { "criterion_id": "6.lead_time", "question": "Show order-to-ship lead time history and the quoted lead time for SI-OC-0006 against the 8-week need-by (claim at capacity.md §1.1 gives no figure)." },
+      { "criterion_id": "8.flowdown", "question": "Pull a purchase order to Wakanda Design Group and confirm it carries Stark's requirements (claim at subtier.md §1.2)." }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "as_of": "2026-11-01",
+  "candidates": [
+    {
+      "id": "SUP-01",
+      "name": "Frost Technotics",
+      "commodity": "cold_plate",
+      "part": "NPI liquid-cooling cold plate"
+    },
+    {
+      "id": "SUP-02",
+      "name": "Wakanda Design Group",
+      "commodity": "quick_disconnect",
+      "part": "Dry-break coolant coupling"
+    },
+    {
+      "id": "SUP-03",
+      "name": "Hammer Industries",
+      "commodity": "power_module",
+      "part": "Rack power conversion module"
+    },
+    {
+      "id": "SUP-04",
+      "name": "Pym Technologies",
+      "commodity": "pcba",
+      "part": "Rack control PCBA"
+    },
+    {
+      "id": "SUP-05",
+      "name": "Cross Technological Enterprises",
+      "commodity": "machined_part",
+      "part": "Precision coolant bracket"
+    },
+    {
+      "id": "SUP-06",
+      "name": "Stane International",
+      "commodity": "optics_cable",
+      "part": "Rack optical cable assembly"
+    },
+    {
+      "id": "SUP-07",
+      "name": "Oscorp",
+      "commodity": "cold_plate",
+      "part": "NPI liquid-cooling cold plate"
+    },
+    {
+      "id": "SUP-08",
+      "name": "Roxxon",
+      "commodity": "contract_mfg",
+      "part": "Liquid-cooled rack system build"
+    },
+    {
+      "id": "SUP-09",
+      "name": "Horizon Labs",
+      "commodity": "cold_plate",
+      "part": "NPI liquid-cooling cold plate"
+    }
+  ],
+  "active": [
+    {
+      "id": "ACT-01",
+      "name": "Damage Control",
+      "commodity": "sheet_metal",
+      "part": "Rack mounting panel"
+    },
+    {
+      "id": "ACT-02",
+      "name": "Alchemax",
+      "commodity": "pcba",
+      "part": "Rack control PCBA"
+    },
+    {
+      "id": "ACT-03",
+      "name": "Rand Enterprises",
+      "commodity": "machined_part",
+      "part": "Precision coolant bracket"
+    },
+    {
+      "id": "ACT-04",
+      "name": "Timely Industries",
+      "commodity": "quick_disconnect",
+      "part": "Dry-break coolant coupling"
+    },
+    {
+      "id": "ACT-05",
+      "name": "A.I.M. (Advanced Idea Mechanics)",
+      "commodity": "cold_plate",
+      "part": "NPI liquid-cooling cold plate"
+    },
+    {
+      "id": "ACT-06",
+      "name": "Trask Industries",
+      "commodity": "power_module",
+      "part": "Rack power conversion module"
+    }
+  ]
+}

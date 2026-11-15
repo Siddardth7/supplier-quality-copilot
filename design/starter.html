@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#08111b">
+<title>Starter — RoLaMGAS style</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  header{display:flex;justify-content:space-between;align-items:center;gap:30px;padding-block:26px;border-bottom:1px solid var(--line)}
+  .brand{font-size:23px;font-weight:750;letter-spacing:-.7px} .brand small{display:block;font-size:10px;font-weight:400;color:var(--muted);letter-spacing:.45px;margin-top:4px}
+  nav{display:flex;gap:28px;align-items:center;font-size:13px} nav>a:not(.button){color:var(--ink-soft)} nav>a:hover{color:var(--cyan)}
+  .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:80px;align-items:end;padding-block:72px 66px}
+  .aside{border-left:1px solid var(--line);padding-left:40px}
+  .cta{display:grid;grid-template-columns:1fr 400px;gap:120px;align-items:center}
+  .explain{display:grid;grid-template-columns:repeat(3,1fr);gap:55px} .explain p{font-size:12px;line-height:1.9;color:var(--muted)}
+  footer{display:flex;justify-content:space-between;padding-block:30px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}
+  @media(max-width:760px){nav>a:not(.button){display:none}.hero,.cta,.explain{display:block}.aside{border:0;border-top:1px solid var(--line);padding:25px 0 0;margin-top:30px}.feature-card{margin-top:30px}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="container">
+  <header>
+    <a class="brand" href="./">Product<small>One-line product descriptor</small></a>
+    <nav><a href="#">Docs <span aria-hidden="true">↗</span></a><a class="button compact" href="#cta">Get started <span aria-hidden="true">↓</span></a></nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div>
+        <p class="eyebrow"><span class="live-dot"></span>CATEGORY / PUBLIC PREVIEW</p>
+        <h1>A short headline.<br>A lot of <em>possibility.</em></h1>
+        <p class="lede">One or two sentences explaining what this is and why someone should care.</p>
+        <a class="text-link" href="#explore">Explore <span aria-hidden="true">↘</span></a>
+      </div>
+      <div class="aside">
+        <p class="eyebrow muted">01 / THE LIBRARY</p>
+        <div class="stats"><div><strong>93</strong><span>saved items</span></div><div><strong>7</strong><span>categories</span></div></div>
+        <p class="quiet">Supporting note in muted text.</p>
+      </div>
+    </section>
+
+    <section id="explore" class="section">
+      <p class="eyebrow">THE EXPLORER</p>
+      <h2>Choose your next thing.</h2><br>
+      <div class="pills" role="group" aria-label="Filter">
+        <button aria-pressed="true">All <span>93</span></button><button aria-pressed="false">Alpha <span>8</span></button><button aria-pressed="false">Beta <span>5</span></button>
+      </div>
+      <div class="panel">
+        <div style="padding:22px 24px;display:flex;justify-content:space-between;align-items:start">
+          <div><p class="eyebrow" style="font-size:9px">DETAIL VIEW</p><h3>Item title · 2045</h3></div>
+          <div class="segmented"><button aria-pressed="true">3D</button><button aria-pressed="false">XY</button></div>
+        </div>
+        <div class="metrics" style="padding:23px 24px;border-block:1px solid var(--line)">
+          <div class="metric"><p>Metric A</p><strong>28.36</strong><small>km²/s²</small></div>
+          <div class="metric"><p>Metric B</p><strong>575.2</strong><small>m/s</small></div>
+          <div class="metric"><p>Metric C</p><strong>5.36</strong><small>km/s</small></div>
+          <div class="metric"><p>Metric D</p><strong>13.66</strong><small>years</small></div>
+        </div>
+        <div class="tabs" role="tablist" style="padding:0 24px"><button role="tab" aria-selected="true">Itinerary</button><button role="tab" aria-selected="false">Model &amp; data</button></div>
+        <div style="padding:7px 24px 20px;overflow-x:auto">
+          <table><thead><tr><th>Event</th><th>Date</th><th>Value</th><th>Details</th></tr></thead>
+            <tbody>
+              <tr><td><span class="dot"></span>Start</td><td>2032-04-29</td><td class="num">2463351.50</td><td class="quiet">Departure</td></tr>
+              <tr><td><span class="dot cyan"></span>Action</td><td>2033-05-14</td><td class="num">2463732.40</td><td class="quiet">575 m/s</td></tr>
+            </tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta" class="section cta">
+      <div>
+        <p class="eyebrow">02 / BUILD YOUR OWN</p>
+        <h2 style="font-size:44px;letter-spacing:-1.7px">The next one<br>could be yours.</h2>
+        <p class="lede">Call-to-action paragraph.</p>
+      </div>
+      <div class="feature-card">
+        <p class="eyebrow muted" style="font-size:9px">PRODUCT / v1.0</p>
+        <h3 style="font-size:25px;font-weight:450">Ready when you are.</h3>
+        <ul><li>Feature one</li><li>Feature two</li><li>Feature three</li></ul>
+        <a class="button" style="width:100%" href="#">Download <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <section class="section explain">
+      <article><p class="eyebrow muted" style="font-size:9px">TERM ONE</p><h3 style="font-size:16px">What is X?</h3><p>Plain-language explanation.</p></article>
+      <article><p class="eyebrow muted" style="font-size:9px">TERM TWO</p><h3 style="font-size:16px">What is Y?</h3><p>Plain-language explanation.</p></article>
+      <article><p class="eyebrow muted" style="font-size:9px">TERM THREE</p><h3 style="font-size:16px">Why care about Z?</h3><p>Plain-language explanation.</p></article>
+    </section>
+  </main>
+
+  <footer><strong style="font-size:17px;color:var(--ink)">Product</strong><a class="text-link" href="#">Back to top ↗</a></footer>
+</div>
+</body>
+</html>

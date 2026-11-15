@@ -1,0 +1,1 @@
+Created all 10 requested Markdown files in this folder. Verified the required first lines, assigned sections, supplied facts, and exact `rfq.md` text, including its final newline.

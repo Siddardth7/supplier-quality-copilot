@@ -1,0 +1,1 @@
+Created all 10 Markdown files in this folder. Checked the required first lines and assigned headings, and preserved the RFQ text exactly.

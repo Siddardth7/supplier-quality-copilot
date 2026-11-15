@@ -1,0 +1,294 @@
+{
+  "header": "Stark Industries — Supplier Quality. Synthetic document for a demo.",
+  "commodity": "cold_plate",
+  "part_no": "SI-CP-0007",
+  "part_name": "NPI liquid-cooling cold plate",
+  "revision": "A",
+  "drawing_no": "SI-DWG-CP-0007",
+  "ctqs": [
+    {
+      "name": "Base thickness",
+      "nominal": 3,
+      "lsl": 2.9,
+      "usl": 3.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Port bore",
+      "nominal": 8,
+      "lsl": 7.95,
+      "usl": 8.05,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Mounting-hole pitch",
+      "nominal": 80,
+      "lsl": 79.9,
+      "usl": 80.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    }
+  ],
+  "tests": {
+    "4.leak_test": {
+      "name": "Leak test",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Helium leak rate",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.000001,
+          "unit": "mbar·L/s",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Helium differential pressure",
+          "kind": "setup",
+          "operator": "=",
+          "value": 6,
+          "unit": "bar",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Test temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": 20,
+          "unit": "°C",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.burst_pressure": {
+      "name": "Burst / proof pressure",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Maximum operating pressure",
+          "kind": "setup",
+          "operator": "=",
+          "value": 6,
+          "unit": "bar",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Proof / maximum operating pressure",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 3,
+          "unit": "ratio",
+          "basis": "heuristic",
+          "context": "Sustained proof pressure divided by the setup maximum operating pressure, throughout the proof hold."
+        },
+        {
+          "measure": "Proof hold time",
+          "kind": "setup",
+          "operator": ">=",
+          "value": 60,
+          "unit": "s",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Rupture during proof hold",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": false,
+          "unit": "boolean",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.cleanliness": {
+      "name": "Internal cleanliness",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Particles at least 100 µm",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 100,
+          "unit": "particles/part",
+          "basis": "heuristic",
+          "context": "Total extracted from each complete internal wetted circuit; includes larger particles."
+        },
+        {
+          "measure": "Particles at least 500 µm",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "particles/part",
+          "basis": "heuristic",
+          "context": "Total extracted from each complete internal wetted circuit."
+        }
+      ]
+    },
+    "4.material_cert": {
+      "name": "Material certificate",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Drawing material",
+          "kind": "setup",
+          "operator": "=",
+          "value": "SI-MAT-AL-01",
+          "unit": "designation",
+          "basis": "heuristic",
+          "context": "Fictional drawing designation for aluminum alloy."
+        },
+        {
+          "measure": "Certificate traceable to material lot",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Certificate matches drawing material",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.thermal_cycling": {
+      "name": "Thermal cycling / HTOL",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Completed thermal cycles",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 500,
+          "unit": "cycles",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Lower temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": -20,
+          "unit": "°C",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Upper temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": 80,
+          "unit": "°C",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Dwell at each extreme",
+          "kind": "setup",
+          "operator": ">=",
+          "value": 15,
+          "unit": "min",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Failures",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Post-cycle helium leak rate",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.000001,
+          "unit": "mbar·L/s",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Post-cycle helium differential pressure",
+          "kind": "setup",
+          "operator": "=",
+          "value": 6,
+          "unit": "bar",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.coolant_compat": {
+      "name": "Coolant compatibility",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "System coolant",
+          "kind": "setup",
+          "operator": "=",
+          "value": "SI-COOL-01",
+          "unit": "designation",
+          "basis": "heuristic",
+          "context": "Fictional propylene-glycol/water mixture."
+        },
+        {
+          "measure": "Propylene glycol concentration by volume",
+          "kind": "setup",
+          "operator": "=",
+          "value": 30,
+          "unit": "%",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Exposure duration",
+          "kind": "setup",
+          "operator": ">=",
+          "value": 1000,
+          "unit": "h",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Exposure temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": 80,
+          "unit": "°C",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Absolute mass change",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 1,
+          "unit": "%",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "All wetted materials assessed",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Visible corrosion",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": false,
+          "unit": "boolean",
+          "basis": "heuristic"
+        }
+      ]
+    }
+  },
+  "peak_weekly_demand": 2000,
+  "need_by_weeks": 12,
+  "planning_basis": "heuristic"
+}

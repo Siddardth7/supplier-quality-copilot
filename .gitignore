@@ -1,0 +1,16 @@
+.DS_Store
+node_modules/
+*.log
+.env
+.pipeline/
+.claude/settings.local.json
+
+# Local dev world from scripts/dev-world.mjs
+dev-data/
+
+# Frozen world stage outcomes are dataset artifacts, not local debug logs.
+!data/worlds/*/run.log
+
+# Local-only: identifying-term list (SHIP-FR-01) and personal Claude notes
+.scrub-terms
+CLAUDE.local.md

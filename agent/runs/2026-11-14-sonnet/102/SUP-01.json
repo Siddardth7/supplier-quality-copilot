@@ -1,0 +1,50 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-01",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-07-11", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-01-QMS expiry, registrar REG-001" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "Type ISO 9001, certificate REG-SUP-01-QMS; recorded result true for type and manufacturing scope" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Recorded result true" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Corrective-action program, recorded result true" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Gauge calibration program, recorded result true" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Manufacturing failure-mode analysis, recorded result true" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Lists all three rfq CTQs: base thickness, port bore, mounting-hole pitch" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.4852971490270372, "citation": "capability_study.md §1.1", "note": "Port bore lowest; thickness 1.5733, pitch 1.6019; n=50 each" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Statistical process monitoring, recorded result true; capability_study.md §1.1 has CTQ data" },
+    { "id": "3.grr", "state": "verified", "value": 3.8775525673835998, "citation": "msa.md §9.1", "note": "Base thickness highest; bore 3.8188, pitch 3.3260 (% of tolerance)" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.leak_test", "state": "missing", "value": null, "citation": null, "note": "No helium leak test report or claim in reliability_report.md; only post-cycle leak in thermal cycling §1.3. Checked all packet files" },
+    { "id": "4.burst_pressure", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "Proof ratio 3.7355 (limit >=3), hold 60 s, no rupture" },
+    { "id": "4.cleanliness", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "75 particles >=100 µm (limit <=100); 0 at >=500 µm" },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "SI-MAT-AL-01; lot-traceable and matches drawing" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "629 cycles (>=500), 0 failures, post-cycle leak 7.73e-7 mbar·L/s" },
+    { "id": "4.coolant_compat", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Mass change 0.748% (<=1), all wetted materials assessed, no corrosion" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Lot traceability, recorded result true" },
+    { "id": "5.records_retention", "state": "missing", "value": null, "citation": null, "note": "No retention period stated; looked in quality_manual.md, pcn_policy.md, cover_letter.md and the other packet files" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.7", "note": "Nonconforming material segregation, recorded result true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.4825, "citation": "capacity.md §1.1", "note": "Stated ratio; mean output 2965/week vs 2000 peak demand" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 9 weeks vs need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone 2026-11-01, added 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 106, "citation": "pcn_policy.md §9.1", "note": "Advance change notice, days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.1", "note": "Customer change authorization, recorded result true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Wakanda Design Group named" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Requirements passed to outside suppliers, recorded result true" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Registration REG-SUB-001" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §9.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.1", "note": "Recorded result low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.2", "note": "Recorded result healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["4.leak_test", "5.records_retention"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: RFI for SI-CP-0007 rev A (SUP-01, Frost Technotics) — two items\n\nHello Frost Technotics team,\n\nTo complete our review of your packet for the NPI liquid-cooling cold plate (SI-CP-0007, rev A), please send the following:\n\n1. 4.leak_test — the helium leak test report for this part, showing the leak rate at 6 bar differential pressure and 20 °C against the Stark limit of 0.000001 mbar·L/s or lower.\n2. 5.records_retention — your quality-record retention period, in years, with the procedure that states it.\n\nThank you.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["4.leak_test", "5.records_retention"],
+    "audit_plan": [
+      { "criterion_id": "4.leak_test", "question": "reliability_report.md has no helium leak test (§9.1–§1.6); only a post-cycle leak in §1.3. Ask to see the leak test station, method and records for SI-CP-0007: 6 bar, 20 °C, limit <= 0.000001 mbar·L/s." },
+      { "criterion_id": "5.records_retention", "question": "No retention period appears in the packet. Ask to see the record-retention procedure and confirm the retention period in years for quality records for this part." }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-03",
+  "commodity": "power_module",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-05-06", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-03-QMS expiry date as recorded" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "Type ISO 9001; registration type and manufacturing scope recorded as present" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Recorded result true: internal audit program present or demonstrated" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Recorded result true: corrective-action program present or demonstrated" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Recorded result true: gauge calibration program present or demonstrated" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Recorded result true: manufacturing failure-mode analysis present or demonstrated" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Control plan lists Output voltage, Connector pitch, Mounting-hole pitch, all three rfq.md CTQs" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 0.6885724247164918, "citation": "capability_study.md §9.1", "note": "Lowest is Connector pitch, n=50. Others: Output voltage 0.8255750806529724, Mounting-hole pitch 0.73693952923011" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §9.3", "note": "Recorded result true: statistical process monitoring present or demonstrated" },
+    { "id": "3.grr", "state": "verified", "value": 24.072683948491743, "citation": "msa.md §1.1", "note": "Highest is Output voltage. Connector pitch 15.186720455339342, Mounting-hole pitch 18.997402436835213 (% of tolerance)" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.burn_in", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "48 h, 55 C, rated load 1; fallout 0.008886657874499918 vs Stark limit 0.01" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "580 cycles vs 500 required; -20/85 C, dwell 15 min, 0 failures" },
+    { "id": "4.efficiency", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "Efficiency 1 at 0.2, 0.5 and 1.0 load vs limits 0.9/0.94/0.94; 400 V in, 48 V out" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §9.3", "note": "Documented statistical sample-size rationale" },
+    { "id": "4.halt", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "Operating and destruct-limit margins reported" },
+    { "id": "4.derating", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "Derating analysis present; voltage ratio 0.6917890694278936, current ratio 0.6843917642632029 (limit 0.8)" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Recorded result true: lot traceability present or demonstrated" },
+    { "id": "5.records_retention", "state": "verified", "value": 14, "citation": "quality_manual.md §1.6", "note": "Record retention 14 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §9.4", "note": "Recorded result true: nonconforming material segregation present or demonstrated" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.46625, "citation": "capacity.md §1.1", "note": "Ratio stated; mean 1466.25 parts/week over 8 weeks vs peak demand 1000" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 10 weeks vs need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone date 2026-11-01, added output 200 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 116, "citation": "pcn_policy.md §1.1", "note": "Advance change notice 116 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §9.1", "note": "Customer change authorization recorded as present" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §9.2", "note": "Requirements passed to outside suppliers recorded as present" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.3", "note": "Registration certificate REG-SUB-001 on file" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §9.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.1", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §9.2", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": [],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-PM-0003 supplier packet — no further information requested\n\nHello Hammer Industries team,\n\nThank you for the packet for SI-PM-0003 (Rack power conversion module, rev A). No further information is requested at this time.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["2.ctq_cpk", "3.grr"],
+    "audit_plan": [
+      { "criterion_id": "2.ctq_cpk", "question": "Review the Connector pitch study (capability_study.md §9.1, Cpk 0.6885724247164918, n=50, mean 11.9946 mm, sd 0.0458 mm). Verify the raw data and the process actions for all three CTQs; Output voltage is 0.8255750806529724 and Mounting-hole pitch 0.73693952923011." },
+      { "criterion_id": "3.grr", "question": "Observe the Output voltage gauge study (msa.md §1.1, GRR 24.072683948491743% of tolerance, 47.5–48.5 V). Verify the study records and calibration status, and ask what is planned to reduce gauge variation. Also check the other two gauges (15.19%, 19.00%)." }
+    ]
+  }
+}

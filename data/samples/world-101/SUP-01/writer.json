@@ -1,0 +1,59 @@
+{
+  "seed": 101,
+  "suppliers": {
+    "SUP-01": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-01.md",
+        "brief_sha256": "d0a10f09d7b608e685d7ea318909021179e5c92ac972df73eac29e4640a8749c",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "c6f29a3314fa3b28d824793e342a2a0fadafbc8d45259776d5e016551272a6e2",
+          "repository_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "ef52456a4255165ad35d7f589bb8f86efe180d625f56196f8cc100dd1611d48d",
+          "capacity.md": "96ec272a8bf098b9a7041218d025c790896018b845288a66c23376493bbba509",
+          "certificates.md": "f44bc00827b7f749476b580edf177905cb21e0cb9630248da407098b7f131fd2",
+          "cover_letter.md": "c0f937d272020970441cd56d49329eaccdeecdfc516cbff62f85d3f3cd6ec00f",
+          "msa.md": "3dae00c8b39675fab4ecd03169fa8f2b09d8df2297491721ab5a216bd6f0f6c3",
+          "pcn_policy.md": "07796c8db959762179bd1caecfa62be396319efdac9945af3dc7c8abb529a60b",
+          "quality_manual.md": "44b565c99b4e50a24ce5a52388ddc1c25dd6145ad5ed993d8897be1ac7f820fa",
+          "reliability_report.md": "4c0ed8957c667f77742e96f3e93a82b5d5cc5c12c42049e120eac940f3822349",
+          "rfq.md": "8d7a844a02bf96bfac9a4c3f12a6e3fc23eb812139fde97ef529729c105b4e63",
+          "subtier.md": "7ad98d6b5335fc93a8012ba325605506905f6fda80d48f9eeb987c4f372f0dc8"
+        }
+      }
+    ]
+  }
+}

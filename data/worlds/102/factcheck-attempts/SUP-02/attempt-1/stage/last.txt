@@ -1,0 +1,1 @@
+Created all 10 requested Markdown files in this folder. Verified the required first lines and assigned headings, and confirmed `rfq.md` matches the supplied text exactly.

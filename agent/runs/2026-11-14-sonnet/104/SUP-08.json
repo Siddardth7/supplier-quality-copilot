@@ -1,0 +1,50 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-08",
+  "commodity": "contract_mfg",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-05-14", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-08-QMS expiry date, registrar REG-001" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, certificate REG-SUP-08-QMS, manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "assumed", "value": true, "citation": "quality_manual.md §1.1", "note": "\"The recorded result is true.\" Manual statement, no audit record in packet" },
+    { "id": "1.capa", "state": "assumed", "value": true, "citation": "quality_manual.md §1.2", "note": "\"The recorded result is true.\" Manual statement, no CAPA procedure or records in packet" },
+    { "id": "1.calibration", "state": "assumed", "value": true, "citation": "quality_manual.md §1.3", "note": "\"The recorded result is true.\" Manual statement, no calibration records in packet" },
+    { "id": "2.pfmea", "state": "assumed", "value": true, "citation": "quality_manual.md §1.4", "note": "\"The recorded result is true.\" Manual statement, no PFMEA document in packet" },
+    { "id": "2.control_plan", "state": "assumed", "value": true, "citation": "quality_manual.md §1.5", "note": "Manual lists CTQs: Rail spacing, Mounting fastener torque, Manifold alignment; no control plan document in packet" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.7497481371561885, "citation": "capability_study.md §9.1", "note": "Rail spacing lowest; torque 2.4515474322032325, alignment 1.7752810720706236; n=50 each" },
+    { "id": "2.spc", "state": "assumed", "value": true, "citation": "quality_manual.md §9.1", "note": "\"The recorded result is true.\" Statistical process monitoring claimed; no charts or reaction plan in packet" },
+    { "id": "3.grr", "state": "verified", "value": 3.0950108892283743, "citation": "msa.md §9.1", "note": "Highest %GRR of tolerance is rail spacing; torque 2.5219689697083423, alignment 2.7121326703825943" },
+    { "id": "3.inspection_method", "state": "assumed", "value": true, "citation": "quality_manual.md §9.2", "note": "\"Drawing-specific CTQ measurement instructions and calibrated gauges.\" No method named, no record" },
+    { "id": "4.process_audit", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "Audit complete true; open major process findings 0; meets buyer limit" },
+    { "id": "4.esd_program", "state": "verified", "value": false, "citation": "reliability_report.md §9.1", "note": "ESD program implemented: false; open major ESD findings: 1; does not meet buyer limit" },
+    { "id": "4.fpy_data", "state": "verified", "value": 5, "citation": "reliability_report.md §1.2", "note": "5 consecutive months of FPY data; buyer limit is at least 6 months" },
+    { "id": "4.mes_trace", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "Serial-level MES records true; shipped serial coverage 1" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "Documented statistical sample-size rationale" },
+    { "id": "4.training_records", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Qualification coverage 1; expired qualifications 0 (nice to have)" },
+    { "id": "5.lot_trace", "state": "assumed", "value": true, "citation": "quality_manual.md §1.6", "note": "\"The recorded result is true.\" Manual statement, no trace records to raw material in packet" },
+    { "id": "5.records_retention", "state": "verified", "value": 15, "citation": "quality_manual.md §1.7", "note": "Record retention stated as 15 years" },
+    { "id": "5.nc_segregation", "state": "assumed", "value": true, "citation": "quality_manual.md §1.8", "note": "\"The recorded result is true.\" Manual statement, no segregation records in packet" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.50125, "citation": "capacity.md §1.1", "note": "Mean 300.25 parts/week over 8 weeks vs peak demand 200; ratio stated as 1.50125" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 8 weeks; need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §9.1", "note": "Milestone 2026-11-01, added 40 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 117, "citation": "pcn_policy.md §9.1", "note": "Advance change notice 117 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §9.2", "note": "PCN policy records customer change authorization true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "assumed", "value": true, "citation": "subtier.md §1.2", "note": "\"The recorded result is true.\" Requirements passed to outside suppliers; no flowdown document or record" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.3", "note": "Registration certificate on file: REG-SUB-001" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §9.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §9.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.1", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.internal_audit", "1.capa", "1.calibration", "2.pfmea", "2.control_plan", "2.spc", "3.inspection_method", "5.lot_trace", "5.nc_segregation", "8.flowdown"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CM-0008 (SUP-08) — supporting evidence requested for qualification\n\nHello,\n\nThank you for your packet for SI-CM-0008, rev A. Please send supporting evidence for the following items, which are currently stated without records:\n\n1. 1.internal_audit — internal audit program: procedure and recent audit records.\n2. 1.capa — documented corrective-action (CAPA) process: procedure and sample records.\n3. 1.calibration — gauge calibration program covering production gauges: procedure and calibration records.\n4. 2.pfmea — current process failure-mode analysis (PFMEA) for this part.\n5. 2.control_plan — production control plan covering rail spacing, mounting fastener torque and manifold alignment.\n6. 2.spc — SPC in use on the CTQs now: control charts and reaction plan.\n7. 3.inspection_method — inspection method for the CTQ tolerances: methods and equipment used.\n8. 5.lot_trace — lot or serial traceability to raw material: procedure and a sample trace record.\n9. 5.nc_segregation — nonconforming material identification and segregation: procedure and records.\n10. 8.flowdown — requirements flowed down to sub-tier suppliers: flowdown document or purchase-order terms.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["4.esd_program", "4.fpy_data", "5.lot_trace"],
+    "audit_plan": [
+      { "criterion_id": "4.esd_program", "question": "reliability_report.md §9.1 records ESD program implemented false and 1 open major ESD finding. Walk the stations building SI-CM-0008 and verify ESD controls in place, the open finding and its corrective-action status." },
+      { "criterion_id": "4.fpy_data", "question": "reliability_report.md §1.2 records 5 consecutive months of FPY data against Stark's 6-month limit. Review the FPY records by month and confirm start date, data source and when a sixth month will exist." },
+      { "criterion_id": "5.lot_trace", "question": "quality_manual.md §1.6 claims lot traceability with no record. Pick shipped serials and trace each back to raw-material lots, showing the records at each step." }
+    ]
+  }
+}

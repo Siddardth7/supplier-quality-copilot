@@ -1,0 +1,23 @@
+name: test
+
+on:
+  pull_request:
+    branches: [test, main]
+  push:
+    branches: [test, main]
+
+permissions:
+  contents: read
+
+jobs:
+  node-test:
+    runs-on: macos-26 # ARM64 macOS: same generator family for bitwise native-Math fixtures.
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26.0.0 # Same exact runtime as frozen generator outputs.
+      - run: node --version
+      # ponytail: no install step; the project has no dependencies (CLAUDE.md).
+      - run: node --test

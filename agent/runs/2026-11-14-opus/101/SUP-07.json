@@ -1,0 +1,51 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-07",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-opus", "model": "claude-opus-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "assumed", "value": null, "citation": "certificates.md §1.1", "note": "\"Our quality-system registration remains current.\" No expiry date given for REG-SUP-07-QMS." },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "Certificate REG-SUP-07-QMS, type ISO 9001; registration type and manufacturing scope recorded result true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Internal audit program recorded result true" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Corrective-action program recorded result true" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Gauge calibration program recorded result true" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Manufacturing failure-mode analysis recorded result true" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Control plan lists all three rfq.md CTQs: Base thickness, Port bore, Mounting-hole pitch" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.1300542478927795, "citation": "capability_study.md §1.1", "note": "Lowest is Port bore, n=50. Base thickness 1.2983362595385826, Mounting-hole pitch 1.2953195802269672" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Statistical process monitoring recorded result true" },
+    { "id": "3.grr", "state": "verified", "value": 5.986288570693152, "citation": "msa.md §1.1", "note": "Highest is Port bore (% of tolerance). Base thickness 5.918492931137833, Mounting-hole pitch 4.803333661552956; 10 parts x 3 appraisers x 3 repeats" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges; recorded result true" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "He leak 6.913395559483644e-7 mbar·L/s vs Stark limit ≤ 1e-6, at 6 bar, 20 °C" },
+    { "id": "4.burst_pressure", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "Proof/MOP ratio 3.8444299461893965 vs Stark ≥ 3; MOP 6 bar, hold 60 s, no rupture" },
+    { "id": "4.cleanliness", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "64 particles ≥100 µm (limit ≤ 100), 0 particles ≥500 µm (limit 0)" },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "SI-MAT-AL-01; cert traceable to lot and matches drawing material" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Methods and buyer acceptance criteria documented; recorded result true" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "Documented statistical sample-size rationale; recorded result true" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "627 cycles (≥ 500), -20/80 °C, 15 min dwell, 0 failures, post-cycle leak 7.086875388290226e-7 mbar·L/s" },
+    { "id": "4.coolant_compat", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "SI-COOL-01, 30% PG, 1000 h at 80 °C; mass change 0.6942809009143014% (≤ 1), all wetted materials assessed, no corrosion" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.7", "note": "Lot traceability recorded result true" },
+    { "id": "5.records_retention", "state": "verified", "value": 12, "citation": "quality_manual.md §1.8", "note": "Record retention 12 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Nonconforming material segregation recorded result true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 0.8485, "citation": "capacity.md §9.1", "note": "Stated ratio 0.8485: mean 1697 parts/week over 8 weeks vs peak demand 2000" },
+    { "id": "6.lead_time", "state": "verified", "value": false, "citation": "capacity.md §9.2", "note": "Quoted 16 weeks vs rfq.md need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.1", "note": "Milestone date 2026-11-01, added 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 115, "citation": "pcn_policy.md §1.1", "note": "Advance change notice 115 days" },
+    { "id": "7.change_approval", "state": "assumed", "value": true, "citation": "pcn_policy.md §1.2", "note": "\"We obtain customer authorization before changing manufacturing arrangements.\" No procedure or record; process, site and sub-tier changes not named" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Critical sub-tier named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Requirements passed to outside suppliers recorded result true" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.3", "note": "Sub-tier certificate on file: REG-SUB-001" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.3", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.cert_current", "7.change_approval"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CP-0007 cold plate qualification — request for information (SUP-07, Oscorp)\n\nDear Oscorp team,\n\nThank you for your qualification packet for part SI-CP-0007 (NPI liquid-cooling cold plate, rev A, drawing SI-DWG-CP-0007). To complete our review, please send the following:\n\n1. 1.cert_current — Quality-system certificate expiry: a copy of certificate REG-SUP-07-QMS showing its expiry date. Your packet (certificates.md §1.1) states the registration \"remains current\" but gives no date.\n2. 7.change_approval — Customer approval of changes: your documented procedure or contract clause confirming that no process, site or sub-tier change is made without Stark Industries' prior written approval. Your PCN policy (pcn_policy.md §1.2) states that customer authorization is obtained before changing manufacturing arrangements, but no procedure or record is attached.\n\nPlease reply with the documents referenced above.\n\nRegards,\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["1.cert_current", "2.ctq_cpk", "6.lead_time"],
+    "audit_plan": [
+      { "criterion_id": "1.cert_current", "question": "Inspect the original ISO 9001 certificate REG-SUP-07-QMS and the registrar's latest surveillance report; record the expiry date, since certificates.md §1.1 only states the registration \"remains current\"." },
+      { "criterion_id": "2.ctq_cpk", "question": "Review the Port bore study behind capability_study.md §1.1 (Cpk 1.1300542478927795, n=50, mean 8.0046 mm on 7.95–8.05 mm): raw data, gauge used, machine and tooling, and the plan to raise Cpk to Stark's 1.33 bar." },
+      { "criterion_id": "6.lead_time", "question": "Walk the order-to-ship flow behind the 16-week quote in capacity.md §9.2 against Stark's 12-week need-by: identify the long-lead steps (material, sub-tier at Wakanda Design Group, test) and what would close the 4-week gap." }
+    ]
+  }
+}

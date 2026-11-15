@@ -1,0 +1,156 @@
+{
+  "header": "Stark Industries — Supplier Quality. Synthetic document for a demo.",
+  "commodity": "quick_disconnect",
+  "part_no": "SI-QD-0002",
+  "part_name": "Dry-break coolant coupling",
+  "revision": "A",
+  "drawing_no": "SI-DWG-QD-0002",
+  "ctqs": [
+    {
+      "name": "Seal bore",
+      "nominal": 10,
+      "lsl": 9.97,
+      "usl": 10.03,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Engagement length",
+      "nominal": 20,
+      "lsl": 19.9,
+      "usl": 20.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Latch groove width",
+      "nominal": 2,
+      "lsl": 1.95,
+      "usl": 2.05,
+      "unit": "mm",
+      "basis": "heuristic"
+    }
+  ],
+  "tests": {
+    "4.leak_test": {
+      "name": "Leak test",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Helium leak rate",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.000001,
+          "unit": "mbar·L/s",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Helium differential pressure",
+          "kind": "setup",
+          "operator": "=",
+          "value": 6,
+          "unit": "bar",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Test temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": 20,
+          "unit": "°C",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.cycle_life": {
+      "name": "Connect / disconnect cycle life",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Connect/disconnect cycles",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 5000,
+          "unit": "cycles",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Post-cycle helium leak rate",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.000001,
+          "unit": "mbar·L/s",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Post-cycle helium differential pressure",
+          "kind": "setup",
+          "operator": "=",
+          "value": 6,
+          "unit": "bar",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.pressure_drop": {
+      "name": "Pressure drop",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Pressure drop",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.2,
+          "unit": "bar",
+          "basis": "heuristic",
+          "context": "Fully coupled assembly."
+        },
+        {
+          "measure": "Rated water flow",
+          "kind": "setup",
+          "operator": "=",
+          "value": 4,
+          "unit": "L/min",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Water temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": 20,
+          "unit": "°C",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.spill_volume": {
+      "name": "Spill on disconnect",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Disconnect spill volume",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.1,
+          "unit": "mL/disconnect",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Operating pressure",
+          "kind": "setup",
+          "operator": "=",
+          "value": 6,
+          "unit": "bar",
+          "basis": "heuristic"
+        }
+      ]
+    }
+  },
+  "peak_weekly_demand": 4000,
+  "need_by_weeks": 10,
+  "planning_basis": "heuristic"
+}

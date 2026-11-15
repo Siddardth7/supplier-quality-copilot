@@ -1,0 +1,49 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-02",
+  "commodity": "quick_disconnect",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-11-17", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-02-QMS expiry date as recorded" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "Type ISO 9001; scope recorded as covering manufacturing (result: true)" },
+    { "id": "1.internal_audit", "state": "assumed", "value": true, "citation": "quality_manual.md §1.1", "note": "\"Internal audit program is present or demonstrated (recorded result: true)\"; no audit records in packet" },
+    { "id": "1.capa", "state": "assumed", "value": true, "citation": "quality_manual.md §1.2", "note": "\"Corrective-action program is present or demonstrated (recorded result: true)\"; no CAPA records" },
+    { "id": "1.calibration", "state": "assumed", "value": true, "citation": "quality_manual.md §1.3", "note": "\"Gauge calibration program is present or demonstrated (recorded result: true)\"; no calibration records" },
+    { "id": "2.pfmea", "state": "assumed", "value": true, "citation": "quality_manual.md §9.1", "note": "\"Manufacturing failure-mode analysis is present or demonstrated (recorded result: true)\"; no PFMEA document" },
+    { "id": "2.control_plan", "state": "assumed", "value": true, "citation": "quality_manual.md §1.4", "note": "Claim lists CTQs Seal bore, Engagement length, Latch groove width; no control plan document" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.6293230647720218, "citation": "capability_study.md §1.1", "note": "Lowest Cpk is Latch groove width, n=50; seal bore 1.9345, engagement length 2.2584" },
+    { "id": "2.spc", "state": "assumed", "value": true, "citation": "quality_manual.md §1.5", "note": "\"Statistical process monitoring is present or demonstrated (recorded result: true)\"; no charts or reaction plan" },
+    { "id": "3.grr", "state": "verified", "value": 4.521132447753406, "citation": "msa.md §1.1", "note": "Highest %GRR of tolerance is Latch groove width; seal bore 3.011, engagement length 3.191" },
+    { "id": "3.inspection_method", "state": "assumed", "value": true, "citation": "quality_manual.md §1.6", "note": "\"Drawing-specific CTQ measurement instructions and calibrated gauges\"; no record behind it" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "Helium 7.461e-7 mbar·L/s at 6 bar, 20 °C; Stark limit ≤ 1e-6" },
+    { "id": "4.cycle_life", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "6283 cycles (limit ≥ 5000); post-cycle leak 7.259e-7 mbar·L/s (limit ≤ 1e-6)" },
+    { "id": "4.pressure_drop", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "0.1535 bar at 4 L/min, 20 °C; Stark limit ≤ 0.2 bar" },
+    { "id": "4.spill_volume", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "0.0717 mL/disconnect at 6 bar; Stark limit ≤ 0.1 (nice to have)" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "assumed", "value": true, "citation": "quality_manual.md §9.2", "note": "\"Lot traceability is present or demonstrated (recorded result: true)\"; no trace records" },
+    { "id": "5.records_retention", "state": "verified", "value": 15, "citation": "quality_manual.md §9.3", "note": "Record retention stated as 15 years" },
+    { "id": "5.nc_segregation", "state": "assumed", "value": true, "citation": "quality_manual.md §1.7", "note": "\"Nonconforming material segregation is present or demonstrated (recorded result: true)\"; no records" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.333, "citation": "capacity.md §1.1", "note": "Ratio stated 1.333; mean output 5332 vs peak demand 4000 parts/week" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 7 weeks vs need-by 10 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone 2026-11-01, added 800 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 97, "citation": "pcn_policy.md §1.1", "note": "PCN policy states 97 days advance notice" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §9.1", "note": "PCN policy records customer change authorization (result: true)" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Critical outside supplier named: Horizon Labs" },
+    { "id": "8.flowdown", "state": "assumed", "value": true, "citation": "subtier.md §1.1", "note": "\"Requirements passed to outside suppliers is present or demonstrated (recorded result: true)\"; no flowdown document" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Registration certificate listed: REG-SUB-001" },
+    { "id": "9.second_source", "state": "verified", "value": false, "citation": "cover_letter.md §1.1", "note": "Qualified alternate source absent or not demonstrated (recorded result: false)" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.3", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.internal_audit", "1.capa", "1.calibration", "2.pfmea", "2.control_plan", "2.spc", "3.inspection_method", "5.lot_trace", "5.nc_segregation", "8.flowdown"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SUP-02 / SI-QD-0002 — request for supporting evidence\n\nHello Wakanda Design Group team,\n\nThank you for your packet for part SI-QD-0002 (Dry-break coolant coupling, rev A). Please send supporting records for the following items:\n\n1. 1.internal_audit — internal audit program: audit schedule and recent audit reports.\n2. 1.capa — documented corrective-action (CAPA) process and sample records.\n3. 1.calibration — gauge calibration program covering production gauges, with calibration records.\n4. 2.pfmea — current process FMEA for this part.\n5. 2.control_plan — production control plan covering seal bore, engagement length and latch groove width.\n6. 2.spc — SPC in use on the CTQs now: control charts and reaction plan.\n7. 3.inspection_method — inspection method and gauges used for each CTQ tolerance.\n8. 5.lot_trace — lot or serial traceability records back to raw material.\n9. 5.nc_segregation — procedure and records for identifying and segregating nonconforming material.\n10. 8.flowdown — evidence that requirements are flowed down to sub-tier supplier Horizon Labs.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["5.lot_trace", "1.internal_audit", "1.capa"],
+    "audit_plan": [
+      { "criterion_id": "5.lot_trace", "question": "Trace a recent lot of SI-QD-0002 from finished goods back to raw material lot using actual records. The packet only claims traceability (quality_manual.md §9.2)." },
+      { "criterion_id": "1.internal_audit", "question": "Review the internal audit schedule, the latest audit reports and closure of findings. The packet only claims the program (quality_manual.md §1.1)." },
+      { "criterion_id": "1.capa", "question": "Sample recent CAPA records for open/closed status, root cause and effectiveness checks. The packet only claims the program (quality_manual.md §1.2)." }
+    ]
+  }
+}

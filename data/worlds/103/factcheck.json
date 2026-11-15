@@ -1,0 +1,461 @@
+{
+  "seed": 103,
+  "status": "passed",
+  "suppliers": [
+    {
+      "supplier_id": "SUP-01",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-01/attempt-1/brief.md",
+          "brief_sha256": "44df80845acff555ac587f2a0926c117b9bafae475f57448b81abcbff9435823",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-02",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-02/attempt-1/brief.md",
+          "brief_sha256": "e9a15711f8dcc23fae4f13141cc9590f8f73d9b9120c5608b958cb54d1a5a70f",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-03",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-03/attempt-1/brief.md",
+          "brief_sha256": "2a2ee55ee6e2bd812cd7656b0dd398cd5f68c51ec201d4325ed83b9c9a459be0",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-04",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-04/attempt-1/brief.md",
+          "brief_sha256": "cd27130e8bb432981f612c3067d46da36767dd83a7df60588ac14734ee7e2344",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-05",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-05/attempt-1/brief.md",
+          "brief_sha256": "daf3440e71c1699b873d645f9e56c5ceeedd70802f603f8ec991c9596bb7c44e",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-06",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-06/attempt-1/brief.md",
+          "brief_sha256": "09fa08831a99373d6ead5360a2909c63dc30939cdfe50b8b958800bdcb3c0f74",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": [
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "4.workmanship_620",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "6.lead_time",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "8.flowdown",
+              "reason": "boolean_value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-07",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-07/attempt-1/brief.md",
+          "brief_sha256": "1ecaf10911abd1a4c70f9944328dd06a72e0515d5f07f005467a0e936b89dc86",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [
+            {
+              "rule": "verified_value",
+              "criterion": "1.cert_scope",
+              "file": "certificates.md",
+              "section": "1.2",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "1.internal_audit",
+              "file": "quality_manual.md",
+              "section": "9.1",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "1.calibration",
+              "file": "quality_manual.md",
+              "section": "1.2",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "2.pfmea",
+              "file": "quality_manual.md",
+              "section": "9.2",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "2.control_plan",
+              "file": "quality_manual.md",
+              "section": "1.3",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "2.spc",
+              "file": "quality_manual.md",
+              "section": "1.4",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "3.inspection_method",
+              "file": "quality_manual.md",
+              "section": "9.3",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "4.leak_test",
+              "file": "reliability_report.md",
+              "section": "1.1",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "4.burst_pressure",
+              "file": "reliability_report.md",
+              "section": "1.2",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "4.cleanliness",
+              "file": "reliability_report.md",
+              "section": "1.3",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "4.method_criteria",
+              "file": "reliability_report.md",
+              "section": "9.1",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "4.sample_size",
+              "file": "reliability_report.md",
+              "section": "1.7",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "5.nc_segregation",
+              "file": "quality_manual.md",
+              "section": "1.7",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "6.lead_time",
+              "file": "capacity.md",
+              "section": "9.1",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "6.ramp_plan",
+              "file": "capacity.md",
+              "section": "9.2",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "7.change_approval",
+              "file": "pcn_policy.md",
+              "section": "9.1",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "8.subtier_named",
+              "file": "subtier.md",
+              "section": "1.1",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "8.flowdown",
+              "file": "subtier.md",
+              "section": "1.2",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            },
+            {
+              "rule": "verified_value",
+              "criterion": "9.second_source",
+              "file": "cover_letter.md",
+              "section": "1.1",
+              "detail": "The supplied recorded result is absent from its assigned section."
+            }
+          ],
+          "unscannable": [
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "1.capa",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "4.thermal_cycling",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "4.coolant_compat",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "5.lot_trace",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "8.subtier_certs",
+              "reason": "boolean_value"
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-07/attempt-2/brief.md",
+          "brief_sha256": "13a9173cd2cff1590c630efa4ec486a6321daf23ad48bd6edf9b79bfbcc74579",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": [
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "1.capa",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "4.thermal_cycling",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "4.coolant_compat",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "5.lot_trace",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "8.subtier_certs",
+              "reason": "boolean_value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-08",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-08/attempt-1/brief.md",
+          "brief_sha256": "609a7d8084dceb7c82463bcd3ad6d7b4fe0d9a4320948626809e02c389cc62ac",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-09",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-09/attempt-1/brief.md",
+          "brief_sha256": "b0e428cc8f6ff9fb65acecf21f7eca14a886daae1fb655af021e8cc7dfd77b87",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    }
+  ]
+}

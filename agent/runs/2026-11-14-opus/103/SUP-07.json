@@ -1,0 +1,51 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-07",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-opus", "model": "claude-opus-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-06-12", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-07-QMS, registrar REG-001, expiry 2028-06-12" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "REG-SUP-07-QMS, type ISO 9001; registration type and manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Internal audit program recorded true" },
+    { "id": "1.capa", "state": "assumed", "value": null, "citation": "quality_manual.md §1.1", "note": "\"We investigate defects and track corrective actions to closure.\" No documented procedure or records provided" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Gauge calibration program recorded true" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Manufacturing failure-mode analysis recorded true" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Control plan lists Base thickness, Port bore, Mounting-hole pitch: all three rfq.md CTQs" },
+    { "id": "2.ctq_cpk", "state": "assumed", "value": null, "citation": "capability_study.md §1.1", "note": "\"Our process consistently holds the critical drawing tolerances.\" No Cpk values or study data for any CTQ" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Statistical process monitoring recorded true" },
+    { "id": "3.grr", "state": "assumed", "value": null, "citation": "msa.md §1.1", "note": "\"Our measurement system has suitable repeatability across operators.\" No %GRR values for any CTQ gauge" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §9.3", "note": "Recorded true; method: drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "He leak 7.256713076668792e-7 mbar·L/s at 6 bar, 20 °C; Stark limit ≤ 1e-6" },
+    { "id": "4.burst_pressure", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "Proof/MOP ratio 3.9757 (Stark ≥ 3), MOP 6 bar, hold 60 s (≥ 60), no rupture" },
+    { "id": "4.cleanliness", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "72 particles ≥100 µm (Stark ≤ 100), 0 particles ≥500 µm (Stark = 0)" },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "SI-MAT-AL-01; cert traceable to lot true, matches drawing material true" },
+    { "id": "4.thermal_cycling", "state": "assumed", "value": null, "citation": "reliability_report.md §1.5", "note": "\"Our parts survive the required temperature exposure without failure.\" No cycles, conditions or post-cycle leak data" },
+    { "id": "4.coolant_compat", "state": "assumed", "value": null, "citation": "reliability_report.md §1.6", "note": "\"Our wetted materials tolerate the specified fluid.\" No exposure test data" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "Recorded true: methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.7", "note": "Recorded true: documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "assumed", "value": null, "citation": "quality_manual.md §1.5", "note": "\"We can link each shipment back to its incoming material batch.\" No traceability record provided" },
+    { "id": "5.records_retention", "state": "verified", "value": 10, "citation": "quality_manual.md §1.6", "note": "Record retention 10 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.7", "note": "Nonconforming material segregation recorded true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 0.8559375, "citation": "capacity.md §1.1", "note": "Stated ratio; mean of 8 weekly outputs 1711.875 parts/week vs peak demand 2000" },
+    { "id": "6.lead_time", "state": "verified", "value": false, "citation": "capacity.md §9.1", "note": "Quoted 17 weeks vs rfq.md need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §9.2", "note": "Milestone 2026-11-01, added output 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 108, "citation": "pcn_policy.md §1.1", "note": "PCN notice 108 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §9.1", "note": "Customer change authorization recorded true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Critical sub-tier named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Requirements passed to outside suppliers recorded true" },
+    { "id": "8.subtier_certs", "state": "assumed", "value": null, "citation": "subtier.md §1.3", "note": "\"We retain current registrations for our critical outside suppliers.\" No certificate for Wakanda Design Group provided" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §9.1", "note": "Regional continuity exposure recorded low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §9.2", "note": "Financial condition recorded healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.capa", "2.ctq_cpk", "3.grr", "5.lot_trace", "8.subtier_certs"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CP-0007 cold plate qualification — request for additional information (SUP-07)\n\nDear Oscorp team,\n\nThank you for your qualification packet for the NPI liquid-cooling cold plate, part number SI-CP-0007, revision A (drawing SI-DWG-CP-0007). To complete our review, please send the following:\n\n1. 1.capa — Corrective and preventive action: your documented CAPA procedure, with example records showing corrective actions tracked to closure.\n2. 2.ctq_cpk — Process capability: a capability study with Cpk values for each CTQ (Base thickness, Port bore, Mounting-hole pitch), including sample size and raw data.\n3. 3.grr — Gage R&R: measurement system analysis results, as % of tolerance, for every gauge used on the three CTQs.\n4. 5.lot_trace — Lot traceability: a traceability record showing a shipment linked back to its raw-material lot.\n5. 8.subtier_certs — Sub-tier certificates: copies of the current quality-system certificates you hold on file for your critical sub-tier supplier, Wakanda Design Group.\n\nPlease reply with these documents at your earliest convenience.\n\nRegards,\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["2.ctq_cpk", "3.grr", "5.lot_trace"],
+    "audit_plan": [
+      { "criterion_id": "2.ctq_cpk", "question": "capability_study.md §1.1 gives only a claim. On site, pull current production data for Base thickness (2.9–3.1 mm), Port bore (7.95–8.05 mm) and Mounting-hole pitch (79.9–80.1 mm) and compute Cpk for each; confirm sample size and that the data is from the production process." },
+      { "criterion_id": "3.grr", "question": "msa.md §1.1 gives no %GRR. Witness or review a Gage R&R study for each CTQ gauge named in the drawing-specific measurement instructions (quality_manual.md §9.3) and record %GRR against the CTQ tolerance." },
+      { "criterion_id": "5.lot_trace", "question": "quality_manual.md §1.5 claims shipment-to-batch linkage. Pick a recent shipped lot and trace it end to end to the incoming aluminum (SI-MAT-AL-01) material lot and its certificate, including any Wakanda Design Group sub-tier steps." }
+    ]
+  }
+}

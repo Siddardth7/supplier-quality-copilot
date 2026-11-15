@@ -1,0 +1,51 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-01",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-opus", "model": "claude-opus-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-06-07", "citation": "certificates.md §9.1", "note": "Certificate REG-SUP-01-QMS, registrar REG-001, expiry 2028-06-07" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.1", "note": "ISO 9001, certificate REG-SUP-01-QMS; registration type and manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Internal audit program recorded true" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Corrective-action program recorded true" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Gauge calibration program recorded true" },
+    { "id": "2.pfmea", "state": "missing", "value": null, "citation": null, "note": "No PFMEA in any packet file; checked quality_manual.md, capability_study.md, reliability_report.md, cover_letter.md and all other files" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Control plan lists Base thickness, Port bore, Mounting-hole pitch: all 3 rfq.md CTQs" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.6599963879994164, "citation": "capability_study.md §1.1", "note": "Lowest is Mounting-hole pitch, n=50; Base thickness 1.793, Port bore 1.987" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §9.3", "note": "Statistical process monitoring recorded true" },
+    { "id": "3.grr", "state": "verified", "value": 7.735012813750115, "citation": "msa.md §1.1", "note": "Highest is Port bore gauge; Base thickness 4.66%, Mounting-hole pitch 3.98%; crossed study 10x3x3" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "He leak 8.98e-7 mbar·L/s vs Stark limit ≤ 1e-6, at 6 bar, 20 °C" },
+    { "id": "4.burst_pressure", "state": "missing", "value": null, "citation": null, "note": "No burst/proof pressure report or claim in reliability_report.md or any other packet file" },
+    { "id": "4.cleanliness", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "92 particles ≥100 µm (limit ≤100), 0 particles ≥500 µm (limit 0)" },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "SI-MAT-AL-01; cert traceable to lot and matches drawing material" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "574 cycles -20/80 °C, 15 min dwell, 0 failures, post-cycle leak 8.95e-7 mbar·L/s" },
+    { "id": "4.coolant_compat", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "SI-COOL-01 30% PG, 1000 h at 80 °C, mass change 0.879%, all wetted materials, no corrosion" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "\"Methods and buyer acceptance criteria documented\"" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "\"Documented statistical sample-size rationale\"" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Lot traceability recorded true" },
+    { "id": "5.records_retention", "state": "verified", "value": 13, "citation": "quality_manual.md §1.5", "note": "Record retention 13 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Nonconforming material segregation recorded true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.3705, "citation": "capacity.md §1.1", "note": "Stated ratio; mean 2741 parts/week over 8 weeks vs peak demand 2000" },
+    { "id": "6.lead_time", "state": "missing", "value": null, "citation": null, "note": "No quoted lead time in capacity.md, cover_letter.md or any other packet file; rfq.md need-by is 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §9.1", "note": "Milestone 2026-11-01, added 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 98, "citation": "pcn_policy.md §9.1", "note": "Advance change notice 98 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §9.2", "note": "Customer change authorization recorded true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "missing", "value": null, "citation": null, "note": "No requirement flowdown statement in subtier.md, quality_manual.md or any other packet file" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.2", "note": "Certificate REG-SUB-001 on file" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure: low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.3", "note": "Financial condition: healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["2.pfmea", "4.burst_pressure", "6.lead_time", "8.flowdown"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CP-0007 cold plate qualification — request for additional information (SUP-01)\n\nDear Frost Technotics team,\n\nThank you for your qualification packet for part SI-CP-0007 (NPI liquid-cooling cold plate, rev A, drawing SI-DWG-CP-0007). To complete our review, please send the following:\n\n1. 2.pfmea — Your current process FMEA (PFMEA) for this part.\n2. 4.burst_pressure — A burst / proof pressure test report showing sustained proof pressure of at least 3× the 6 bar maximum operating pressure for a hold of at least 60 s with no rupture, per Stark's requirement sheet.\n3. 6.lead_time — Your quoted lead time for this part (Stark's need-by lead time is 12 weeks).\n4. 8.flowdown — Evidence that Stark's requirements are flowed down to your critical sub-tier supplier (Wakanda Design Group), e.g. purchase-order clauses or a quality agreement.\n\nPlease cite the document and section for each item in your reply.\n\nRegards,\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["4.burst_pressure", "2.pfmea", "6.lead_time"],
+    "audit_plan": [
+      { "criterion_id": "4.burst_pressure", "question": "No burst/proof report in reliability_report.md: witness or review raw data for a proof test at ≥ 18 bar (3 × 6 bar MOP) held ≥ 60 s with no rupture, including test rig calibration and sample traceability." },
+      { "criterion_id": "2.pfmea", "question": "No PFMEA in the packet: review the PFMEA for SI-CP-0007 on site, confirm it is current to rev A and covers base thickness, port bore and mounting-hole pitch, and that its controls match the control plan (quality_manual.md §9.2)." },
+      { "criterion_id": "6.lead_time", "question": "No quoted lead time in the packet: review the quoting basis, material lead times and scheduling to confirm whether the supplier can deliver within Stark's 12-week need-by, given 2741 parts/week demonstrated (capacity.md §1.1)." }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-03",
+  "commodity": "power_module",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-06-04", "citation": "certificates.md §9.1", "note": "Certificate REG-SUP-03-QMS expiry date, registrar REG-001" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.1", "note": "ISO 9001, certificate REG-SUP-03-QMS, manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "assumed", "value": true, "citation": "quality_manual.md §9.1", "note": "Quality manual: \"Recorded result: true.\" No audit records in packet" },
+    { "id": "1.capa", "state": "assumed", "value": true, "citation": "quality_manual.md §9.2", "note": "Quality manual: \"Recorded result: true.\" No CAPA procedure or records in packet" },
+    { "id": "1.calibration", "state": "assumed", "value": true, "citation": "quality_manual.md §9.3", "note": "Quality manual: \"Recorded result: true.\" No calibration records in packet" },
+    { "id": "2.pfmea", "state": "assumed", "value": true, "citation": "quality_manual.md §1.1", "note": "Quality manual: \"Recorded result: true.\" No PFMEA document in packet" },
+    { "id": "2.control_plan", "state": "assumed", "value": true, "citation": "quality_manual.md §9.4", "note": "Quality manual claims true, lists CTQs: Output voltage, Connector pitch, Mounting-hole pitch. No control plan document" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 0.52297555690597, "citation": "capability_study.md §9.1", "note": "Output voltage lowest, n=50. Connector pitch 0.6120538987302796; mounting-hole pitch 0.6615291774723894" },
+    { "id": "2.spc", "state": "assumed", "value": true, "citation": "quality_manual.md §9.5", "note": "Quality manual: \"Recorded result: true.\" No charts or reaction plan in packet" },
+    { "id": "3.grr", "state": "verified", "value": 19.05879354836699, "citation": "msa.md §9.1", "note": "Connector pitch highest %GRR of tolerance. Output voltage 16.98609206620537; mounting-hole pitch 16.84011518879141" },
+    { "id": "3.inspection_method", "state": "assumed", "value": true, "citation": "quality_manual.md §9.6", "note": "Claims \"Drawing-specific CTQ measurement instructions and calibrated gauges.\" No method named (CMM etc.)" },
+    { "id": "4.burn_in", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "48 h at 55 °C, rated load 1; fallout 0.008383786927934836 vs limit ≤ 0.01" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "592 cycles vs ≥ 500, -20 to 85 °C, dwell 15 min, 0 failures" },
+    { "id": "4.efficiency", "state": "verified", "value": true, "citation": "reliability_report.md §9.3", "note": "Efficiency 1 at 0.2, 0.5 and 1.0 load; meets limits; 400 V DC in, 48 V DC out" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §9.6", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §9.7", "note": "Documented statistical sample-size rationale" },
+    { "id": "4.halt", "state": "verified", "value": true, "citation": "reliability_report.md §9.4", "note": "Operating and destruct-limit margins reported" },
+    { "id": "4.derating", "state": "verified", "value": true, "citation": "reliability_report.md §9.5", "note": "Analysis present; voltage ratio 0.6575246390513776, current ratio 0.6656574923941587 (limit ≤ 0.8)" },
+    { "id": "5.lot_trace", "state": "assumed", "value": true, "citation": "quality_manual.md §1.2", "note": "Quality manual: \"Recorded result: true.\" No trace records in packet" },
+    { "id": "5.records_retention", "state": "verified", "value": 15, "citation": "quality_manual.md §1.3", "note": "Record retention stated as 15 years" },
+    { "id": "5.nc_segregation", "state": "assumed", "value": true, "citation": "quality_manual.md §9.7", "note": "Quality manual: \"Recorded result: true.\" No segregation records in packet" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.519625, "citation": "capacity.md §9.1", "note": "Stated ratio; mean 1519.625 parts/week over 8 weeks, peak demand 1000" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.1", "note": "Quoted 8 weeks vs need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Milestone date 2026-11-01, added 200 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 112, "citation": "pcn_policy.md §9.1", "note": "Advance change notice 112 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.1", "note": "PCN policy records customer change authorization true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Wakanda Design Group named" },
+    { "id": "8.flowdown", "state": "assumed", "value": true, "citation": "subtier.md §9.2", "note": "Subtier doc: \"Recorded result: true.\" No flowdown document or record" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.3", "note": "Registration certificate REG-SUB-001 listed" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §9.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §9.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §9.3", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.internal_audit", "1.capa", "1.calibration", "2.pfmea", "2.control_plan", "2.spc", "3.inspection_method", "5.lot_trace", "5.nc_segregation", "8.flowdown"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SUP-03 / SI-PM-0003 — supporting evidence requested\n\nHello Hammer Industries team,\n\nFor part SI-PM-0003 (Rack power conversion module, rev A), your packet states the items below without supporting records. Please send the evidence for each:\n\n1. 1.internal_audit — internal audit program: procedure and recent audit records.\n2. 1.capa — documented corrective-action (CAPA) process: procedure and example records.\n3. 1.calibration — calibration program covering production gauges: procedure and calibration records.\n4. 2.pfmea — current process failure-mode analysis (PFMEA) for this part.\n5. 2.control_plan — control plan covering all three CTQs (output voltage, connector pitch, mounting-hole pitch).\n6. 2.spc — SPC in use on the CTQs now: control charts and reaction plan.\n7. 3.inspection_method — inspection method used for the CTQ tolerances, named (for example CMM) with the gauges used.\n8. 5.lot_trace — lot or serial traceability to raw material: procedure and a sample trace record.\n9. 5.nc_segregation — nonconforming material identification and segregation: procedure and records.\n10. 8.flowdown — requirements flowed down to the sub-tier supplier: the flowdown document or purchase terms.\n\nThank you.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["2.ctq_cpk", "3.grr", "5.lot_trace"],
+    "audit_plan": [
+      { "criterion_id": "2.ctq_cpk", "question": "Review the capability study (capability_study.md §9.1): output voltage Cpk 0.52297555690597, connector pitch 0.6120538987302796, mounting-hole pitch 0.6615291774723894 (n=50 each). Verify raw data, sampling and current process behavior, and the corrective actions on the output voltage spread." },
+      { "criterion_id": "3.grr", "question": "Observe the connector pitch gauge study (msa.md §9.1, %GRR of tolerance 19.05879354836699). Verify appraisers, repeats, gauge ID and calibration status, and any action to reduce gauge variation." },
+      { "criterion_id": "5.lot_trace", "question": "The quality manual claims lot traceability (quality_manual.md §1.2) with no records. Trace one shipped power module lot back to raw material lots and show the records on site." }
+    ]
+  }
+}

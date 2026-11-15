@@ -1,0 +1,49 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-05",
+  "commodity": "machined_part",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2026-10-22", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-05-QMS expiry date, reported only" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, certificate REG-SUP-05-QMS, manufacturing scope recorded as true" },
+    { "id": "1.internal_audit", "state": "assumed", "value": true, "citation": "quality_manual.md §1.1", "note": "Manual: \"Internal audit program\" recorded true; no audit records in packet" },
+    { "id": "1.capa", "state": "assumed", "value": true, "citation": "quality_manual.md §1.2", "note": "Manual: \"Corrective-action program\" recorded true; no CAPA records in packet" },
+    { "id": "1.calibration", "state": "assumed", "value": true, "citation": "quality_manual.md §1.3", "note": "Manual: \"Gauge calibration program\" recorded true; no calibration records in packet" },
+    { "id": "2.pfmea", "state": "assumed", "value": true, "citation": "quality_manual.md §1.4", "note": "Manual: \"Manufacturing failure-mode analysis\" recorded true; no PFMEA document in packet" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Control plan lists Datum bore, Base thickness, Hole pitch, matching all three CTQs in rfq.md" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.7136399150974995, "citation": "capability_study.md §1.1", "note": "Lowest is Datum bore, n=50; base thickness 1.8923202487291553, hole pitch 1.8783882946640744" },
+    { "id": "2.spc", "state": "assumed", "value": true, "citation": "quality_manual.md §9.1", "note": "Manual: \"Statistical process monitoring\" recorded true; no control charts or reaction plan in packet" },
+    { "id": "3.grr", "state": "verified", "value": 8.218258174185058, "citation": "msa.md §1.1", "note": "Highest is Datum bore, % of tolerance; base thickness 5.658496586333797, hole pitch 5.5723833546691415" },
+    { "id": "3.inspection_method", "state": "assumed", "value": true, "citation": "quality_manual.md §1.6", "note": "Manual: \"Drawing-specific CTQ measurement instructions and calibrated gauges\"; no CMM or method named" },
+    { "id": "4.fai", "state": "verified", "value": 1, "citation": "reliability_report.md §1.1", "note": "Drawing-characteristic coverage 1 fraction, meets buyer limit" },
+    { "id": "4.cmm_report", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "Coverage 1, out-of-tolerance CTQs 0, flatness 0.03924307788141482 mm (limit 0.05)" },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "SI-MAT-AL-02, traceable to lot and matches drawing material" },
+    { "id": "4.surface_finish", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Ra 1.2311837227655138 µm, limit 1.6 µm (nice to have)" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "assumed", "value": true, "citation": "quality_manual.md §1.7", "note": "Manual: \"Lot traceability\" recorded true; no trace records in packet" },
+    { "id": "5.records_retention", "state": "verified", "value": 12, "citation": "quality_manual.md §1.8", "note": "Retention stated as 12 years" },
+    { "id": "5.nc_segregation", "state": "assumed", "value": true, "citation": "quality_manual.md §1.9", "note": "Manual: \"Nonconforming material segregation\" recorded true; no records in packet" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.575875, "citation": "capacity.md §1.1", "note": "Stated ratio; mean 4727.625 parts/week over peak demand 3000, 8 weekly outputs" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 4 weeks; need-by 6 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §9.1", "note": "Milestone 2026-11-01, added 600 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 93, "citation": "pcn_policy.md §9.1", "note": "PCN policy states 93 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.1", "note": "Customer change authorization recorded true in PCN policy" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Requirements passed to outside suppliers recorded true" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Registration certificate REG-SUB-001 on file" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §9.1", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.internal_audit", "1.capa", "1.calibration", "2.pfmea", "2.spc", "3.inspection_method", "5.lot_trace", "5.nc_segregation"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: RFI for SI-MP-0005 Precision coolant bracket — supporting evidence requested (SUP-05)\n\nHello,\n\nThank you for your packet for SI-MP-0005. Please send supporting evidence for the following items:\n\n1. 1.internal_audit — Internal audit program: procedure and recent audit records.\n2. 1.capa — Documented corrective-action (CAPA) process: procedure and example records.\n3. 1.calibration — Calibration program covering production gauges: procedure and calibration records.\n4. 2.pfmea — Current process failure-mode analysis (PFMEA) for this part.\n5. 2.spc — SPC in use on the CTQs now: control charts and reaction plan.\n6. 3.inspection_method — Inspection method used for the CTQ tolerances (for example CMM), with equipment identified.\n7. 5.lot_trace — Lot or serial traceability to raw material: procedure and a sample trace record.\n8. 5.nc_segregation — Nonconforming material identification and segregation: procedure and records.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["1.internal_audit", "1.capa", "1.calibration"],
+    "audit_plan": [
+      { "criterion_id": "1.internal_audit", "question": "Quality manual §1.1 states an internal audit program. Ask to see the audit schedule, the most recent audit reports and closure of findings." },
+      { "criterion_id": "1.capa", "question": "Quality manual §1.2 states a corrective-action program. Sample recent CAPA records from open to closure, including root cause and effectiveness check." },
+      { "criterion_id": "1.calibration", "question": "Quality manual §1.3 states a gauge calibration program. Check calibration status and certificates for the gauges used on the datum bore, base thickness and hole pitch." }
+    ]
+  }
+}

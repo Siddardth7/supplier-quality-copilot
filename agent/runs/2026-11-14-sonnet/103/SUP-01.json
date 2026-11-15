@@ -1,0 +1,51 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-01",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-05-24", "citation": "certificates.md §9.1", "note": "Expiry of REG-SUP-01-QMS, registrar REG-001. Date only." },
+    { "id": "1.cert_scope", "state": "missing", "value": null, "citation": null, "note": "certificates.md §9.1 gives certificate ID, registrar and expiry only; no standard (ISO 9001/AS9100/IATF) or scope stated. Checked all packet files." },
+    { "id": "1.internal_audit", "state": "assumed", "value": true, "citation": "quality_manual.md §1.1", "note": "\"Internal audit program is demonstrated (true).\" No audit records provided." },
+    { "id": "1.capa", "state": "assumed", "value": true, "citation": "quality_manual.md §1.2", "note": "\"Corrective-action program is demonstrated (true).\" No procedure or records provided." },
+    { "id": "1.calibration", "state": "assumed", "value": true, "citation": "quality_manual.md §9.1", "note": "\"Gauge calibration program is demonstrated (true).\" No calibration records provided." },
+    { "id": "2.pfmea", "state": "missing", "value": null, "citation": null, "note": "No PFMEA in quality_manual.md, capability_study.md, or any other packet file." },
+    { "id": "2.control_plan", "state": "assumed", "value": true, "citation": "quality_manual.md §1.3", "note": "\"Production control plan is demonstrated (true).\" Lists Base thickness, Port bore, Mounting-hole pitch. No plan document." },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.5081559181539947, "citation": "capability_study.md §1.1", "note": "Lowest of 3 CTQs: mounting-hole pitch, n=50 (base thickness 1.9133, port bore 1.7989)." },
+    { "id": "2.spc", "state": "assumed", "value": true, "citation": "quality_manual.md §1.4", "note": "\"Statistical process monitoring is demonstrated (true).\" No control charts or reaction plan provided." },
+    { "id": "3.grr", "state": "verified", "value": 5.74761302023574, "citation": "msa.md §1.1", "note": "Highest %GRR of tolerance: base thickness (port bore 5.581, pitch 4.983)." },
+    { "id": "3.inspection_method", "state": "assumed", "value": true, "citation": "quality_manual.md §9.2", "note": "\"Drawing-specific CTQ measurement instructions and calibrated gauges.\" No CMM/AOI method named." },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "8.41e-7 mbar·L/s vs Stark limit ≤1e-6; 6 bar, 20 °C setup matches." },
+    { "id": "4.burst_pressure", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "Proof ratio 3.4957 vs ≥3; hold 60 s; no rupture; 6 bar MOP." },
+    { "id": "4.cleanliness", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "83 particles ≥100 µm (limit ≤100); 0 particles ≥500 µm (limit 0)." },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "SI-MAT-AL-01; certificate lot-traceable and matches drawing material." },
+    { "id": "4.method_criteria", "state": "assumed", "value": true, "citation": "reliability_report.md §1.7", "note": "\"Methods and buyer acceptance criteria documented.\" Document itself not in packet." },
+    { "id": "4.sample_size", "state": "assumed", "value": true, "citation": "reliability_report.md §1.8", "note": "\"Documented statistical sample-size rationale.\" Rationale itself not in packet." },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "568 cycles (≥500), 0 failures, post-cycle leak 8.40e-7 mbar·L/s; -20/80 °C, 15 min dwell." },
+    { "id": "4.coolant_compat", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "SI-COOL-01, 30%, 1000 h, 80 °C; mass change 0.843% (≤1); all wetted assessed; no corrosion." },
+    { "id": "5.lot_trace", "state": "assumed", "value": true, "citation": "quality_manual.md §9.3", "note": "\"Lot traceability is demonstrated (true).\" No trace records provided." },
+    { "id": "5.records_retention", "state": "verified", "value": 10, "citation": "quality_manual.md §9.4", "note": "Retention stated as 10 years." },
+    { "id": "5.nc_segregation", "state": "assumed", "value": true, "citation": "quality_manual.md §9.5", "note": "\"Nonconforming material segregation is demonstrated (true).\" No records provided." },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.3755625, "citation": "capacity.md §1.1", "note": "Stated ratio; mean 2751.125 parts/week over 8 weeks ÷ 2000 peak demand." },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 9 weeks vs need-by 12 weeks." },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone 2026-11-01, added 400 parts/week." },
+    { "id": "7.pcn_notice", "state": "verified", "value": 112, "citation": "pcn_policy.md §1.1", "note": "Advance change notice 112 days." },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.2", "note": "PCN policy states customer change authorization." },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Names Wakanda Design Group." },
+    { "id": "8.flowdown", "state": "assumed", "value": true, "citation": "subtier.md §1.2", "note": "\"Requirements passed to outside suppliers is demonstrated (true).\" No flowdown document provided." },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.3", "note": "Registration certificate REG-SUB-001 listed for the sub-tier." },
+    { "id": "9.second_source", "state": "assumed", "value": true, "citation": "cover_letter.md §9.1", "note": "\"Qualified alternate source is demonstrated (true). Qualified alternate manufacturer: Horizon Labs.\" No qualification record." },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.1", "note": "Recorded result: low." },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.2", "note": "Recorded result: healthy." }
+  ],
+  "drafts": {
+    "rfi_items": ["1.cert_scope", "1.internal_audit", "1.capa", "1.calibration", "2.pfmea", "2.control_plan", "2.spc", "3.inspection_method", "4.method_criteria", "4.sample_size", "5.lot_trace", "5.nc_segregation", "8.flowdown", "9.second_source"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CP-0007 cold plate — supplier packet information request\n\nHello Frost Technotics team,\n\nThank you for your packet for SI-CP-0007 (rev A). Please send the following:\n\n1. 1.cert_scope — the quality-system certificate (standard and scope) showing it covers the process that makes this part.\n2. 1.internal_audit — internal audit program procedure and recent audit records.\n3. 1.capa — documented corrective-action (CAPA) procedure and example records.\n4. 1.calibration — calibration program and current calibration records for production gauges.\n5. 2.pfmea — the current PFMEA for this part.\n6. 2.control_plan — the control plan document covering all three CTQs.\n7. 2.spc — evidence SPC is in use now on CTQs (charts and reaction plan).\n8. 3.inspection_method — the inspection method and equipment used for the CTQ tolerances.\n9. 4.method_criteria — the test methods and acceptance criteria documents for the required tests.\n10. 4.sample_size — the statistical or standards-based sample-size rationale for the required tests.\n11. 5.lot_trace — lot/serial traceability procedure and a sample trace to raw material.\n12. 5.nc_segregation — nonconforming material identification and segregation procedure and records.\n13. 8.flowdown — evidence that requirements are flowed down to the sub-tier supplier.\n14. 9.second_source — qualification record for the alternate source, Horizon Labs.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["1.cert_scope", "5.lot_trace", "2.pfmea"],
+    "audit_plan": [
+      { "criterion_id": "1.cert_scope", "question": "Inspect certificate REG-SUP-01-QMS (certificates.md §9.1): which standard, and does the scope cover manufacture of this cold plate? Confirm the 2027-05-24 expiry." },
+      { "criterion_id": "5.lot_trace", "question": "Trace one finished lot back to raw material lot and material certificate; compare with the traceability claim in quality_manual.md §9.3." },
+      { "criterion_id": "2.pfmea", "question": "Request the current PFMEA for SI-CP-0007 (none in packet) and check it covers the CTQs: base thickness, port bore, mounting-hole pitch." }
+    ]
+  }
+}

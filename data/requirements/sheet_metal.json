@@ -1,0 +1,97 @@
+{
+  "header": "Stark Industries — Supplier Quality. Synthetic document for a demo.",
+  "commodity": "sheet_metal",
+  "part_no": "SI-SM-0010",
+  "part_name": "Rack mounting panel",
+  "revision": "A",
+  "drawing_no": "SI-DWG-SM-0010",
+  "ctqs": [
+    {
+      "name": "Sheet thickness",
+      "nominal": 1.5,
+      "lsl": 1.4,
+      "usl": 1.6,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Bend angle",
+      "nominal": 90,
+      "lsl": 89,
+      "usl": 91,
+      "unit": "degrees",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Mounting-hole pitch",
+      "nominal": 400,
+      "lsl": 399.5,
+      "usl": 400.5,
+      "unit": "mm",
+      "basis": "heuristic"
+    }
+  ],
+  "tests": {
+    "4.fai": {
+      "name": "First article inspection",
+      "required": true,
+      "value_type": "number",
+      "conditions": [
+        {
+          "measure": "Drawing-characteristic coverage",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.coating_thickness": {
+      "name": "Coating thickness",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Dry coating thickness",
+          "kind": "acceptance",
+          "operator": "between",
+          "value": [
+            60,
+            100
+          ],
+          "unit": "µm",
+          "basis": "heuristic",
+          "context": "Drawing-specified coated surfaces."
+        }
+      ]
+    },
+    "4.salt_spray": {
+      "name": "Salt spray",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Salt-spray exposure",
+          "kind": "setup",
+          "operator": ">=",
+          "value": 96,
+          "unit": "h",
+          "basis": "heuristic",
+          "context": "Neutral salt spray on coated drawing surfaces; duration is a buyer heuristic."
+        },
+        {
+          "measure": "Substrate corrosion area",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "%",
+          "basis": "heuristic"
+        }
+      ]
+    }
+  },
+  "peak_weekly_demand": 1500,
+  "need_by_weeks": 6,
+  "planning_basis": "heuristic"
+}

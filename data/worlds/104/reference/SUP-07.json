@@ -1,0 +1,269 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-07",
+  "commodity": "cold_plate",
+  "run": {
+    "run_id": "simulation-104-SUP-07",
+    "model": "deterministic-simulation",
+    "skill_sha": "simulation-reference-v1"
+  },
+  "criteria": [
+    {
+      "id": "1.cert_current",
+      "state": "verified",
+      "value": "2028-03-03",
+      "citation": "certificates.md §1.1",
+      "note": null
+    },
+    {
+      "id": "1.cert_scope",
+      "state": "verified",
+      "value": true,
+      "citation": "certificates.md §1.2",
+      "note": null
+    },
+    {
+      "id": "1.internal_audit",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §1.1",
+      "note": null
+    },
+    {
+      "id": "1.capa",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §1.2",
+      "note": null
+    },
+    {
+      "id": "1.calibration",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §1.3",
+      "note": null
+    },
+    {
+      "id": "2.pfmea",
+      "state": "assumed",
+      "value": null,
+      "citation": "quality_manual.md §9.1",
+      "note": "Supplier claims: \"We review manufacturing failure modes for this part.\""
+    },
+    {
+      "id": "2.control_plan",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §1.4",
+      "note": null
+    },
+    {
+      "id": "2.ctq_cpk",
+      "state": "verified",
+      "value": 1.217917313999748,
+      "citation": "capability_study.md §1.1",
+      "note": null
+    },
+    {
+      "id": "2.spc",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §1.5",
+      "note": null
+    },
+    {
+      "id": "3.grr",
+      "state": "verified",
+      "value": 6.094987149109353,
+      "citation": "msa.md §1.1",
+      "note": null
+    },
+    {
+      "id": "3.inspection_method",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §9.2",
+      "note": null
+    },
+    {
+      "id": "4.leak_test",
+      "state": "verified",
+      "value": true,
+      "citation": "reliability_report.md §1.1",
+      "note": null
+    },
+    {
+      "id": "4.burst_pressure",
+      "state": "verified",
+      "value": true,
+      "citation": "reliability_report.md §9.1",
+      "note": null
+    },
+    {
+      "id": "4.cleanliness",
+      "state": "assumed",
+      "value": null,
+      "citation": "reliability_report.md §1.2",
+      "note": "Supplier claims: \"Our internal passages meet the particle limits.\""
+    },
+    {
+      "id": "4.material_cert",
+      "state": "verified",
+      "value": true,
+      "citation": "reliability_report.md §9.2",
+      "note": null
+    },
+    {
+      "id": "4.thermal_cycling",
+      "state": "verified",
+      "value": true,
+      "citation": "reliability_report.md §1.3",
+      "note": null
+    },
+    {
+      "id": "4.coolant_compat",
+      "state": "verified",
+      "value": true,
+      "citation": "reliability_report.md §1.4",
+      "note": null
+    },
+    {
+      "id": "4.method_criteria",
+      "state": "verified",
+      "value": true,
+      "citation": "reliability_report.md §1.5",
+      "note": null
+    },
+    {
+      "id": "4.sample_size",
+      "state": "verified",
+      "value": true,
+      "citation": "reliability_report.md §1.6",
+      "note": null
+    },
+    {
+      "id": "5.lot_trace",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §1.6",
+      "note": null
+    },
+    {
+      "id": "5.records_retention",
+      "state": "verified",
+      "value": 14,
+      "citation": "quality_manual.md §1.7",
+      "note": null
+    },
+    {
+      "id": "5.nc_segregation",
+      "state": "verified",
+      "value": true,
+      "citation": "quality_manual.md §1.8",
+      "note": null
+    },
+    {
+      "id": "6.capacity_ratio",
+      "state": "verified",
+      "value": 0.81475,
+      "citation": "capacity.md §1.1",
+      "note": null
+    },
+    {
+      "id": "6.lead_time",
+      "state": "verified",
+      "value": false,
+      "citation": "capacity.md §1.2",
+      "note": null
+    },
+    {
+      "id": "6.ramp_plan",
+      "state": "verified",
+      "value": true,
+      "citation": "capacity.md §1.3",
+      "note": null
+    },
+    {
+      "id": "7.pcn_notice",
+      "state": "verified",
+      "value": 90,
+      "citation": "pcn_policy.md §1.1",
+      "note": null
+    },
+    {
+      "id": "7.change_approval",
+      "state": "verified",
+      "value": true,
+      "citation": "pcn_policy.md §1.2",
+      "note": null
+    },
+    {
+      "id": "8.subtier_named",
+      "state": "verified",
+      "value": true,
+      "citation": "subtier.md §9.1",
+      "note": null
+    },
+    {
+      "id": "8.flowdown",
+      "state": "verified",
+      "value": true,
+      "citation": "subtier.md §9.2",
+      "note": null
+    },
+    {
+      "id": "8.subtier_certs",
+      "state": "verified",
+      "value": true,
+      "citation": "subtier.md §1.1",
+      "note": null
+    },
+    {
+      "id": "9.second_source",
+      "state": "verified",
+      "value": true,
+      "citation": "cover_letter.md §9.1",
+      "note": null
+    },
+    {
+      "id": "9.region_risk",
+      "state": "verified",
+      "value": "low",
+      "citation": "cover_letter.md §1.1",
+      "note": null
+    },
+    {
+      "id": "9.financial_health",
+      "state": "verified",
+      "value": "healthy",
+      "citation": "cover_letter.md §1.2",
+      "note": null
+    }
+  ],
+  "drafts": {
+    "rfi_items": [
+      "2.pfmea",
+      "4.cleanliness"
+    ],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: Evidence request for SUP-07\n\nPlease provide supporting evidence for 2.pfmea.\nPlease provide supporting evidence for 4.cleanliness.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": [
+      "2.ctq_cpk",
+      "4.cleanliness",
+      "6.lead_time"
+    ],
+    "audit_plan": [
+      {
+        "criterion_id": "2.ctq_cpk",
+        "question": "Please demonstrate the records and controls supporting 2.ctq_cpk."
+      },
+      {
+        "criterion_id": "4.cleanliness",
+        "question": "Please demonstrate the records and controls supporting 4.cleanliness."
+      },
+      {
+        "criterion_id": "6.lead_time",
+        "question": "Please demonstrate the records and controls supporting 6.lead_time."
+      }
+    ]
+  }
+}

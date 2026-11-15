@@ -1,0 +1,47 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-02",
+  "commodity": "quick_disconnect",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-08-19", "citation": "certificates.md §9.1", "note": "Certificate REG-SUP-02-QMS expiry date as recorded" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.1", "note": "ISO 9001, certificate REG-SUP-02-QMS, manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Internal audit program recorded true" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Corrective-action program recorded true" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Gauge calibration program recorded true" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Manufacturing failure-mode analysis recorded true" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Covers Seal bore, Engagement length, Latch groove width, all three rfq CTQs" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.8460086200134944, "citation": "capability_study.md §9.1", "note": "Latch groove width lowest; seal bore 1.8707797225867848, engagement length 2.1117265993850984; n=50 each" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Statistical process monitoring recorded true" },
+    { "id": "3.grr", "state": "verified", "value": 4.98288742890234, "citation": "msa.md §1.1", "note": "Latch groove width highest %GRR; seal bore 4.063366847418249, engagement length 3.4652229196019655" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §9.3", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "Helium 8.397020412973656e-7 mbar·L/s vs rfq limit 1e-6; 6 bar, 20 °C match setup" },
+    { "id": "4.cycle_life", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "5730 cycles vs 5000; post-cycle leak 8.521977625382357e-7 vs 1e-6; 6 bar" },
+    { "id": "4.pressure_drop", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "0.16515885703588598 bar vs limit 0.2; 4 L/min, 20 °C match setup" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §9.3", "note": "Documented statistical sample-size rationale" },
+    { "id": "4.spill_volume", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "0.08693202178832916 mL/disconnect vs limit 0.1; 6 bar (nice to have)" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Lot traceability recorded true" },
+    { "id": "5.records_retention", "state": "verified", "value": 10, "citation": "quality_manual.md §1.6", "note": "Record retention 10 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.7", "note": "Nonconforming material segregation recorded true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.58975, "citation": "capacity.md §1.1", "note": "Ratio as stated: mean 6359 / peak demand 4000 parts/week (8 weekly outputs listed)" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 7 weeks vs need-by 10 weeks in rfq" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone 2026-11-01, added 800 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 116, "citation": "pcn_policy.md §1.1", "note": "Advance change notice 116 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.2", "note": "Customer change authorization recorded true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Named: Horizon Labs" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §9.2", "note": "Requirements passed to outside suppliers recorded true" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.3", "note": "Registration certificate REG-SUB-001 listed" },
+    { "id": "9.second_source", "state": "verified", "value": false, "citation": "cover_letter.md §9.1", "note": "Qualified alternate source absent or not demonstrated (recorded false)" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.1", "note": "Regional continuity exposure recorded low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §9.2", "note": "Financial condition recorded healthy" }
+  ],
+  "drafts": {
+    "rfi_items": [],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SUP-02 SI-QD-0002 qualification packet — no further information requested\n\nThank you for the supplier packet for the Dry-break coolant coupling (SI-QD-0002, revision A). No further information is requested at this time.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["9.second_source"],
+    "audit_plan": [
+      { "criterion_id": "9.second_source", "question": "cover_letter.md §9.1 records no qualified alternate source for SI-QD-0002. Ask what alternate-source qualification exists or is planned, and whether any second site or supplier has produced this part." }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+Created all 10 requested Markdown files in this folder, with the required first lines and assigned numbered sections. Verified that `rfq.md` matches the supplied buyer text exactly, including its final newline.

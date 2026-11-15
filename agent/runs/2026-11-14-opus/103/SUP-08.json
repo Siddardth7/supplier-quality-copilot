@@ -1,0 +1,49 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-08",
+  "commodity": "contract_mfg",
+  "run": { "run_id": "2026-11-14-opus", "model": "claude-opus-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-02-20", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-08-QMS, registrar REG-001, expiry 2028-02-20" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "REG-SUP-08-QMS, type ISO 9001; registration type and manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Internal audit program recorded as present or demonstrated" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Corrective-action program recorded as present or demonstrated" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Gauge calibration program recorded as present or demonstrated" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Manufacturing failure-mode analysis recorded as present or demonstrated" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Control plan lists all three RFQ CTQs: Rail spacing, Mounting fastener torque, Manifold alignment" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.7964698000297137, "citation": "capability_study.md §9.1", "note": "Lowest is Rail spacing (n=50); torque 1.9102666208029078, manifold alignment 1.8753097081031394" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §9.3", "note": "Statistical process monitoring recorded as present or demonstrated" },
+    { "id": "3.grr", "state": "verified", "value": 3.7332322658575974, "citation": "msa.md §1.1", "note": "Highest is Rail spacing, % of tolerance; torque 2.8983887082196906, manifold alignment 2.973522558272506; 10 parts x 3 appraisers x 3 repeats" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.process_audit", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "Audit complete = true; open major findings 0; meets Stark limits (rfq.md §3.1)" },
+    { "id": "4.esd_program", "state": "verified", "value": false, "citation": "reliability_report.md §9.2", "note": "ESD program implemented observed false; 2 open major ESD findings; Stark limits are true and 0 (rfq.md §3.2)" },
+    { "id": "4.fpy_data", "state": "verified", "value": 4, "citation": "reliability_report.md §9.3", "note": "4 consecutive months of FPY data; Stark limit is >= 6 months (rfq.md §3.3)" },
+    { "id": "4.mes_trace", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "Serial-level MES records true; shipped serial coverage 1; meets Stark limits (rfq.md §3.4)" },
+    { "id": "4.training_records", "state": "verified", "value": true, "citation": "reliability_report.md §9.4", "note": "Operator/station qualification coverage 1; expired qualifications 0; meets Stark limits (rfq.md §3.5)" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §9.4", "note": "Lot traceability recorded as present or demonstrated" },
+    { "id": "5.records_retention", "state": "verified", "value": 14, "citation": "quality_manual.md §1.5", "note": "Record retention 14 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §9.5", "note": "Nonconforming material segregation recorded as present or demonstrated" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.425, "citation": "capacity.md §1.1", "note": "Stated ratio 1.425; mean 285 parts/week over 8 weeks vs peak demand 200 (rfq.md §4)" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 10 weeks vs need-by 12 weeks (rfq.md §4)" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone date 2026-11-01; added weekly output 40 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 94, "citation": "pcn_policy.md §9.1", "note": "Advance change notice 94 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.1", "note": "Customer change authorization recorded as present or demonstrated" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Critical outside supplier named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Requirements passed to outside suppliers recorded as present or demonstrated" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Outside supplier registration on file: REG-SUB-001" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §9.1", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.2", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": [],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: Roxxon (SUP-08) — SI-CM-0008 qualification packet: no further information requested\n\nDear Roxxon team,\n\nThank you for your qualification packet for part SI-CM-0008, Liquid-cooled rack system build, Revision A. We have reviewed it and no further information is requested at this time.\n\nRegards,\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["4.esd_program", "4.fpy_data"],
+    "audit_plan": [
+      { "criterion_id": "4.esd_program", "question": "reliability_report.md §9.2 records the ESD control program as not implemented, with 2 open major ESD findings. On site, walk every station that builds SI-CM-0008, review both open findings and their corrective actions with due dates, and check grounding, wrist-strap/footwear testing logs and EPA controls against Stark's limits (implemented = true, 0 open majors, rfq.md §3.2)." },
+      { "criterion_id": "4.fpy_data", "question": "reliability_report.md §9.3 shows 4 consecutive months of FPY data against Stark's limit of at least 6 months (rfq.md §3.3). Pull the FPY records from the line, confirm the start date and how yield is calculated and collected, and confirm a plan to keep collecting data until there are 6 consecutive months." }
+    ]
+  }
+}

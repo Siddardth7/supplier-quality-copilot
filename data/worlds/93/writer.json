@@ -1,0 +1,553 @@
+{
+  "seed": 93,
+  "suppliers": {
+    "SUP-01": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-01.attempt-2.md",
+        "brief_sha256": "288ab78e382eacbdc6ab92db46226609c7a1f0e76b57cceecff6d6f8c00efe0a",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "eba826cf0999f2cc87a687d9db84caf9bf3369dc55a4b11b8efbd8e1451c4386",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "106e479d2fde78ded18e22946e50b07043168872cf7ba7cffe6c19693df93601",
+          "capacity.md": "d295a43f6f09ad9917bd411a6cd072c93a37ed28596a9672ac9ffc01afaa80e9",
+          "certificates.md": "0d5b1bb7cb6f4bbbe4d2a9ec62fbc648a9c616f408d5d8e9769cca93d1667542",
+          "cover_letter.md": "93d92bbc2ea2259dedb21d047b0a800f054cba2928cfdeefa8b3bd4e977d7250",
+          "msa.md": "f326f5471ab034cc052b058479126b8261ab3b5585e5d1e5e4077c88aa11fa1c",
+          "pcn_policy.md": "95e34c803a0abf5436b608a174dccabb8bd3c6c0909bdcf1f941bc3f757ed9d4",
+          "quality_manual.md": "d80d0d7ab2fc36542a5ca86ec167208147b869bcb720d924dbbcd0b8fbc86df1",
+          "reliability_report.md": "40f5d556d12e11a3f1b15376d933b53efe77fa1d19029690af47985281d0ac2f",
+          "rfq.md": "8d7a844a02bf96bfac9a4c3f12a6e3fc23eb812139fde97ef529729c105b4e63",
+          "subtier.md": "dee1e9dc9d99a2e3ecade55204d39c6f477ae7ae397d1b4d0d24f877c52b0457"
+        }
+      },
+      {
+        "attempt": 2,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-01.attempt-3.md",
+        "brief_sha256": "698802c829f7674ef10ff5b1036ce14d2378c4eccbc8aa0b978cf746dd27f30b",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "ea505be6b4dcc0919fbfbaaf75d4bb56519a81264f19236d16a4eed16f4aa5d2",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "7753f8c065993aaea649be741387211db11154cfbe18191afb5671a04bc3b50f",
+          "capacity.md": "3bd0e701cd20ccf6e164238d5eb5db80c3227ed00e79dc88c667558bb7c9090c",
+          "certificates.md": "e7b67c872c6ea007867dbbfbfac6374e286235491d92c650376cafc54c3b5754",
+          "cover_letter.md": "fcdf7691c871d2eebd505036d364c3321f64859e13d4d76d3d097c64ead41dd1",
+          "msa.md": "12404f7b5df1e4a63af400e6d44394183b7e6560b969a9a5d96e5bb94a48628f",
+          "pcn_policy.md": "76b6df54a5a673610bb0b42ba12bc06f475ee35f29fd9fce6e01d3f92dedc116",
+          "quality_manual.md": "eeb31ebd57f818bb259da4a2105dcb354e5db3afc0ab00c358739bf6e9bd9155",
+          "reliability_report.md": "067e4c2ec5d52fdfd42d5d04d2f53efed3083a483113dfe5ab50b85ee5682d9b",
+          "rfq.md": "8d7a844a02bf96bfac9a4c3f12a6e3fc23eb812139fde97ef529729c105b4e63",
+          "subtier.md": "963402781f246e3791ce641c9dcd4cd66482e9b3c92d8643b7cd9de7735b98e1"
+        }
+      }
+    ],
+    "SUP-02": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-02.attempt-1.md",
+        "brief_sha256": "abe6d91c04dd476802e12bcff6967b83e09e2cf74fcabc4d0a6a54e80d37c70e",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "21dd7bc9d075d181ebdbc962b4564c12571708b726398ac73b329e21f870f8b7",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "ef4476050347dc76308995bcf33bc0053545c44f7458db0d2ecec6eae55f02d0",
+          "capacity.md": "1c30b031f54fee687e598d1cb9056c02e5395ad2a2e071f9a4e9ed37860d1169",
+          "certificates.md": "9ffc70f5debf55417303fbe22724b6ff643d34dae799c28dab69b1897e97c47e",
+          "cover_letter.md": "3218a6a3b8e16c9e80f05673010053d9e752256bf98506f50b69bac95a1a5dd5",
+          "msa.md": "763133c95b0c59ce4cbcec2db1a58dc88efe418a0e109f65da3c0fea613896dc",
+          "pcn_policy.md": "f1ea503d607194a57c48b328958962fc277988fe68e3f2bdfba3e837a31cfbc0",
+          "quality_manual.md": "338605a3f2ee682e947982852bf2f0b22efda2d11efdb78d9f198b4f0cd9fe26",
+          "reliability_report.md": "3a61cdccc044a553cb2e31c520f432b5f67a9f15de636e823e2d501a01f1b919",
+          "rfq.md": "031866933ccf3b50ba28e15df75a872dfd615414c356a9313a0a6edc0641fef7",
+          "subtier.md": "c5f1d1d5d396d631d44b0ffb2479b8835ee33f08676cedd5b0ba466271bf2e9f"
+        }
+      }
+    ],
+    "SUP-03": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-03.attempt-1.md",
+        "brief_sha256": "652d228758c40516b8f20491238dda70fa10de0f77586f739252554290abb6c0",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "93a3501af4638c492759e4511ba59cc35b8fbdf06774f5c556311bbdfbdeea9d",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "0d143a968d265ace5d52ba2fe91f21ac00a36af9e181c0a759ad869ef3352123",
+          "capacity.md": "c829b1634d876357e2315958ebb450537c3d21a53913dd1b16b56dfd74e8ea22",
+          "certificates.md": "42eac8bf38573cefa97bb9a5204403cd79764b8bb74702287511bd2bbbf8b7e8",
+          "cover_letter.md": "e01f0d82caac6f4bdf087f6710293ef74ccad40a54219e8fbd1a178e012cdf0a",
+          "msa.md": "b45c45497b13183d269d3ad5a1909558c5ae8d69108d97e96bad09512dd8ff10",
+          "pcn_policy.md": "6d90734355d031d1645c0200e3b8a06b6fcd7b1b1fe679fa078aaba836d5dcad",
+          "quality_manual.md": "44ebd043c9d1b2a5ecf4dd49cb3575d2c06eda9e3b83e9d1aed1145727985c2e",
+          "reliability_report.md": "f0e572def97eff2d31285810023095171bca07b46af572c3869e0e96b98f40de",
+          "rfq.md": "fb7eeacc3588a964ea9000b77d46d39d8dbf0f2d05bac9f923ac56c34367bd16",
+          "subtier.md": "da006a9bf3e246623998d86585b2567db1063be9c1998e3bda70a372e04084d5"
+        }
+      }
+    ],
+    "SUP-04": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-04.attempt-1.md",
+        "brief_sha256": "55538f74f4ac030ba9e6bdf597330651ac7f6e7550e56f212ad8620ab52b2106",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "02148e998ef4a54b6b67a7ef02c7c57e9bc3ebdff0dc8c166740e6e6007a9287",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "04f8e9e6765678f4415fd4110c8bef4ac8c6defb6a0fcb87f8c0d5f565c36e89",
+          "capacity.md": "340c2bd7a50e10b8c9f203a71867a18af4bc1baae3f3d2f53192bfd5c1a32922",
+          "certificates.md": "1d880f5d4fb000cff9d46c4752270489aabb40d7f8b2d131f91ce37f7225cb9b",
+          "cover_letter.md": "2f5cb88710b742ea93cf426a502477f346694e70a51cb574188fe045ccbaf91d",
+          "msa.md": "dbb74d1946f480358833140a0af595a045e5fd04eb13567742a347ed60c87d1d",
+          "pcn_policy.md": "9c1e36bb0a3dd97378729b2086b1be668822e464e273d538315f02231a32958e",
+          "quality_manual.md": "7c686ec06ec7dd2e17bc7d78e8bc65602edfb07ce37a80dd915960adcb794929",
+          "reliability_report.md": "433fbc00a332379aa5b713c3bf71037970f66efd8365b070c33b36fa7862e1f1",
+          "rfq.md": "8a680e32286f18e20f66d7279aa042068d69accbaf21c557685f87b5354b5aff",
+          "subtier.md": "9f123de3f436a44e6b32ad8c19c4b74e71237652b4e10ff73e4a63bd2f3db71a"
+        }
+      }
+    ],
+    "SUP-05": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-05.attempt-1.md",
+        "brief_sha256": "23a4508c2f7640c3305844f5cd72f0482610b269796d36f34fe7f8b001effd95",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "dd01269fac4f80fa9fccde9cd1e8cd3e1bcd3fe17a4e5744189d7966981f2c74",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "4ec1c568bcfd7b2cf1dc264323e1e779f45acf50484d9aa85e5ec802221a0d12",
+          "capacity.md": "82bcd770f6092e92fcee1933ec779f5afc9c1a29443fe91f611bb968a9802897",
+          "certificates.md": "ace8017671834aa64e0fa73d22f71bc060c87858884ba768130736d91c29e54d",
+          "cover_letter.md": "7e85ef9f72b89b12c84fc095d614f00c0e771d5a4bac0a07216820bbbc6bdd63",
+          "msa.md": "06e8d42f24c5c6fd3f8288e6eea499543fed9ce347cca365baead7d8218163de",
+          "pcn_policy.md": "e77df9e034fcaccae8588227d4b826e95487bbb0c1f16b289f3af5d5d3ccd225",
+          "quality_manual.md": "3febe43548cd5066df101fd19f60a29b30438ec9b2dc9f2230b79094485c9c1e",
+          "reliability_report.md": "b9fe94905dbdc49006b7261a63666fb3e84e7cd99dc9349f97fc81d512c539fe",
+          "rfq.md": "7afb3106054678dfe83f335e27cfbcc703c9633fa9e5a54007b306fd0ad39fc4",
+          "subtier.md": "ef2c4839b6481b7b34cd870eef3674d5041244f9de2105d553fad2ec8244f4da"
+        }
+      }
+    ],
+    "SUP-06": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-06.attempt-1.md",
+        "brief_sha256": "bf4c931b24f65fd226a64615ea569583ca7020880d53aae686b79a15f60256fe",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "00f0bd9ab08fd728333c54256167bdfa4100e9e473119aa3e9b08351039b2373",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "514af47cb62b21e40e11b4946ee04ca15908b37b2992786df01c3550d5430469",
+          "capacity.md": "6b9fd732d49ac953829e57afab76f13e5427c2a2151cac8ccf0ae4a1774ec5b9",
+          "certificates.md": "d61d173b61269373317c280684937bdd018a457c85541a2345c926a4189a5335",
+          "cover_letter.md": "de89bab69ea6a26cf217715911386c53eda3a6240c71804f9d0680cc09a2c43f",
+          "msa.md": "887d17efd7278c9192d8a494644e2c3e6a65792a8bc5ce3e1e10d33c118d42a5",
+          "pcn_policy.md": "49d376904d51ac6c645593d79008eedb90800e27428abccf471f3e621dd71bf1",
+          "quality_manual.md": "653bf1e13105585354273e3f011d3eeaf5a4ba55b1e25f299021e1f5d08b5b85",
+          "reliability_report.md": "fc00847f54067c3bd2f3f336180f142666b27b886c73b1d9d59d255de10cca46",
+          "rfq.md": "ebd054707bbfa46bceac471d2a9c09505233ddb015da250db9143007ecc3e1f7",
+          "subtier.md": "3255c8fe2b3bdf1c3867e9fa616db38981ccd901aca861c4c964f4b636312228"
+        }
+      }
+    ],
+    "SUP-07": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-07.attempt-1.md",
+        "brief_sha256": "0784bce5a7ad8f36293a63dd260cefb61c192e90cf5c4fc631d6f458593a6227",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "feac5846ae0eb46eae0e43b144305f83c47a0d81e6a877a2849dfe5e079d32f8",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "6962acf9ad0e66a2faec7a08c98243cb1362696712a7a864c1b844486d0b4c57",
+          "capacity.md": "fec43a640713ffd0249d43bbbea381e4e9fc49f3e85eaa6b4be5d223c84fb918",
+          "certificates.md": "28d9dec4d9f2fa1e8643e01a31452e1e41a977a9207a19322bafd4901344a1b6",
+          "cover_letter.md": "f827c1ce0af1f0c4439e9b8398cd7f9bfba5eb15d8f593a6a459cf553750a7ec",
+          "msa.md": "4b7df3747f7e320518f091823a9b51458a7ea9654b330d9b2c8b9632c0236343",
+          "pcn_policy.md": "8f8fbe17bb6c23e3ad57ec5a5b41b956a3121d5d9ab0c51e23db2ca565816926",
+          "quality_manual.md": "1496864a6d30ec92d0c6b13f8d7912657ed9f785c6787a2e3491d8b36c9b2b1c",
+          "reliability_report.md": "fddd087ac24fa48457fca811267e5690a75e5cf5770dd63fc1fa712b35c9efcd",
+          "rfq.md": "8d7a844a02bf96bfac9a4c3f12a6e3fc23eb812139fde97ef529729c105b4e63",
+          "subtier.md": "d1a37e48e72c590a9e9192d20b314f9e1494a614a2015902cd91f4735ba79869"
+        }
+      }
+    ],
+    "SUP-08": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-08.attempt-1.md",
+        "brief_sha256": "74c8f78c083b78f98094ee913d86c49453acdf1886e5815f8bd02db22e48fd87",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "8bef70dbc05c36739412c6632fbec34253326c4cfc983e45a0716fc6da59a4d9",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "a865941b45591cdea8cd25d8b0cde9750fbc6a45a275514908b46bcac5b3533c",
+          "capacity.md": "b20de85a57d592983112d6ee2ae926252ea67f04631c8071b36ce47ddd59533e",
+          "certificates.md": "3313b015a7fd58419f208a860f9ba7515c886745fab8afaae678dffc77f9802d",
+          "cover_letter.md": "52e1fb5ea34c7f6dfc50748c614a73d3fb9009b64847566f292fb44acdbea4fd",
+          "msa.md": "a425a479c16e84c02f85a392ed28f54431281fac72fe22274b8471401e9dd37a",
+          "pcn_policy.md": "37842bf1e184c9eccbf832f57ab8f85d0fb88d756cb568fb6aa36279c42ae488",
+          "quality_manual.md": "079a8eccb174cb6e98d9477d1c561254dd9363bbeac7d31550e969bae724d567",
+          "reliability_report.md": "83f8739fa5866fccdc37ea6a0410ad23d7a33303e8c73001e861783ad4fde34e",
+          "rfq.md": "b318d8a9deeedc2d93d9d2a18e594656afd2604382ec9ad4c0b0a6c3adeb21f9",
+          "subtier.md": "ca3e88724702ff3a0855244553b8b780d4260534b6f1624ca7e057e3a0628719"
+        }
+      }
+    ],
+    "SUP-09": [
+      {
+        "attempt": 1,
+        "version": "codex-cli 0.167.0",
+        "model": "gpt-6.1-sol",
+        "model_source": "explicit successful CLI -m argument",
+        "brief": "briefs/SUP-09.attempt-1.md",
+        "brief_sha256": "5620271c2f7ef3b7f3373060ae16b7399505625faef35cc275a7bfc34cd71942",
+        "prompt": "Read brief.md and write every file it lists, in this folder.",
+        "flags": [
+          "exec",
+          "-C",
+          "<stage>",
+          "--skip-git-repo-check",
+          "--ephemeral",
+          "--ignore-rules",
+          "--ignore-user-config",
+          "-c",
+          "project_doc_max_bytes=0",
+          "-s",
+          "danger-full-access",
+          "-m",
+          "gpt-6.1-sol",
+          "--json",
+          "-o",
+          "<stage>/last.txt",
+          "Read brief.md and write every file it lists, in this folder."
+        ],
+        "stage_inventory": [
+          "brief.md"
+        ],
+        "isolation": {
+          "method": "macOS sandbox-exec",
+          "profile_sha256": "e7bce2524187357bed8e775b578778c04e86ca0aee590663c774844dff698099",
+          "repository_read_denied": true,
+          "world_read_denied": true,
+          "staged_brief_read_allowed": true,
+          "clean_home": true,
+          "clean_codex_home": "auth.json only",
+          "project_doc_max_bytes": 0
+        },
+        "outputs": {
+          "capability_study.md": "2aaed7930f18a9721fa02754d3a3a66ecdefb5aef6f0acb41c33c361903a779d",
+          "capacity.md": "1fd0bea2cbd08f1e35a0f43ba54eb69f20896c7a8d24f75e539470a6e0b27ac4",
+          "certificates.md": "d7f831da6eca1c9119f57d6be6135a96f054b42a353b77eb342991373a9e28d0",
+          "cover_letter.md": "1942858567b5986fdb92b39f2ad1da1034027a8d6115f5fdf4af18a269e31f94",
+          "msa.md": "e931e1c8d66e1731e9b4e8712658139e31bf4f3b96fd259988e9e642f80f096d",
+          "pcn_policy.md": "d8dfca084da45e6ab21eb12f2d5c873b9b0b90b2f83c4856c52450e5cb29d47c",
+          "quality_manual.md": "69312d604051a960060f41f7e82e92fabf0410dbce973bbc9fac1977191a90d6",
+          "reliability_report.md": "0095ae19146a79b8fad400f2d16edd304ba958f59dd7b35f5b1de7a7fb433fd6",
+          "rfq.md": "8d7a844a02bf96bfac9a4c3f12a6e3fc23eb812139fde97ef529729c105b4e63",
+          "subtier.md": "f38370951ebc4dd70a10a82be936a9920cf8bc29c08a14d2a157a1c3fea1df94"
+        }
+      }
+    ]
+  }
+}

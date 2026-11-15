@@ -1,0 +1,12 @@
+{
+  "stage": "simulation",
+  "status": "passed"
+}
+{
+  "stage": "answer_key",
+  "status": "passed"
+}
+{
+  "stage": "packets_and_factcheck",
+  "status": "passed"
+}

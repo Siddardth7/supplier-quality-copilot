@@ -1,0 +1,248 @@
+{
+  "header": "Stark Industries — Supplier Quality. Synthetic document for a demo.",
+  "commodity": "pcba",
+  "part_no": "SI-PC-0004",
+  "part_name": "Rack control PCBA",
+  "revision": "A",
+  "drawing_no": "SI-DWG-PC-0004",
+  "ctqs": [
+    {
+      "name": "Board thickness",
+      "nominal": 2,
+      "lsl": 1.9,
+      "usl": 2.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Mounting-hole pitch",
+      "nominal": 90,
+      "lsl": 89.9,
+      "usl": 90.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Connector location",
+      "nominal": 15,
+      "lsl": 14.9,
+      "usl": 15.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    }
+  ],
+  "tests": {
+    "4.ipc610_class": {
+      "name": "Workmanship, IPC-A-610",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Drawing IPC-A-610 class",
+          "kind": "setup",
+          "operator": "=",
+          "value": "Class 2",
+          "unit": "class",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Built to drawing class",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Inspected to drawing class",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Inspection rejects",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.aoi_xray": {
+      "name": "AOI and BGA X-ray",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "AOI board coverage",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic",
+          "context": "Every shipped board."
+        },
+        {
+          "measure": "BGA X-ray coverage",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic",
+          "context": "Every BGA on every shipped board."
+        },
+        {
+          "measure": "Solder bridges",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Solder opens",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "BGA void area per joint",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 25,
+          "unit": "%",
+          "basis": "heuristic",
+          "context": "Stark-specific acceptance limit."
+        }
+      ]
+    },
+    "4.ict_fct": {
+      "name": "In-circuit / functional test",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "ICT testable-net coverage",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 0.9,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "FCT specified-function coverage",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Shipped-board passing fraction",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Coverage reported",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.ionic_contam": {
+      "name": "Ionic contamination",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Ionic contamination",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 1.56,
+          "unit": "µg NaCl eq/cm²",
+          "basis": "heuristic",
+          "context": "Whole-board extract normalized by board surface area; synthetic buyer threshold, not a universal published acceptance limit."
+        }
+      ]
+    },
+    "4.msl": {
+      "name": "Moisture sensitivity handling",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "J-STD-033 handling controls in place",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Floor-life excursions",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Dry-storage records current",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.conformal_coat": {
+      "name": "Conformal coating",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Dry coating thickness",
+          "kind": "acceptance",
+          "operator": "between",
+          "value": [
+            25,
+            75
+          ],
+          "unit": "µm",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Specified-area coverage",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Keep-out violations",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        }
+      ]
+    }
+  },
+  "peak_weekly_demand": 2500,
+  "need_by_weeks": 8,
+  "planning_basis": "heuristic"
+}

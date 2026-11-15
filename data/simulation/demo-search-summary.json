@@ -1,0 +1,85 @@
+{
+  "from": 1,
+  "to": 20000,
+  "eligible": 19992,
+  "selected": 93,
+  "candidates": {
+    "SUP-01": {
+      "hits": 8103,
+      "eligible": 19992,
+      "rate": 0.40531212484994
+    },
+    "SUP-02": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    },
+    "SUP-03": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    },
+    "SUP-04": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    },
+    "SUP-05": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    },
+    "SUP-06": {
+      "hits": 9215,
+      "eligible": 19992,
+      "rate": 0.4609343737494998
+    },
+    "SUP-07": {
+      "hits": 13165,
+      "eligible": 19992,
+      "rate": 0.6585134053621449
+    },
+    "SUP-08": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    },
+    "SUP-09": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    }
+  },
+  "stories": {
+    "ACT-01": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    },
+    "ACT-02": {
+      "hits": 781,
+      "eligible": 19992,
+      "rate": 0.0390656262505002
+    },
+    "ACT-03": {
+      "hits": 19990,
+      "eligible": 19992,
+      "rate": 0.9998999599839936
+    },
+    "ACT-04": {
+      "hits": 19966,
+      "eligible": 19992,
+      "rate": 0.9986994797919168
+    },
+    "ACT-05": {
+      "hits": 19583,
+      "eligible": 19992,
+      "rate": 0.9795418167266907
+    },
+    "ACT-06": {
+      "hits": 19992,
+      "eligible": 19992,
+      "rate": 1
+    }
+  }
+}

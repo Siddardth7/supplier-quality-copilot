@@ -1,0 +1,261 @@
+{
+  "1.cert_current": [
+    "registration expiry",
+    "expiry",
+    "expiration",
+    "registration remains current"
+  ],
+  "1.cert_scope": [
+    "manufacturing scope",
+    "registered activities",
+    "ISO 9001",
+    "AS9100",
+    "IATF 16949"
+  ],
+  "1.internal_audit": [
+    "internal audit",
+    "review our own operations"
+  ],
+  "1.capa": [
+    "corrective-action program",
+    "corrective actions",
+    "CAPA"
+  ],
+  "1.calibration": [
+    "calibration",
+    "checked on a controlled schedule"
+  ],
+  "2.pfmea": [
+    "failure-mode analysis",
+    "failure modes",
+    "PFMEA"
+  ],
+  "2.control_plan": [
+    "control plan",
+    "production checks address"
+  ],
+  "2.ctq_cpk": [
+    "process capability",
+    "Cpk",
+    "consistently holds the critical drawing tolerances"
+  ],
+  "2.spc": [
+    "statistical process monitoring",
+    "statistical charts",
+    "SPC"
+  ],
+  "3.grr": [
+    "repeatability",
+    "GRR",
+    "Gage R&R"
+  ],
+  "3.inspection_method": [
+    "inspection methods",
+    "measuring equipment appropriate"
+  ],
+  "4.method_criteria": [
+    "test instructions",
+    "release limits"
+  ],
+  "4.sample_size": [
+    "sample-size rationale",
+    "sample sizes",
+    "test quantities",
+    "statistical rationale"
+  ],
+  "5.lot_trace": [
+    "lot traceability",
+    "incoming material batch"
+  ],
+  "5.records_retention": [
+    "record retention",
+    "retain production and inspection history"
+  ],
+  "5.nc_segregation": [
+    "nonconforming material segregation",
+    "rejected parts",
+    "released stock"
+  ],
+  "6.capacity_ratio": [
+    "demonstrated output",
+    "demonstrated weekly output",
+    "peak weekly demand"
+  ],
+  "6.lead_time": [
+    "requested lead time",
+    "requested schedule",
+    "quoted weeks"
+  ],
+  "6.ramp_plan": [
+    "ramp plan",
+    "staffing for the ramp"
+  ],
+  "7.pcn_notice": [
+    "advance change notice",
+    "advance notice",
+    "PCN"
+  ],
+  "7.change_approval": [
+    "customer change authorization",
+    "customer authorization"
+  ],
+  "8.subtier_named": [
+    "named critical outside suppliers",
+    "identify the outside suppliers"
+  ],
+  "8.flowdown": [
+    "requirements passed to outside suppliers",
+    "purchase instructions carry"
+  ],
+  "8.subtier_certs": [
+    "outside supplier registrations",
+    "registrations for our critical outside suppliers"
+  ],
+  "9.second_source": [
+    "qualified alternate source",
+    "alternate manufacturer"
+  ],
+  "9.region_risk": [
+    "regional continuity exposure",
+    "reliable supply continuity"
+  ],
+  "9.financial_health": [
+    "financial condition",
+    "resources to sustain"
+  ],
+  "4.leak_test": [
+    "leak",
+    "helium",
+    "remain sealed under"
+  ],
+  "4.burst_pressure": [
+    "burst",
+    "proof pressure",
+    "proof load",
+    "rupture"
+  ],
+  "4.cleanliness": [
+    "cleanliness",
+    "particle limits"
+  ],
+  "4.material_cert": [
+    "material certificate",
+    "lot-linked alloy records"
+  ],
+  "4.thermal_cycling": [
+    "thermal cycling",
+    "HTOL",
+    "temperature exposure"
+  ],
+  "4.coolant_compat": [
+    "coolant compatibility",
+    "wetted materials"
+  ],
+  "4.cycle_life": [
+    "cycle life",
+    "repeated mating operations"
+  ],
+  "4.pressure_drop": [
+    "pressure drop",
+    "hydraulic performance"
+  ],
+  "4.spill_volume": [
+    "spill",
+    "release less fluid"
+  ],
+  "4.burn_in": [
+    "burn-in",
+    "powered endurance"
+  ],
+  "4.efficiency": [
+    "efficiency",
+    "conversion performance"
+  ],
+  "4.halt": [
+    "HALT",
+    "destructive stress margins"
+  ],
+  "4.derating": [
+    "derating",
+    "prescribed stress allowances"
+  ],
+  "4.ipc610_class": [
+    "IPC-A-610",
+    "boards are built and inspected"
+  ],
+  "4.aoi_xray": [
+    "AOI",
+    "BGA X-ray",
+    "hidden solder joints"
+  ],
+  "4.ict_fct": [
+    "in-circuit",
+    "functional test",
+    "verify electrical operation"
+  ],
+  "4.ionic_contam": [
+    "ionic contamination",
+    "ionic residue"
+  ],
+  "4.msl": [
+    "moisture sensitivity",
+    "moisture-sensitive devices"
+  ],
+  "4.conformal_coat": [
+    "conformal coating",
+    "protective film"
+  ],
+  "4.fai": [
+    "first article",
+    "initial production parts"
+  ],
+  "4.cmm_report": [
+    "CMM report",
+    "dimensional measurements"
+  ],
+  "4.surface_finish": [
+    "surface finish",
+    "measured roughness"
+  ],
+  "4.insertion_loss": [
+    "insertion",
+    "return loss",
+    "signal attenuation"
+  ],
+  "4.workmanship_620": [
+    "IPC/WHMA-A-620",
+    "cable assemblies are built and inspected"
+  ],
+  "4.bend_flex": [
+    "bend / flex",
+    "repeated bending"
+  ],
+  "4.coating_thickness": [
+    "coating thickness",
+    "deposited layer"
+  ],
+  "4.salt_spray": [
+    "salt spray",
+    "corrosive exposure"
+  ],
+  "4.process_audit": [
+    "process audit",
+    "unresolved major findings"
+  ],
+  "4.esd_program": [
+    "ESD",
+    "electrostatic discharge"
+  ],
+  "4.fpy_data": [
+    "first-pass yield",
+    "units passing on their first attempt"
+  ],
+  "4.mes_trace": [
+    "MES traceability",
+    "electronic build history"
+  ],
+  "4.training_records": [
+    "operator training",
+    "task qualifications"
+  ]
+}

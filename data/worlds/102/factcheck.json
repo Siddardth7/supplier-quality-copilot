@@ -1,0 +1,299 @@
+{
+  "seed": 102,
+  "status": "passed",
+  "suppliers": [
+    {
+      "supplier_id": "SUP-01",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-01/attempt-1/brief.md",
+          "brief_sha256": "fc72ccc51465ebaa41e01e15f6631b1549162c3877afd0fc802aeb1e411fd804",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": [
+            {
+              "rule": "missing_mentioned",
+              "criterion": "4.leak_test",
+              "keyword": "leak",
+              "reason": "required_text_collision"
+            },
+            {
+              "rule": "missing_mentioned",
+              "criterion": "4.leak_test",
+              "keyword": "helium",
+              "reason": "required_text_collision"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-02",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-02/attempt-1/brief.md",
+          "brief_sha256": "ef9fa71a427460b0197b2542af2174a328da9639aac1dc3ae689ecc798554533",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-03",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-03/attempt-1/brief.md",
+          "brief_sha256": "e4f045eaa0e0e4f14c6f0e9fd513217ebb9d5828ca3f03ebba94b4d799815df8",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-04",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-04/attempt-1/brief.md",
+          "brief_sha256": "9064927a5c84192fec65e90d8589be851e123f4ed9644cd1ba9e34d75edc406b",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-05",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-05/attempt-1/brief.md",
+          "brief_sha256": "241c555f0a0b1b4970a3890b31cf12115ed513c95e42917efd138e6c08ffda77",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-06",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-06/attempt-1/brief.md",
+          "brief_sha256": "d6301800eb2124137aec3fe615288ab6e274140b5744bab0814faf519a686cf4",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": [
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "4.bend_flex",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "8.subtier_named",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "8.subtier_certs",
+              "reason": "boolean_value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-07",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-07/attempt-1/brief.md",
+          "brief_sha256": "3541305922b5ccab1a17b680f6e2e37b41fe3a778755060acadbc9e9b39599a6",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": [
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "1.calibration",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "2.control_plan",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "4.leak_test",
+              "reason": "boolean_value"
+            },
+            {
+              "rule": "assumed_hidden_value",
+              "criterion": "5.lot_trace",
+              "reason": "boolean_value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-08",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-08/attempt-1/brief.md",
+          "brief_sha256": "d2caf7c57bd3d17bbf630217379ee6f175a7416f2e14f8272a1b22f0b16551cd",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    },
+    {
+      "supplier_id": "SUP-09",
+      "status": "passed",
+      "attempts": [
+        {
+          "attempt": 0,
+          "kind": "existing_packet",
+          "failures": [
+            {
+              "rule": "packet_missing",
+              "detail": "Supplier packet directory is absent."
+            }
+          ],
+          "unscannable": []
+        },
+        {
+          "attempt": 1,
+          "model": "gpt-6.1-sol",
+          "prompt": "Read brief.md and write every file it lists, in this folder.",
+          "brief_path": "factcheck-attempts/SUP-09/attempt-1/brief.md",
+          "brief_sha256": "23d4fb291e4e1f33bd9211bd3217f901a43ea120a653a47c88773db5959c8357",
+          "writer_version": "codex-cli 0.167.0",
+          "failures": [],
+          "unscannable": []
+        }
+      ]
+    }
+  ]
+}

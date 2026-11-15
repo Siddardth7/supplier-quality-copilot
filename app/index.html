@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Today · Supplier Quality Copilot</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../design/tokens.css">
+  <link rel="stylesheet" href="app.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="app-header container">
+    <h1 class="brand"><a id="brand" href="#view=today">Stark Industries <small>Supplier Quality Copilot</small></a></h1>
+    <div class="header-tools">
+      <a id="policy-chip" class="policy-chip cyan" href="#view=standards"></a>
+      <div class="role">
+        <span class="role-label" aria-hidden="true">Viewing as</span>
+        <div id="role-switch" class="pills" role="radiogroup" aria-label="Viewing as"></div>
+      </div>
+    </div>
+    <p id="dev-note" class="quiet dev-note" hidden></p>
+  </header>
+
+  <div class="shell-bar">
+    <div class="synthetic-label container">
+      <span class="badge"><span class="live-dot"></span>Synthetic data. Fictional suppliers.</span>
+    </div>
+    <nav class="tab-bar">
+      <div class="tabs container" role="tablist" aria-label="Views">
+        <button type="button" role="tab" id="tab-today" aria-controls="view-today" aria-selected="true" tabindex="0" data-view="today"><span class="num" aria-hidden="true">01</span> Today</button>
+        <button type="button" role="tab" id="tab-qualify" aria-controls="view-qualify" aria-selected="false" tabindex="-1" data-view="qualify"><span class="num" aria-hidden="true">02</span> Qualify</button>
+        <button type="button" role="tab" id="tab-compare" aria-controls="view-compare" aria-selected="false" tabindex="-1" data-view="compare"><span class="num" aria-hidden="true">03</span> Compare</button>
+        <button type="button" role="tab" id="tab-monitor" aria-controls="view-monitor" aria-selected="false" tabindex="-1" data-view="monitor"><span class="num" aria-hidden="true">04</span> Monitor</button>
+        <button type="button" role="tab" id="tab-standards" aria-controls="view-standards" aria-selected="false" tabindex="-1" data-view="standards"><span class="num" aria-hidden="true">05</span> Standards</button>
+        <button type="button" role="tab" id="tab-eval" aria-controls="view-eval" aria-selected="false" tabindex="-1" data-view="eval"><span class="num" aria-hidden="true">06</span> Eval</button>
+      </div>
+    </nav>
+  </div>
+
+  <main id="main" class="container" tabindex="-1">
+    <div id="announce" class="sr-only" role="status" aria-live="polite"></div>
+    <noscript><p class="quiet">This app needs JavaScript.</p></noscript>
+    <section id="view-today" class="view" role="tabpanel" tabindex="0" aria-labelledby="tab-today"></section>
+    <section id="view-qualify" class="view" role="tabpanel" tabindex="0" aria-labelledby="tab-qualify" hidden></section>
+    <section id="view-compare" class="view" role="tabpanel" tabindex="0" aria-labelledby="tab-compare" hidden></section>
+    <section id="view-monitor" class="view" role="tabpanel" tabindex="0" aria-labelledby="tab-monitor" hidden></section>
+    <section id="view-standards" class="view" role="tabpanel" tabindex="0" aria-labelledby="tab-standards" hidden></section>
+    <section id="view-eval" class="view" role="tabpanel" tabindex="0" aria-labelledby="tab-eval" hidden></section>
+  </main>
+
+  <dialog id="viewer" class="sheet" aria-modal="true" aria-labelledby="viewer-title">
+    <header class="sheet-head">
+      <div><p class="viewer-label badge">Synthetic data. Fictional suppliers.</p><p class="eyebrow mono" id="viewer-eyebrow"></p><h2 id="viewer-title"></h2></div>
+      <button type="button" class="subtle-button" id="viewer-close">Close<span class="sr-only"> citation viewer</span> ✕</button>
+    </header>
+    <div class="sheet-scroll packet" id="viewer-body" tabindex="0" role="region" aria-label="Packet file"></div>
+    <p class="viewer-disclaimer quiet">Fan-made demo. Not affiliated with Marvel.</p>
+  </dialog>
+
+  <footer class="app-footer container">
+    <p class="quiet">Fan-made demo. Not affiliated with Marvel.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{
+  "header": "Stark Industries — Supplier Quality. Synthetic document for a demo.",
+  "commodity": "power_module",
+  "part_no": "SI-PM-0003",
+  "part_name": "Rack power conversion module",
+  "revision": "A",
+  "drawing_no": "SI-DWG-PM-0003",
+  "ctqs": [
+    {
+      "name": "Output voltage",
+      "nominal": 48,
+      "lsl": 47.5,
+      "usl": 48.5,
+      "unit": "V",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Connector pitch",
+      "nominal": 12,
+      "lsl": 11.9,
+      "usl": 12.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Mounting-hole pitch",
+      "nominal": 100,
+      "lsl": 99.9,
+      "usl": 100.1,
+      "unit": "mm",
+      "basis": "heuristic"
+    }
+  ],
+  "tests": {
+    "4.burn_in": {
+      "name": "Burn-in",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Burn-in duration",
+          "kind": "setup",
+          "operator": ">=",
+          "value": 48,
+          "unit": "h",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Ambient temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": 55,
+          "unit": "°C",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Rated-load fraction",
+          "kind": "setup",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Burn-in fallout",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.01,
+          "unit": "fraction",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.thermal_cycling": {
+      "name": "Thermal cycling / HTOL",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Completed thermal cycles",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 500,
+          "unit": "cycles",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Lower temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": -20,
+          "unit": "°C",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Upper temperature",
+          "kind": "setup",
+          "operator": "=",
+          "value": 85,
+          "unit": "°C",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Dwell at each extreme",
+          "kind": "setup",
+          "operator": ">=",
+          "value": 15,
+          "unit": "min",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Functional failures",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.efficiency": {
+      "name": "Efficiency vs load",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Efficiency at low load point",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 0.9,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Low load point / rated load",
+          "kind": "setup",
+          "operator": "=",
+          "value": 0.2,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Efficiency at middle load point",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 0.94,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Middle load point / rated load",
+          "kind": "setup",
+          "operator": "=",
+          "value": 0.5,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Efficiency at full load point",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 0.94,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Full load point / rated load",
+          "kind": "setup",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Input voltage",
+          "kind": "setup",
+          "operator": "=",
+          "value": 400,
+          "unit": "V DC",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Output voltage",
+          "kind": "setup",
+          "operator": "=",
+          "value": 48,
+          "unit": "V DC",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.halt": {
+      "name": "HALT",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Operating-limit margins reported",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic",
+          "context": "Report cold, hot and vibration margins relative to the declared product operating envelope."
+        },
+        {
+          "measure": "Destruct-limit margins reported",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic",
+          "context": "Report cold, hot and vibration margins relative to the declared product operating envelope."
+        }
+      ]
+    },
+    "4.derating": {
+      "name": "Component derating",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Derating analysis present",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic",
+          "context": "Stark heuristic policy for all components at worst-case declared load and ambient."
+        },
+        {
+          "measure": "Component applied / rated voltage",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.8,
+          "unit": "ratio",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Component applied / rated current",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.8,
+          "unit": "ratio",
+          "basis": "heuristic"
+        }
+      ]
+    }
+  },
+  "peak_weekly_demand": 1000,
+  "need_by_weeks": 12,
+  "planning_basis": "heuristic"
+}

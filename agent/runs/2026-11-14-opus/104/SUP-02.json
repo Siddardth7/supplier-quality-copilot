@@ -1,0 +1,47 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-02",
+  "commodity": "quick_disconnect",
+  "run": { "run_id": "2026-11-14-opus", "model": "claude-opus-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-11-17", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-02-QMS, registrar REG-001, expiry 2027-11-17" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, REG-SUP-02-QMS; type and manufacturing scope recorded result true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Internal audit program recorded result true" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Corrective-action program recorded result true" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Gauge calibration program recorded result true" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Manufacturing failure-mode analysis recorded result true" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Control plan lists all three RFQ CTQs: Seal bore, Engagement length, Latch groove width" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.6293230647720218, "citation": "capability_study.md §1.1", "note": "Lowest is Latch groove width, n=50; Seal bore 1.9345, Engagement length 2.2584" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Statistical process monitoring recorded result true; no charts or reaction plan included in packet" },
+    { "id": "3.grr", "state": "verified", "value": 4.521132447753406, "citation": "msa.md §1.1", "note": "Highest is Latch groove width, % of tolerance; Seal bore 3.011, Engagement length 3.191; 10 parts x 3 appraisers x 3 repeats" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges; not CMM/AOI/X-ray, GRR 3-4.5% supports fit to tolerance" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "He leak 7.461e-7 mbar·L/s vs Stark limit <= 1e-6, at 6 bar, 20 °C" },
+    { "id": "4.cycle_life", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "6283 cycles vs >= 5000; post-cycle He leak 7.259e-7 mbar·L/s vs <= 1e-6 at 6 bar" },
+    { "id": "4.pressure_drop", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "0.1535 bar vs <= 0.2 bar, fully coupled, 4 L/min water at 20 °C" },
+    { "id": "4.spill_volume", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "0.0717 mL/disconnect vs <= 0.1, at 6 bar" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Lot traceability recorded result true" },
+    { "id": "5.records_retention", "state": "verified", "value": 15, "citation": "quality_manual.md §9.3", "note": "Record retention 15 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.7", "note": "Nonconforming material segregation recorded result true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.333, "citation": "capacity.md §1.1", "note": "Stated ratio 1.333; mean 5332 parts/week over 8 weeks vs RFQ peak 4000" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 7 weeks vs RFQ need-by 10 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone 2026-11-01, added 800 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 97, "citation": "pcn_policy.md §1.1", "note": "Advance change notice 97 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §9.1", "note": "Customer change authorization recorded result true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Named critical sub-tier: Horizon Labs" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Requirements passed to outside suppliers recorded result true" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Sub-tier certificate REG-SUB-001 on file" },
+    { "id": "9.second_source", "state": "verified", "value": false, "citation": "cover_letter.md §1.1", "note": "\"A qualified alternate source is absent or not demonstrated (recorded result: false)\"" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.3", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": [],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-QD-0002 Dry-break coolant coupling — supplier qualification packet, SUP-02\n\nDear Wakanda Design Group team,\n\nThank you for your qualification packet for part SI-QD-0002, revision A (drawing SI-DWG-QD-0002). We have reviewed it, and no further information is requested at this time. We will contact you if the review raises any follow-up.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["9.second_source"],
+    "audit_plan": [
+      { "criterion_id": "9.second_source", "question": "cover_letter.md §1.1 says no qualified alternate source exists for SI-QD-0002. On site, confirm whether a second line, site or tooling set could be qualified for this part, check what dual-sourcing or business-continuity plan covers the seal bore and latch groove machining, and get the timeline and capacity for it." }
+    ]
+  }
+}

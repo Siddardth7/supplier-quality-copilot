@@ -1,0 +1,51 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-01",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-06-16", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-01-QMS expiry date, as recorded" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, REG-SUP-01-QMS; manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Recorded result: true" },
+    { "id": "1.capa", "state": "missing", "value": null, "citation": null, "note": "No CAPA process found in quality_manual.md, certificates.md, cover_letter.md or other packet files" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Gauge calibration program, recorded result: true" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Manufacturing failure-mode analysis, recorded result: true" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Lists all three rfq CTQs: base thickness, port bore, mounting-hole pitch" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.9379627413054112, "citation": "capability_study.md §1.1", "note": "Lowest of three CTQs: mounting-hole pitch, n=50 (others 2.2656, 2.0508)" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Statistical process monitoring, recorded result: true" },
+    { "id": "3.grr", "state": "verified", "value": 4.640525241010846, "citation": "msa.md §1.1", "note": "Highest %GRR of tolerance: port bore (others 2.490, 3.250)" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "8.2148e-7 mbar·L/s at 6 bar, 20 C; limit 1e-6" },
+    { "id": "4.burst_pressure", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "Proof ratio 3.4188 (limit >=3), hold 60 s, no rupture" },
+    { "id": "4.cleanliness", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "80 particles >=100 um (limit 100); 0 particles >=500 um" },
+    { "id": "4.material_cert", "state": "missing", "value": null, "citation": null, "note": "No material certificate or SI-MAT-AL-01 lot traceability in reliability_report.md or any other packet file" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "577 cycles (limit 500), 0 failures, post-cycle leak 8.54e-7" },
+    { "id": "4.coolant_compat", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Mass change 0.840% (limit 1), 1000 h at 80 C, no corrosion" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Lot traceability, recorded result: true" },
+    { "id": "5.records_retention", "state": "missing", "value": null, "citation": null, "note": "No retention period found in quality_manual.md or any other packet file" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Nonconforming segregation, recorded result: true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.5008125, "citation": "capacity.md §1.1", "note": "Stated ratio; mean output 3001.625/wk vs peak demand 2000/wk" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 9 weeks vs need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "missing", "value": null, "citation": null, "note": "No ramp plan with dates or added capacity in capacity.md or other packet files" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 104, "citation": "pcn_policy.md §1.1", "note": "Advance change notice period 104 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.2", "note": "Customer change authorization, recorded result: true" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Named supplier: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Requirements passed to outside suppliers, recorded true" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.2", "note": "Listed certificate REG-SUB-001" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "missing", "value": null, "citation": null, "note": "No financial health indicator in cover_letter.md or any other packet file" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.capa", "4.material_cert", "5.records_retention", "6.ramp_plan", "9.financial_health"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CP-0007 cold plate qualification — information request for Frost Technotics (SUP-01)\n\nHello,\n\nThank you for the qualification packet for SI-CP-0007. To complete our review, please send the following:\n\n1. 1.capa — your documented corrective and preventive action (CAPA) process.\n2. 4.material_cert — the material certificate for the part, traceable to the material lot and matching drawing material SI-MAT-AL-01.\n3. 5.records_retention — how many years quality records are retained.\n4. 6.ramp_plan — a ramp plan with dates and added capacity.\n5. 9.financial_health — your financial health indicator.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["4.material_cert", "1.capa", "5.records_retention"],
+    "audit_plan": [
+      { "criterion_id": "4.material_cert", "question": "No material certificate is in the packet (reliability_report.md has no entry). Show the mill cert for the SI-CP-0007 lot, confirm it traces to the lot and matches SI-MAT-AL-01." },
+      { "criterion_id": "1.capa", "question": "No CAPA process appears in quality_manual.md. Ask to see the documented CAPA procedure and recent closed CAPA records with root cause and effectiveness checks." },
+      { "criterion_id": "5.records_retention", "question": "No retention period is stated in the packet. Ask for the records-retention procedure and confirm the years kept for quality records, including lot traceability and test reports." }
+    ]
+  }
+}

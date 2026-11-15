@@ -1,0 +1,56 @@
+{
+  "demo_seed": 93,
+  "eval_seeds": [
+    101,
+    102,
+    103,
+    104
+  ],
+  "worlds": [
+    {
+      "seed": 93,
+      "status": "passed",
+      "suppliers": 9,
+      "packet_files": 90,
+      "writer_calls": 11,
+      "accepted_publications": 10,
+      "final_unscannable": 7
+    },
+    {
+      "seed": 101,
+      "status": "passed",
+      "suppliers": 9,
+      "packet_files": 90,
+      "writer_calls": 9,
+      "accepted_publications": 9,
+      "final_unscannable": 2
+    },
+    {
+      "seed": 102,
+      "status": "passed",
+      "suppliers": 9,
+      "packet_files": 90,
+      "writer_calls": 9,
+      "accepted_publications": 9,
+      "final_unscannable": 9
+    },
+    {
+      "seed": 103,
+      "status": "passed",
+      "suppliers": 9,
+      "packet_files": 90,
+      "writer_calls": 10,
+      "accepted_publications": 10,
+      "final_unscannable": 8
+    },
+    {
+      "seed": 104,
+      "status": "passed",
+      "suppliers": 9,
+      "packet_files": 90,
+      "writer_calls": 11,
+      "accepted_publications": 10,
+      "final_unscannable": 5
+    }
+  ]
+}

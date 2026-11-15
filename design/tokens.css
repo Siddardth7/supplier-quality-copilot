@@ -1,0 +1,106 @@
+/* RoLaMGAS-style design tokens + core components.
+   Extracted from https://robertbarthellgaray.github.io/RoLaMGAS/style.css (2026-11-02).
+   Swap --cyan / --amber for your own two accents. */
+
+:root{
+  color-scheme:dark;
+  --bg:#08111b; --bg-plot:#08121e;
+  --surface-1:#0b1622; --surface-2:#0c1723; --surface-3:#0d1b29; --panel:#0e1b28;
+  --hover:#112332; --selected:#142c3b; --pressed:#173442;
+  --line:#26394a; --line-table:#213242; --line-input:#344758; --line-active:#507b8e;
+  --ink:#edf4fa; --ink-soft:#c1cddb; --ink-lede:#b8c8d8; --muted:#9aadbf;
+  --cyan:#79d8f1; --cyan-hover:#aff0ff; --on-cyan:#061520; --amber:#ffd08a;
+  --ok:#7fd7a8; --bad:#ff9b9b;
+  --card-gradient:linear-gradient(140deg,#173142,#101f2e);
+  --scrim:#040a10b8; /* behind modal sheets (::backdrop inherits custom properties: Chrome 122, Firefox 120, Safari 17.4) */
+  --sans:Inter,Segoe UI,system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+  --gutter:48px; --max:1540px;
+  font-family:var(--sans); font-size:15px; color:var(--ink); background:var(--bg);
+}
+@media(max-width:1100px){:root{--gutter:28px}}
+@media(max-width:760px){:root{--gutter:20px}}
+
+/* Base */
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg)}
+button,input,select{font:inherit;color:var(--ink)} a{color:inherit;text-decoration:none} button{cursor:pointer}
+:is(a,button,input,select,summary,canvas):focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.skip-link{position:absolute;top:-100px;padding:15px;background:var(--cyan);color:var(--bg);z-index:10}
+.skip-link:focus{top:8px;left:8px}
+.container{max-width:var(--max);margin:auto;padding-inline:var(--gutter)}
+
+/* Type */
+h1{font-size:clamp(44px,4.4vw,68px);line-height:1.08;letter-spacing:-3px;font-weight:550;margin:0 0 26px}
+h1 em,h2 em{font-style:normal;color:var(--cyan)}
+h2{font-size:32px;font-weight:500;letter-spacing:-1px;line-height:1.22;margin:0}
+h3{font-size:22px;font-weight:500;letter-spacing:-.6px;margin:0}
+.eyebrow{font:11px/1.6 var(--mono);letter-spacing:1.7px;text-transform:uppercase;color:var(--cyan);margin:0 0 20px}
+.eyebrow.muted{color:var(--muted)}
+.lede{font-size:16px;line-height:1.8;color:var(--ink-lede);max-width:560px}
+.quiet{color:var(--muted);font-size:12px;line-height:1.7}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin:0 7px 1px 0;box-shadow:0 0 10px #79d8f160}
+
+/* Buttons & links */
+.button{display:inline-flex;justify-content:space-between;align-items:center;gap:24px;background:var(--cyan);color:var(--on-cyan)!important;border:1px solid var(--cyan);padding:15px 20px;border-radius:5px;font-weight:650;font-size:14px;transition:background .2s}
+.button:hover{background:var(--cyan-hover)} .button.compact{padding:11px 16px;font-size:12px}
+.text-link{color:var(--cyan);font-size:13px} .text-link span{margin-left:14px}
+.subtle-button{background:none;border:0;color:var(--cyan);padding:4px 0;font-size:11px}
+.subtle-button:hover{text-decoration:underline}
+
+/* Pills (filter tabs) */
+.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:18px}
+.pills button{border:1px solid var(--line);background:transparent;padding:10px 15px;border-radius:5px;white-space:nowrap;font-size:12px}
+.pills button span{color:var(--muted);font:11px var(--mono);margin-left:9px}
+.pills button:hover{border-color:#608394}
+.pills button[aria-pressed=true]{background:var(--pressed);border-color:var(--line-active);color:var(--cyan)}
+
+/* Segmented control */
+.segmented{display:inline-flex;gap:1px;border:1px solid #354b5f;background:#0a1725;border-radius:4px;padding:2px}
+.segmented button{border:0;background:none;font:11px var(--mono);color:var(--muted);padding:6px 9px;border-radius:2px}
+.segmented button[aria-pressed=true]{background:var(--cyan);color:#04131d}
+
+/* Underline tabs */
+.tabs{display:flex;gap:25px;border-bottom:1px solid var(--line)}
+.tabs button{border:0;border-bottom:2px solid transparent;padding:16px 0 12px;background:none;color:var(--muted);font-size:12px}
+.tabs button[aria-selected=true]{color:var(--cyan);border-color:var(--cyan)}
+
+/* Input */
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--line-input);border-radius:4px;background:var(--bg);padding:0 10px}
+.search input{width:100%;background:none;border:0;font-size:12px;padding:11px 0}
+
+/* Stats & metrics */
+.stats{display:flex;gap:50px} .stats strong{display:block;font:42px/1 var(--mono);letter-spacing:-2px;font-weight:400}
+.stats span{display:block;font-size:11px;color:var(--muted);margin-top:13px}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.metric p{font:11px var(--mono);color:var(--muted);letter-spacing:.9px;text-transform:uppercase;margin:0 0 9px}
+.metric strong{font:24px var(--mono);font-weight:400;letter-spacing:-1px}
+.metric small{display:block;color:var(--muted);font:11px var(--mono);margin-top:6px}
+
+/* Cards */
+.panel{border:1px solid var(--line);border-radius:8px;background:var(--surface-1);overflow:hidden}
+.list-card{display:block;text-align:left;background:transparent;border:1px solid transparent;border-radius:5px;width:100%;padding:10px;transition:background .15s}
+.list-card:hover{background:var(--hover)} .list-card[aria-pressed=true]{background:var(--selected);border-color:#3d778a}
+.badge{font:11px var(--mono);letter-spacing:.6px;text-transform:uppercase;color:#c6e6eb;background:#112733ee;padding:4px 6px;border-radius:2px}
+.feature-card{background:var(--card-gradient);border:1px solid #365569;border-radius:8px;padding:30px}
+.feature-card ul{list-style:none;padding:0;display:grid;gap:13px;font-size:12px;color:#bdd0de}
+.feature-card li:before{content:'\2197';color:var(--cyan);margin-right:10px}
+
+/* Policy chip (DESIGN-SPEC 4.1): cyan for Stark Reference v1, amber for a custom policy */
+.policy-chip{display:inline-flex;align-items:center;gap:8px;min-height:24px;font:11px var(--mono);letter-spacing:.6px;border:1px solid var(--line-active);border-radius:4px;padding:4px 8px}
+.policy-chip.cyan{color:var(--cyan)} .policy-chip.amber{color:var(--amber)}
+
+/* Table */
+table{border-collapse:collapse;width:100%;text-align:left;font-size:11px}
+thead{color:#8ba2b7;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+th,td{padding:12px 14px 12px 0;border-bottom:1px solid var(--line-table)} th{font-weight:500}
+td.num{font:11px var(--mono);color:#b1c3d3}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--amber);margin-right:7px} .dot.cyan{background:var(--cyan)}
+
+/* Divider sections */
+.section{border-top:1px solid var(--line);padding-block:72px}
+
+@media(max-width:760px){
+  h1{font-size:48px;letter-spacing:-2px} .metrics{grid-template-columns:repeat(2,1fr);row-gap:24px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}

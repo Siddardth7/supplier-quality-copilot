@@ -1,0 +1,172 @@
+{
+  "header": "Stark Industries — Supplier Quality. Synthetic document for a demo.",
+  "commodity": "optics_cable",
+  "part_no": "SI-OC-0006",
+  "part_name": "Rack optical cable assembly",
+  "revision": "A",
+  "drawing_no": "SI-DWG-OC-0006",
+  "ctqs": [
+    {
+      "name": "Cable length",
+      "nominal": 2000,
+      "lsl": 1990,
+      "usl": 2010,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Ferrule protrusion",
+      "nominal": 1,
+      "lsl": 0.95,
+      "usl": 1.05,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Strain-relief length",
+      "nominal": 30,
+      "lsl": 29,
+      "usl": 31,
+      "unit": "mm",
+      "basis": "heuristic"
+    }
+  ],
+  "tests": {
+    "4.insertion_loss": {
+      "name": "Insertion / return loss",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Insertion loss per channel",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.5,
+          "unit": "dB",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Return loss per channel",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 35,
+          "unit": "dB",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Wavelength",
+          "kind": "setup",
+          "operator": "=",
+          "value": 1310,
+          "unit": "nm",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "All channels tested",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.workmanship_620": {
+      "name": "Workmanship, IPC/WHMA-A-620",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Drawing IPC/WHMA-A-620 class",
+          "kind": "setup",
+          "operator": "=",
+          "value": "Class 2",
+          "unit": "class",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Built to drawing class",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Inspected to drawing class",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Inspection rejects",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.bend_flex": {
+      "name": "Bend / flex",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Completed bend/flex cycles",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 1000,
+          "unit": "cycles",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Bend radius",
+          "kind": "setup",
+          "operator": "=",
+          "value": 30,
+          "unit": "mm",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Post-flex insertion loss per channel",
+          "kind": "acceptance",
+          "operator": "<=",
+          "value": 0.5,
+          "unit": "dB",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Post-flex return loss per channel",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 35,
+          "unit": "dB",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Post-flex wavelength",
+          "kind": "setup",
+          "operator": "=",
+          "value": 1310,
+          "unit": "nm",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "All channels tested after flexing",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        }
+      ]
+    }
+  },
+  "peak_weekly_demand": 2000,
+  "need_by_weeks": 8,
+  "planning_basis": "heuristic"
+}

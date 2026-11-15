@@ -1,0 +1,47 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-06",
+  "commodity": "optics_cable",
+  "run": { "run_id": "2026-11-14-opus", "model": "claude-opus-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-07-11", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-06-QMS, registrar REG-001, expiry 2027-07-11" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, REG-SUP-06-QMS; recorded result true for manufacturing scope" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Recorded result: true" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Corrective-action program, recorded result: true" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Gauge calibration program, recorded result: true" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Manufacturing failure-mode analysis, recorded result: true" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "CTQs listed: Cable length, Ferrule protrusion, Strain-relief length (all three rfq.md CTQs)" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.649822928339851, "citation": "capability_study.md §9.1", "note": "Lowest is Cable length, n=50; Ferrule protrusion 1.749658799373016, Strain-relief length 2.989821630855042" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §9.3", "note": "Statistical process monitoring, recorded result: true" },
+    { "id": "3.grr", "state": "verified", "value": 2.9962098522018485, "citation": "msa.md §9.1", "note": "Highest is Ferrule protrusion; Cable length 2.3212392230204064%, Strain-relief 2.406631705840743%; 10 parts x 3 appraisers x 3 repeats" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.insertion_loss", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "IL 0.3859856479413 dB (Stark <= 0.5), RL 40.826719394653935 dB (Stark >= 35), 1310 nm, all channels tested" },
+    { "id": "4.workmanship_620", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "Class 2 per drawing; built and inspected to class; 0 inspection rejects (Stark = 0)" },
+    { "id": "4.bend_flex", "state": "assumed", "value": null, "citation": "reliability_report.md §1.2", "note": "\"Our cables maintain optical performance after repeated bending.\" No cycles or post-flex loss data" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §9.4", "note": "Lot traceability, recorded result: true" },
+    { "id": "5.records_retention", "state": "verified", "value": 14, "citation": "quality_manual.md §1.5", "note": "Record retention 14 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Recorded result: true" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.3228125, "citation": "capacity.md §1.1", "note": "Stated ratio; mean 2645.625 parts/week over 8 weeks vs rfq.md peak 2000 parts/week" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Quoted 6 weeks vs rfq.md need-by 8 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone 2026-11-01, added 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 105, "citation": "pcn_policy.md §1.1", "note": "105 days advance change notice" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.2", "note": "Customer change authorization, recorded result: true" },
+    { "id": "8.subtier_named", "state": "assumed", "value": null, "citation": "subtier.md §1.1", "note": "\"We identify the outside suppliers performing critical operations.\" No supplier names given" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Requirements passed to outside suppliers, recorded result: true" },
+    { "id": "8.subtier_certs", "state": "assumed", "value": null, "citation": "subtier.md §1.2", "note": "\"We retain current registrations for our critical outside suppliers.\" No certificates listed" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Recorded result: low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.3", "note": "Recorded result: healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["8.subtier_named", "8.subtier_certs"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-OC-0006 Rack optical cable assembly (rev A) — request for sub-tier information\n\nDear Stane International team,\n\nThank you for your qualification packet for SI-OC-0006 (drawing SI-DWG-OC-0006). To complete our review, please send the following:\n\n1. 8.subtier_named — The names of the critical sub-tier (outside) suppliers performing critical operations on this part. Your subtier document (§1.1) says they are identified but does not name them.\n2. 8.subtier_certs — Copies of the current quality-system certificates you hold on file for those critical sub-tier suppliers, with certificate numbers and expiry dates (subtier document §1.2).\n\nThank you,\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["8.subtier_named", "8.subtier_certs"],
+    "audit_plan": [
+      { "criterion_id": "8.subtier_named", "question": "subtier.md §1.1 claims critical outside suppliers are identified but names none: review the approved supplier list on site and confirm which named sub-tiers perform critical operations for SI-OC-0006." },
+      { "criterion_id": "8.subtier_certs", "question": "subtier.md §1.2 claims current registrations are retained: pull the certificate file for each critical sub-tier and check type, scope and expiry date against the named suppliers." }
+    ]
+  }
+}

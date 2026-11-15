@@ -1,0 +1,51 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-07",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-opus", "model": "claude-opus-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2028-03-03", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-07-QMS, registrar REG-001, expiry 2028-03-03" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, REG-SUP-07-QMS; registration type and manufacturing scope stated as demonstrated" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §1.1", "note": "Internal audit program present or demonstrated (true)" },
+    { "id": "1.capa", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Corrective-action program present or demonstrated (true)" },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Gauge calibration program present or demonstrated (true)" },
+    { "id": "2.pfmea", "state": "assumed", "value": null, "citation": "quality_manual.md §9.1", "note": "\"We review manufacturing failure modes for this part.\" No PFMEA document or record provided" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Control plan lists Base thickness, Port bore, Mounting-hole pitch: all three rfq.md CTQs" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.217917313999748, "citation": "capability_study.md §1.1", "note": "Lowest is Port bore, n=50. Base thickness 1.26181964340477, Mounting-hole pitch 1.639186685057658" },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Statistical process monitoring present or demonstrated (true)" },
+    { "id": "3.grr", "state": "verified", "value": 6.094987149109353, "citation": "msa.md §1.1", "note": "Highest is Port bore, % of tolerance. Base thickness 5.66%, Mounting-hole pitch 4.25%; crossed 10x3x3 studies" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §9.2", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.leak_test", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "He leak 8.064492918999517e-7 mbar·L/s vs Stark ≤ 1e-6; 6 bar, 20 °C as rfq.md" },
+    { "id": "4.burst_pressure", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "Proof/MOP ratio 3.614131439687068 vs Stark ≥ 3; MOP 6 bar, hold 60 s, no rupture" },
+    { "id": "4.cleanliness", "state": "assumed", "value": null, "citation": "reliability_report.md §1.2", "note": "\"Our internal passages meet the particle limits.\" No particle counts or report given" },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "SI-MAT-AL-01; cert traceable to material lot and matches drawing material" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "610 cycles (≥ 500), -20/80 °C, 15 min dwell, 0 failures, post-cycle leak 7.747e-7 mbar·L/s (≤ 1e-6)" },
+    { "id": "4.coolant_compat", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "SI-COOL-01 30% PG, 1000 h at 80 °C; mass change 0.778% (≤ 1%), all wetted materials assessed, no corrosion" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Lot traceability present or demonstrated (true)" },
+    { "id": "5.records_retention", "state": "verified", "value": 14, "citation": "quality_manual.md §1.7", "note": "Record retention 14 years" },
+    { "id": "5.nc_segregation", "state": "verified", "value": true, "citation": "quality_manual.md §1.8", "note": "Nonconforming material segregation present or demonstrated (true)" },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 0.81475, "citation": "capacity.md §1.1", "note": "Stated ratio; mean of 8 weeks 1629.5 parts/week vs rfq.md peak 2000 parts/week" },
+    { "id": "6.lead_time", "state": "verified", "value": false, "citation": "capacity.md §1.2", "note": "Quoted 15 weeks vs rfq.md need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.3", "note": "Milestone 2026-11-01, added output 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 90, "citation": "pcn_policy.md §1.1", "note": "Advance change notice 90 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.2", "note": "Customer change authorization present or demonstrated (true)" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Critical sub-tier named: Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §9.2", "note": "Requirements passed to outside suppliers present or demonstrated (true)" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Sub-tier registration on file: REG-SUB-001" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §9.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.1", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.2", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["2.pfmea", "4.cleanliness"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CP-0007 cold plate qualification — request for information (SUP-07)\n\nDear Oscorp team,\n\nThank you for your qualification packet for the NPI liquid-cooling cold plate, part SI-CP-0007, revision A, drawing SI-DWG-CP-0007. To complete our review, please send the following:\n\n1. 2.pfmea — Your current Process FMEA for part SI-CP-0007. Your quality manual (§9.1) says you review manufacturing failure modes for this part; please provide the PFMEA document itself, with its revision and date.\n2. 4.cleanliness — An internal cleanliness test report for SI-CP-0007. Your reliability report (§1.2) says the internal passages meet the particle limits; please provide the measured particle counts per part for each complete internal wetted circuit, against Stark's limits of ≤ 100 particles at least 100 µm and 0 particles at least 500 µm.\n\nPlease reply with these documents at your earliest convenience.\n\nKind regards,\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["2.ctq_cpk", "4.cleanliness", "6.lead_time"],
+    "audit_plan": [
+      { "criterion_id": "2.ctq_cpk", "question": "capability_study.md §1.1 gives Port bore Cpk 1.217917313999748 (n=50) and Base thickness Cpk 1.26181964340477. On site, pull the raw Port bore and Base thickness measurement data and gauge records, confirm the Cpk calculation, and review what actions are planned to reduce variation and centre the process." },
+      { "criterion_id": "4.cleanliness", "question": "reliability_report.md §1.2 claims the internal passages meet the particle limits but gives no data. On site, watch or review an internal cleanliness extraction on a complete wetted circuit and check the particle counts against Stark's limits (≤ 100 particles ≥ 100 µm, 0 particles ≥ 500 µm)." },
+      { "criterion_id": "6.lead_time", "question": "capacity.md §1.2 quotes a 15-week lead time against Stark's 12-week need-by. On site, go through the lead-time build-up (material, sub-tier, machining, test) and find which steps drive the 3 extra weeks, and whether the ramp in capacity.md §1.3 (400 parts/week added from 2026-11-01) changes that." }
+    ]
+  }
+}

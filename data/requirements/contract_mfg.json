@@ -1,0 +1,148 @@
+{
+  "header": "Stark Industries — Supplier Quality. Synthetic document for a demo.",
+  "commodity": "contract_mfg",
+  "part_no": "SI-CM-0008",
+  "part_name": "Liquid-cooled rack system build",
+  "revision": "A",
+  "drawing_no": "SI-DWG-CM-0008",
+  "ctqs": [
+    {
+      "name": "Rail spacing",
+      "nominal": 450,
+      "lsl": 449.5,
+      "usl": 450.5,
+      "unit": "mm",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Mounting fastener torque",
+      "nominal": 5,
+      "lsl": 4.5,
+      "usl": 5.5,
+      "unit": "N·m",
+      "basis": "heuristic"
+    },
+    {
+      "name": "Manifold alignment",
+      "nominal": 25,
+      "lsl": 24.5,
+      "usl": 25.5,
+      "unit": "mm",
+      "basis": "heuristic"
+    }
+  ],
+  "tests": {
+    "4.process_audit": {
+      "name": "Process audit",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Process audit complete",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Open major process findings",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.esd_program": {
+      "name": "ESD control program",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "ESD control program implemented",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic",
+          "context": "Audit all stations building this part; no certification claim."
+        },
+        {
+          "measure": "Open major ESD findings",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.fpy_data": {
+      "name": "First-pass yield data",
+      "required": true,
+      "value_type": "number",
+      "conditions": [
+        {
+          "measure": "Consecutive months of FPY data",
+          "kind": "acceptance",
+          "operator": ">=",
+          "value": 6,
+          "unit": "months",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.mes_trace": {
+      "name": "MES traceability",
+      "required": true,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Serial-level build records in MES",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": true,
+          "unit": "boolean",
+          "basis": "heuristic"
+        },
+        {
+          "measure": "Shipped serial record coverage",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic"
+        }
+      ]
+    },
+    "4.training_records": {
+      "name": "Operator training records",
+      "required": false,
+      "value_type": "bool",
+      "conditions": [
+        {
+          "measure": "Operator/station qualification coverage",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 1,
+          "unit": "fraction",
+          "basis": "heuristic",
+          "context": "Current operators at all stations building this part."
+        },
+        {
+          "measure": "Expired qualifications",
+          "kind": "acceptance",
+          "operator": "=",
+          "value": 0,
+          "unit": "count",
+          "basis": "heuristic"
+        }
+      ]
+    }
+  },
+  "peak_weekly_demand": 200,
+  "need_by_weeks": 12,
+  "planning_basis": "heuristic"
+}

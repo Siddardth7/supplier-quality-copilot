@@ -1,0 +1,50 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-08",
+  "commodity": "contract_mfg",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-09-17", "citation": "certificates.md §9.1", "note": "Expiry of REG-SUP-08-QMS, registrar REG-001" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.1", "note": "ISO 9001, certificate REG-SUP-08-QMS, manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "assumed", "value": true, "citation": "quality_manual.md §9.1", "note": "\"Internal audit program is present or demonstrated.\" No audit record." },
+    { "id": "1.capa", "state": "assumed", "value": true, "citation": "quality_manual.md §1.1", "note": "\"Corrective-action program is present or demonstrated.\" No CAPA record." },
+    { "id": "1.calibration", "state": "assumed", "value": true, "citation": "quality_manual.md §1.2", "note": "\"Gauge calibration program is present or demonstrated.\" No calibration records." },
+    { "id": "2.pfmea", "state": "assumed", "value": true, "citation": "quality_manual.md §1.3", "note": "\"Manufacturing failure-mode analysis is present or demonstrated.\" No PFMEA document." },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Control plan lists Rail spacing, Mounting fastener torque, Manifold alignment, matching all 3 rfq CTQs" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.8370587182303004, "citation": "capability_study.md §1.1", "note": "Lowest is Mounting fastener torque, n=50; rail 1.9129, alignment 1.9483" },
+    { "id": "2.spc", "state": "assumed", "value": true, "citation": "quality_manual.md §1.5", "note": "\"Statistical process monitoring is present or demonstrated.\" No charts or reaction plan." },
+    { "id": "3.grr", "state": "verified", "value": 5.413813244030921, "citation": "msa.md §1.1", "note": "Highest is Rail spacing; torque 3.9559, alignment 3.5717 (% of tolerance)" },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.process_audit", "state": "verified", "value": true, "citation": "reliability_report.md §1.1", "note": "Audit complete true; open major findings 0; meets buyer limit" },
+    { "id": "4.esd_program", "state": "verified", "value": false, "citation": "reliability_report.md §1.2", "note": "ESD program implemented false; open major ESD findings 1 (limit 0); does not meet buyer limit" },
+    { "id": "4.fpy_data", "state": "verified", "value": 5, "citation": "reliability_report.md §1.3", "note": "5 consecutive months of FPY data; rfq limit is >= 6" },
+    { "id": "4.mes_trace", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "Serial-level MES records true; shipped serial coverage 1" },
+    { "id": "4.training_records", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Qualification coverage 1; expired qualifications 0" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §9.1", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "assumed", "value": true, "citation": "quality_manual.md §1.7", "note": "\"Lot traceability is present or demonstrated.\" No trace record." },
+    { "id": "5.records_retention", "state": "verified", "value": 12, "citation": "quality_manual.md §1.8", "note": "Retention stated as 12 years" },
+    { "id": "5.nc_segregation", "state": "assumed", "value": true, "citation": "quality_manual.md §1.9", "note": "\"Nonconforming material segregation is present or demonstrated.\" No record." },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 1.435, "citation": "capacity.md §1.1", "note": "Stated ratio; mean 287/week over 8 weeks vs peak demand 200" },
+    { "id": "6.lead_time", "state": "verified", "value": true, "citation": "capacity.md §9.1", "note": "Quoted 9 weeks vs need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Milestone date 2026-11-01, added output 40 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 113, "citation": "pcn_policy.md §9.1", "note": "Advance change notice 113 days" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.1", "note": "Customer change authorization recorded true in PCN policy" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Wakanda Design Group named" },
+    { "id": "8.flowdown", "state": "assumed", "value": true, "citation": "subtier.md §9.1", "note": "\"Requirements passed to outside suppliers is present or demonstrated.\" No flowdown record." },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.2", "note": "Registration certificate REG-SUB-001 listed" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure recorded low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §9.1", "note": "Financial condition recorded healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.internal_audit", "1.capa", "1.calibration", "2.pfmea", "2.spc", "5.lot_trace", "5.nc_segregation", "8.flowdown"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: RFI for SI-CM-0008 — supporting evidence requested\n\nHello,\n\nThank you for your packet for SI-CM-0008. Please send supporting evidence for the following items:\n\n1. 1.internal_audit — internal audit program: procedure and recent audit records.\n2. 1.capa — documented corrective-action (CAPA) process, with example records.\n3. 1.calibration — gauge calibration program covering production gauges, with calibration records.\n4. 2.pfmea — current process FMEA for this part.\n5. 2.spc — SPC in use on the CTQs now: control charts and reaction plan.\n6. 5.lot_trace — lot or serial traceability to raw material, with a sample trace record.\n7. 5.nc_segregation — procedure and records for identifying and segregating nonconforming material.\n8. 8.flowdown — evidence that requirements are flowed down to the sub-tier supplier.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["4.esd_program", "4.fpy_data", "5.lot_trace"],
+    "audit_plan": [
+      { "criterion_id": "4.esd_program", "question": "Walk all stations building SI-CM-0008: verify the open major ESD finding (reliability_report.md §1.2, 1 open vs limit 0), its corrective action and the status of the ESD control program." },
+      { "criterion_id": "4.fpy_data", "question": "Review the FPY records behind the 5 consecutive months reported (reliability_report.md §1.3); confirm the data source and when a sixth month (rfq limit >= 6) will be available." },
+      { "criterion_id": "5.lot_trace", "question": "Trace one shipped unit back to raw-material lots to confirm the lot traceability claimed in quality_manual.md §1.7, and review the supporting records." }
+    ]
+  }
+}

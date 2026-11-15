@@ -1,0 +1,51 @@
+{
+  "schema": "sqc-extraction/1",
+  "supplier_id": "SUP-07",
+  "commodity": "cold_plate",
+  "run": { "run_id": "2026-11-14-sonnet", "model": "claude-sonnet-5-5", "skill_sha": "af74a03" },
+  "criteria": [
+    { "id": "1.cert_current", "state": "verified", "value": "2027-07-20", "citation": "certificates.md §1.1", "note": "Certificate REG-SUP-07-QMS expiry date" },
+    { "id": "1.cert_scope", "state": "verified", "value": true, "citation": "certificates.md §1.2", "note": "ISO 9001, certificate REG-SUP-07-QMS, manufacturing scope recorded true" },
+    { "id": "1.internal_audit", "state": "verified", "value": true, "citation": "quality_manual.md §9.1", "note": "Internal audit program recorded as present" },
+    { "id": "1.capa", "state": "assumed", "value": null, "citation": "quality_manual.md §1.1", "note": "\"We investigate defects and track corrective actions to closure.\" No documented procedure or records." },
+    { "id": "1.calibration", "state": "verified", "value": true, "citation": "quality_manual.md §1.2", "note": "Gauge calibration program recorded as present" },
+    { "id": "2.pfmea", "state": "verified", "value": true, "citation": "quality_manual.md §1.3", "note": "Manufacturing failure-mode analysis recorded as present" },
+    { "id": "2.control_plan", "state": "verified", "value": true, "citation": "quality_manual.md §1.4", "note": "Lists Base thickness, Port bore, Mounting-hole pitch, matching the three CTQs in rfq.md" },
+    { "id": "2.ctq_cpk", "state": "verified", "value": 1.1673135449987455, "citation": "capability_study.md §1.1", "note": "Mounting-hole pitch, n=50. Base thickness 1.2496834513017638, port bore 1.3030242836191919." },
+    { "id": "2.spc", "state": "verified", "value": true, "citation": "quality_manual.md §1.5", "note": "Statistical process monitoring recorded as present; no charts or reaction plan in packet" },
+    { "id": "3.grr", "state": "verified", "value": 6.632156434182213, "citation": "msa.md §1.1", "note": "Base thickness gauge, highest of three. Port bore 4.695125550389444, pitch 5.120412071657155." },
+    { "id": "3.inspection_method", "state": "verified", "value": true, "citation": "quality_manual.md §1.6", "note": "Drawing-specific CTQ measurement instructions and calibrated gauges" },
+    { "id": "4.leak_test", "state": "assumed", "value": null, "citation": "reliability_report.md §1.1", "note": "\"Our assemblies remain sealed under the specified conditions.\" No leak rate data." },
+    { "id": "4.burst_pressure", "state": "assumed", "value": null, "citation": "reliability_report.md §9.1", "note": "\"Our assemblies withstand the required proof load without rupture.\" No proof data." },
+    { "id": "4.cleanliness", "state": "verified", "value": true, "citation": "reliability_report.md §1.2", "note": "80 particles/part at 100 µm (limit 100); 0 at 500 µm (limit 0)" },
+    { "id": "4.material_cert", "state": "verified", "value": true, "citation": "reliability_report.md §1.3", "note": "SI-MAT-AL-01; traceable to lot and matches drawing material" },
+    { "id": "4.thermal_cycling", "state": "verified", "value": true, "citation": "reliability_report.md §1.4", "note": "588 cycles, 0 failures, post-cycle leak 8.239564034184113e-7 mbar·L/s" },
+    { "id": "4.coolant_compat", "state": "verified", "value": true, "citation": "reliability_report.md §1.5", "note": "Mass change 0.7353253441490235 %, no visible corrosion, all wetted materials assessed" },
+    { "id": "4.method_criteria", "state": "verified", "value": true, "citation": "reliability_report.md §9.2", "note": "Methods and buyer acceptance criteria documented" },
+    { "id": "4.sample_size", "state": "verified", "value": true, "citation": "reliability_report.md §1.6", "note": "Documented statistical sample-size rationale" },
+    { "id": "5.lot_trace", "state": "verified", "value": true, "citation": "quality_manual.md §1.7", "note": "Lot traceability recorded as present" },
+    { "id": "5.records_retention", "state": "verified", "value": 11, "citation": "quality_manual.md §1.8", "note": "Retention 11 years" },
+    { "id": "5.nc_segregation", "state": "assumed", "value": null, "citation": "quality_manual.md §1.9", "note": "\"We label rejected parts and hold them away from released stock.\" No records." },
+    { "id": "6.capacity_ratio", "state": "verified", "value": 0.832125, "citation": "capacity.md §1.1", "note": "Mean 1664.25 parts/week over 8 weeks vs peak demand 2000" },
+    { "id": "6.lead_time", "state": "verified", "value": false, "citation": "capacity.md §9.1", "note": "Quoted 15 weeks vs need-by 12 weeks" },
+    { "id": "6.ramp_plan", "state": "verified", "value": true, "citation": "capacity.md §1.2", "note": "Milestone 2026-11-01, added 400 parts/week" },
+    { "id": "7.pcn_notice", "state": "verified", "value": 103, "citation": "pcn_policy.md §1.1", "note": "103 days advance change notice" },
+    { "id": "7.change_approval", "state": "verified", "value": true, "citation": "pcn_policy.md §1.2", "note": "Customer change authorization recorded as present" },
+    { "id": "8.subtier_named", "state": "verified", "value": true, "citation": "subtier.md §1.1", "note": "Wakanda Design Group" },
+    { "id": "8.flowdown", "state": "verified", "value": true, "citation": "subtier.md §1.2", "note": "Requirements passed to outside suppliers recorded as present" },
+    { "id": "8.subtier_certs", "state": "verified", "value": true, "citation": "subtier.md §9.1", "note": "Registration certificate REG-SUB-001 on file" },
+    { "id": "9.second_source", "state": "verified", "value": true, "citation": "cover_letter.md §1.1", "note": "Qualified alternate manufacturer: Horizon Labs" },
+    { "id": "9.region_risk", "state": "verified", "value": "low", "citation": "cover_letter.md §1.2", "note": "Regional continuity exposure recorded as low" },
+    { "id": "9.financial_health", "state": "verified", "value": "healthy", "citation": "cover_letter.md §1.3", "note": "Financial condition recorded as healthy" }
+  ],
+  "drafts": {
+    "rfi_items": ["1.capa", "4.leak_test", "4.burst_pressure", "5.nc_segregation"],
+    "rfi_email": "DRAFT — prepared by an agent for SQE review. Not sent.\n\nSubject: SI-CP-0007 cold plate — supplier qualification information request (SUP-07)\n\nHello,\n\nThank you for the qualification packet for part SI-CP-0007 rev A. To complete our review, please send the following:\n\n1. 1.capa — Your documented corrective-action (CAPA) procedure, with sample records showing actions tracked to closure.\n2. 4.leak_test — The helium leak test report for this part, showing the measured leak rate, with test conditions (6 bar differential, 20 °C) against our limit of ≤ 0.000001 mbar·L/s.\n3. 4.burst_pressure — The burst / proof pressure test report, showing proof pressure of at least 3 times the 6 bar maximum operating pressure held for at least 60 s with no rupture.\n4. 5.nc_segregation — Your procedure and records for identifying and segregating nonconforming material.\n\nThank you.\n\nStark Industries Supplier Quality — Pepper Potts",
+    "audit_focus": ["2.ctq_cpk", "4.leak_test", "4.burst_pressure"],
+    "audit_plan": [
+      { "criterion_id": "2.ctq_cpk", "question": "Review the mounting-hole pitch capability data behind the Cpk of 1.1673135449987455 (capability_study.md §1.1, n=50). Confirm the raw measurements and what is planned to improve process centering and spread." },
+      { "criterion_id": "4.leak_test", "question": "Reliability_report.md §1.1 only states that assemblies remain sealed. Ask to see the helium leak test records for this part, the equipment, the test conditions (6 bar, 20 °C) and the measured rates against ≤ 0.000001 mbar·L/s." },
+      { "criterion_id": "4.burst_pressure", "question": "Reliability_report.md §9.1 only states that assemblies withstand the proof load. Ask to see the proof test records: pressure reached versus 3 × 6 bar, hold time of at least 60 s, and rupture observations." }
+    ]
+  }
+}
