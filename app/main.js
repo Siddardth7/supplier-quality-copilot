@@ -5,12 +5,13 @@ import { resolvePolicy, chipView, policyLabel } from './policy.js';
 import { buildModel } from './model.js';
 import { STARK_REFERENCE } from './engine.js';
 import { REF_KEY, SHARED_KEY, RESERVED_ID, activePolicy, checkedKey, savedKey, checkPolicy, decodePolicy, encodePolicy, exportPolicy, importPolicy,
-  livePolicy, loadStore, removeFromList, saveToList, setField, setRating, toggleKnockout, writeStore } from './standards.js';
+  livePolicy, loadStore, plainPolicyError, removeFromList, saveToList, setField, setRating, toggleKnockout, writeStore } from './standards.js';
 import { parseHash, formatHash, resolveRoute } from './route.js';
 import { announcementKey, chip, roleSwitch } from './shell.js';
 import { copyWithFallback } from './clipboard.js';
 import { VIEWS } from './views/index.js';
-import { fileListBody, packetDir, packetPath, renderPacket, sheetBody } from './packet.js';
+import { ROUND_NOTE, fileListBody, packetDir, packetPath, renderPacket, sheetBody } from './packet.js';
+import { monitorDetailKey, detailScrollOptions } from './monitor.js';
 import { draftsModel, copyPayload } from './drafts.js';
 import { WHERE_REQUIRED, blankEntry, entryFromRecord, exportRecord, importRecord, nextId, remove, scoreEntry, setPart, setRow, toRecord,
   upsert, writeManual } from './manual.js';
@@ -18,8 +19,9 @@ import { revealEntryFocus, issueText, liveGaps, livePanel, profileLine, sheetFor
 import { queueHref } from './queue.js';
 import { importSheet } from './sheet-import.js';
 import { loadSheets, writeSheets, uploadModel, exportSheet, editPreview, previewFields, savePreview, applyPreviewJson } from './sheet-upload.js';
+import { registerOffline } from './offline.js';
 
-if (typeof document !== 'undefined') boot();
+if (typeof document !== 'undefined') { boot(); registerOffline(); }  // issue 169: offline mode, never throws
 
 function boot() {
   const $ = (id) => document.getElementById(id);
@@ -52,6 +54,7 @@ function boot() {
   let lastView = null;  // view of the last render; null until the first one
   let chartTable = false;     // Monitor "Show as table": local UI state, not in the hash (decision 71)
   let lastMonthKey = null;    // 'ACT-03|9' once that month's point got focus, so re-renders don't steal focus (UIM-FR-11)
+  let lastDetailKey = null;   // 'ACT-02' once its detail was brought into view, so re-renders don't steal focus (issue 163)
   // + New supplier (issue 77, decisions 160-171): the open entry lives in memory only, while the hash has new=1.
   let entry = null;
   const manualUi = { saveNote: null, importError: null, confirm: null, entryError: null };
@@ -136,6 +139,21 @@ function boot() {
     }
     entryFocus = null;
     if (monitorFocus) restoreMonitorFocus(monitorFocus);
+    // A newly opened Monitor supplier (deep link, row click, Back/Forward to another ID) focuses its detail heading and
+    // scrolls the detail to the top, once per ID (issue 163, decisions 243-244). Order matters: after
+    // restoreMonitorFocus, so the heading wins over the row link; before the month block, which keeps the last word.
+    const dKey = monitorDetailKey(route, model);
+    if (dKey === null) lastDetailKey = null;
+    else if (dKey !== lastDetailKey) {
+      lastDetailKey = dKey;
+      // An explicit month still focuses its chart point (decision 77); a tab click keeps focus on the tab.
+      if (!keepFocus && !route.params.month) {
+        const h = $('view-monitor').querySelector('#detail-title');
+        h?.focus({ preventScroll: true });
+        // Scroll the whole detail section, not the heading, so ← Table and the tier sit below the sticky shell bar.
+        (h?.closest('.monitor-detail') ?? h)?.scrollIntoView?.(detailScrollOptions(matchMedia('(prefers-reduced-motion: reduce)').matches));
+      }
+    }
     if (linkFocus) {
       const panel = $(`view-${route.view}`);
       const a = [...panel.querySelectorAll(`${linkFocus.sel} a[href]`)].find((x) => x.getAttribute('href') === linkFocus.href);
@@ -183,6 +201,7 @@ function boot() {
     const refocus = dialog.open && sheet.contains(document.activeElement);
     $('viewer-title').textContent = list ? 'Packet files' : doc;
     $('viewer-eyebrow').textContent = eyebrow(route);
+    $('viewer-note').hidden = true;  // issue 163: every open starts with no note; only a rounded packet shows it
     if (!dialog.open) { dialog.showModal(); $('viewer-close').focus(); }
     if (list) {
       sheet.scrollTop = 0;
@@ -193,7 +212,11 @@ function boot() {
 
   async function showPacket(key, rel, doc, sec) {
     const path = source.label + rel;
-    const fill = (state) => { sheet.scrollTop = 0; sheet.innerHTML = sheetBody({ path, doc, sec, ...state }); };
+    const fill = (state) => {
+      sheet.scrollTop = 0; sheet.innerHTML = sheetBody({ path, doc, sec, ...state });
+      // In the header, not the scroller, so it stays visible when the cited section is scrolled to the top (issue 163).
+      const note = $('viewer-note'); note.hidden = !(state.rounded > 0); note.textContent = note.hidden ? '' : ROUND_NOTE;
+    };
     let text = cache.get(rel);
     if (text === undefined) {
       fill({ status: 'loading' });
@@ -292,14 +315,17 @@ function boot() {
     if (el.matches('[data-monitor-link]')) return { id: el.dataset.id };
     if (el.matches('.back-link')) return prevActive ? { id: prevActive } : null;
     if (el.matches('.pt')) return { point: true };
+    if (el.id === 'detail-title') return { heading: true, id: prevActive };  // issue 163: heading if still open, else the row
     if (el.matches('[data-pchart-toggle]')) return { toggle: true };
     // A focused table row or alert link is gone after a re-render: land on the nearest stable control (#45 test note).
     if (el.closest('.pchart-table')) return { toggle: true };
     if (el.matches('[data-alert-link]')) return { point: true };
     return null;
   }
-  function restoreMonitorFocus({ id, point, toggle }) {
+  function restoreMonitorFocus({ id, point, toggle, heading }) {
     const panel = $('view-monitor');
+    const title = heading ? panel.querySelector('#detail-title') : null;
+    if (title) { title.focus({ preventScroll: true }); return; }
     const el = id !== undefined ? panel.querySelector(`[data-monitor-link][data-id="${CSS.escape(id)}"]`)
       : toggle ? panel.querySelector('[data-pchart-toggle]')
         : point ? panel.querySelector('.pt[tabindex="0"]') : null;
@@ -607,7 +633,7 @@ function boot() {
 
   // The effective policy for Share and Export, or null (refused) while the draft is invalid.
   function shareable(verb) {
-    if (draft && ui.error) { ui.actionError = `Can't ${verb}: ${ui.error.message}`; render(); return null; }
+    if (draft && ui.error) { ui.actionError = `Can't ${verb}: ${plainPolicyError(ui.error)}`; render(); return null; }  // issue 162: plain sentence
     return resolved.policy;
   }
 

@@ -432,7 +432,7 @@ const groupsIn = (html) => [...html.matchAll(/<section class="gap-group" data-ki
 const detailsIn = (html) => [...html.matchAll(/<details class="req-cat" data-cat="([^"]*)"( open)?><summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g)]
   .map(([, n, open, summary, body]) => ({ n: Number(n), open: !!open, summary, body, rows: rowsIn(body) }));
 const panelOf = (html) => html.slice(html.indexOf('<div id="dpanel"'));
-const WORD = { fail: '✗ Fail', assumed: '~ Assumed', missing: '? Missing', verified: '✓ Verified', info: 'i Info' };
+const WORD = { fail: '✗ Fail', partial: '◐ Partial', assumed: '~ Assumed', missing: '? Missing', verified: '✓ Verified', info: 'i Info' };
 const MISSING = { state: 'missing', value: null, citation: null, note: 'Searched quality_manual.md §4; no SPC chart' };
 // Many + a missing row: every gap type plus info.
 const ALL_KINDS = set(PACKETS.many, { '2.spc': MISSING });
@@ -449,12 +449,14 @@ test('UIQ-FR-07 Problems: groups fail, assumed, missing, info with glyph + word 
   for (const g of groups) {
     const want = g.kind === 'info' ? ev.nice_to_have.map((n) => n.id) : ev.gaps.filter((x) => x.type === g.kind).map((x) => x.id);
     assert.deepEqual(g.rows.map((r) => r.id), want, `${g.kind}: engine order`);
-    assert.equal(g.title, `${WORD[g.kind].slice(2)} (${want.length})`);
+    assert.equal(g.title, `${g.kind === 'fail' ? 'Fail or partial' : WORD[g.kind].slice(2)} (${want.length})`);  // issue 162
     assert.match(g.body, new RegExp(`<caption class="sr-only">${g.title.replace(/[()]/g, '\\$&')}</caption>`));
     assert.match(g.body, /<thead><tr><th scope="col">State<\/th><th scope="col">Requirement<\/th><th scope="col" class="cell-num">Value<\/th><th scope="col" class="cell-num">Score<\/th><th scope="col">Citation<\/th><\/tr><\/thead>/);
     for (const r of g.rows) {
       assert.deepEqual(r.labels, ['State', 'Requirement', 'Value', 'Score', 'Citation']);
-      assert.equal(text(r.cells[0]), WORD[g.kind], `${r.id}: glyph and word, not colour alone`);
+      // Fail group rows: Fail at score 0, Partial at 1-2 (issue 162).
+      const kind = g.kind === 'fail' && !r.byLabel.Score.startsWith('0 /') ? 'partial' : g.kind;
+      assert.equal(text(r.cells[0]), WORD[kind], `${r.id}: glyph and word, not colour alone`);
     }
   }
   assert.equal(groups.filter((g) => g.kind !== 'info').reduce((s, g) => s + g.rows.length, 0), ev.gaps.length);
@@ -559,7 +561,7 @@ test('UIQ-FR-08: a weight-0 category is still a <details> with 0.0 / 0 and its r
   assert.equal(cats[8].rows.length, evOf(m).categories[8].criteria.length);
 });
 
-test('state chip consistency: verified rows below 3 read Fail in both tabs; verified 3 reads Verified', () => {
+test('state chip consistency: verified rows at 0 read Fail, at 1-2 Partial, in both tabs; verified 3 reads Verified', () => {
   const m = world(set(CP, { '2.ctq_cpk': { value: 1.0 }, '2.spc': { value: false } }));
   const ev = evOf(m);
   const scores = Object.fromEntries(ev.categories.flatMap((c) => c.criteria).map((r) => [r.id, r.score]));
@@ -567,9 +569,9 @@ test('state chip consistency: verified rows below 3 read Fail in both tabs; veri
   const problems = groupsIn(detail(m))[0];
   assert.equal(problems.kind, 'fail');
   const req = detailsIn(detail(m, { tab: 'requirements' })).find((d) => d.n === 2).rows;
-  for (const id of ['2.ctq_cpk', '2.spc']) {
-    assert.equal(text(problems.rows.find((r) => r.id === id).byLabel.State), '✗ Fail', id);
-    assert.equal(text(req.find((r) => r.id === id).byLabel.State), '✗ Fail', id);
+  for (const [id, word] of [['2.ctq_cpk', '◐ Partial'], ['2.spc', '✗ Fail']]) {  // issue 162: chip by score
+    assert.equal(text(problems.rows.find((r) => r.id === id).byLabel.State), word, id);
+    assert.equal(text(req.find((r) => r.id === id).byLabel.State), word, id);
   }
   assert.equal(req.find((r) => r.id === '2.spc').byLabel.Value, 'No');
   assert.equal(req.find((r) => r.id === '2.ctq_cpk').byLabel.Value, '1.00');

@@ -11,7 +11,7 @@ import { formatHash, parseHash } from './route.js';
 import { maySign, queueModel, queueHref } from './queue.js';
 import { escalation, monitorModel, monitorHref, renderMonitor } from './monitor.js';
 import { GRADES, todayModel, renderToday } from './today.js';
-import { errorPanel } from './html.js';
+import { errorPanel, esc } from './html.js';
 import * as today from './views/today.js';
 
 // ---- real engine output ----
@@ -27,7 +27,7 @@ const CSV = [HEAD,
   '2026-10-06,ACT-01,P1,1000,0,1,none,,,,',        // all Good: 100.0 A, no alert
   '2026-10-06,ACT-02,P1,1000,1,1,incoming,FM-A,,,',  // 85.0 A under Stark; C under the TIERS policy below
   '2026-10-06,ACT-03,P1,1000,600,0,line,FM-B,,,',   // 30.0 D
-  '2026-10-06,ACT-04,P1,1000,0,0,none,,,,',         // 80.0 B with an active metric_bad (otd)
+  '2026-10-06,ACT-04,P1,1000,0,0,none,,,,',         // 80.0 B with an active metric_bad (otd): On-time in Bad band
   '2026-01-06,ACT-06,P1,1000,0,1,none,,,,',         // Unrated
 ].join('\n');
 const ACTIVE = ['ACT-01', 'ACT-02', 'ACT-03', 'ACT-04', 'ACT-06'];
@@ -135,7 +135,7 @@ test('UIT-FR-03: Escalate equals Monitor\'s flagged rows in Monitor\'s order, wi
     const r = rows.find((x) => x.id === s.supplier_id);
     const item = html.slice(html.indexOf(`data-id="${r.id}"`), html.indexOf('</a>', html.indexOf(`data-id="${r.id}"`)));
     assert.match(item, /<span class="badge amber">▲ ESCALATE<\/span>/);
-    assert.ok(item.includes(`<span class="card-meta quiet">${escalation(s).text}</span>`), r.id);
+    assert.ok(item.includes(`<span class="card-meta quiet">${esc(escalation(s).text)}</span>`), r.id);
     assert.ok(item.includes(r.tier === null ? 'Unrated · ' : `Tier ${r.tier} · <span class="mono">${r.composite.toFixed(1)}</span>`), r.id);
   }
   const unrated = rows.find((r) => r.tier === null);
@@ -313,6 +313,6 @@ test('UIT-FR-03: hand-built scorecard rows: C without alert and A with an active
   assert.doesNotMatch(spoken, /Unrated\W+Unrated/);
   assert.match(spoken, /Unrated · no composite score/);
   assert.doesNotMatch(item, /\d\.\d/);
-  assert.ok(item.includes('<span class="card-meta quiet">scar_aging</span>'));
+  assert.ok(item.includes('<span class="card-meta quiet">SCAR open &gt; 60 days</span>'));  // issue 162: plain words
   assert.deepEqual(tilesOf(senior(m), 'By grade'), [['Unrated', 2], ['D', 0], ['C', 1], ['B', 1], ['A', 2]]);
 });

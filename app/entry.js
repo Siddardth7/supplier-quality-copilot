@@ -4,7 +4,7 @@
 // (evaluate). Names no criterion, test or commodity (QUAL-NFR-05); the detail components are reused as they are.
 import { esc } from './html.js';
 import { RUBRIC } from './engine.js';
-import { STATES, checklist, scoreEntry } from './manual.js';
+import { STATES, WHERE_REQUIRED, checklist, scoreEntry } from './manual.js';
 import { sheetRows, limitText } from './standards.js';
 import { banner, detailModel, metrics, queueHref } from './queue.js';
 import { problemsModel, renderProblems } from './criteria.js';
@@ -35,7 +35,8 @@ export function livePanel(view, ctx) {
   if (view.blocked) {
     const id = Object.keys(view.rows).find((k) => view.rows[k].issue);
     const name = checklist(s.commodity)?.find((r) => r.id === id)?.name ?? id;
-    return `<p class="status-line" role="status">Score paused: ${esc(name)} needs where I found it</p>`;
+    const need = view.rows[id]?.issue === WHERE_REQUIRED ? 'needs where I found it' : 'needs a value in range';
+    return `<p class="status-line" role="status">Score paused: ${esc(name)} ${need}</p>`;
   }
   if (!view.result.ok) return `<p class="status-line" role="status">Engine error: ${esc(view.result.error.message)}</p>`;
   const ev = view.result.evaluation;

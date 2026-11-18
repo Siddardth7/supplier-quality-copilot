@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Today · Supplier Quality Copilot</title>
-  <link rel="icon" href="data:,">
+  <link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../manifest.json">
   <link rel="stylesheet" href="../design/tokens.css">
   <link rel="stylesheet" href="app.css">
   <script type="module" src="main.js"></script>
@@ -53,7 +54,7 @@
 
   <dialog id="viewer" class="sheet" aria-modal="true" aria-labelledby="viewer-title">
     <header class="sheet-head">
-      <div><p class="viewer-label badge">Synthetic data. Fictional suppliers.</p><p class="eyebrow mono" id="viewer-eyebrow"></p><h2 id="viewer-title"></h2></div>
+      <div><p class="viewer-label badge">Synthetic data. Fictional suppliers.</p><p class="eyebrow mono" id="viewer-eyebrow"></p><h2 id="viewer-title"></h2><p class="quiet" id="viewer-note" role="status" hidden></p></div>
       <button type="button" class="subtle-button" id="viewer-close">Close<span class="sr-only"> citation viewer</span> ✕</button>
     </header>
     <div class="sheet-scroll packet" id="viewer-body" tabindex="0" role="region" aria-label="Packet file"></div>

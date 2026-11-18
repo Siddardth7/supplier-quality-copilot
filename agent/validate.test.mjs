@@ -64,7 +64,7 @@ test('mixed states, the PRD-04 example items and edge values pass', () => {
   set('6.ramp_plan', { state: 'assumed', value: null, citation: 'cover_letter.md §3', note: '"Ramp plan to follow"' });
   set('8.subtier_named', { state: 'missing', value: null, citation: null, note: 'quality_manual.md §7.4 says plating is outsourced, no name' });
   set('3.grr', { state: 'verified', value: 0, citation: 'msa.md §1', note: '' });
-  set('6.capacity_ratio', { state: 'verified', value: -0.5, citation: 'capacity.md §2', note: null });
+  set('6.capacity_ratio', { state: 'verified', value: 0, citation: 'capacity.md §2', note: null });
   set('5.records_retention', { state: 'verified', value: 1.329, citation: 'quality_manual.md §4.2.1', note: null });
   set('1.capa', { state: 'verified', value: false, citation: 'quality_manual.md §8', note: null });
   set('1.cert_current', { state: 'verified', value: '2028-02-29', citation: 'certificates.md §1', note: null });
@@ -203,6 +203,8 @@ test('value type per criterion type', () => {
     ['2.ctq_cpk', NaN, /expected a finite number/],
     ['2.ctq_cpk', Infinity, /expected a finite number/],
     ['9.region_risk', 'High', /^9\.region_risk: expected one of low, medium, high/],
+    // issue 161: out-of-range numbers are refused; Cpk has no bound.
+    ['6.capacity_ratio', -0.5, /^6\.capacity_ratio: expected a number >= 0, got -0\.5$/],
   ];
   for (const date of ['2026-02-30', '2026/11/01', '2026-02-29', '2026-13-01', '2026-1-5', 20270101]) {
     cases.push(['1.cert_current', date, /expected an ISO day YYYY-MM-DD/]);
@@ -211,6 +213,10 @@ test('value type per criterion type', () => {
     const [x, p] = withItem(id, { value });
     only(x, `${p}.value`, re);
   }
+  // issue 161: 4.fai (0 to 1) is required for machined parts; a negative Cpk has no bound and passes.
+  const [xf, pf] = withItem('4.fai', { value: 1.2 }, 'machined_part');
+  only(xf, `${pf}.value`, /^4\.fai: expected a number from 0 to 1, got 1\.2$/);
+  assertOk(withItem('2.ctq_cpk', { value: -0.5 })[0]);
   // assumed claimed values are type-checked too
   const [x, p] = withItem('2.ctq_cpk', { state: 'assumed', value: { cpk: 1.4 }, note: '"capable"' });
   only(x, `${p}.value`, /expected a finite number/);

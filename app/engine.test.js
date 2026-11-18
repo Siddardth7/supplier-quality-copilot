@@ -34,7 +34,9 @@ function docProbes(id, type, cell) {
     assert.ok(bounds.length > 0, `${id}: no bounds parsed from "${cell}"`);
     const xs = [...bounds, bounds[0] - 1, bounds.at(-1) + 1];
     for (let i = 1; i < bounds.length; i++) xs.push((bounds[i - 1] + bounds[i]) / 2);
-    return xs.map((x) => {
+    // Outer probes stay inside the criterion's physical range (issue 161; e.g. capacity -0.2 -> 0, 4.fai 2 -> 1).
+    const { min = -Infinity, max = Infinity } = def(id).range ?? {};
+    return xs.map((x) => Math.min(max, Math.max(min, x))).map((x) => {
       const hits = bands.filter((b) => b.contains(x));
       assert.equal(hits.length, 1, `${id}: doc bands "${cell}" put x=${x} in ${hits.length} bands`);
       return { value: x, expected: hits[0].score };

@@ -23,7 +23,7 @@ export function todayModel(model, { role = 'senior', policy } = {}) {
     // Decision 88: unscored rows have no routing, so maySign drops them; they show as a count only.
     const items = q.cards.filter((c) => maySign(role, c.routing)).map((c) => ({
       id: c.id, name: c.name, part: sheetPart(model, c.commodity), decision: c.decision, total: c.total, routing: c.routing,
-      source: c.source, href: queueHref(ctx, { supplier: c.id }) }));
+      source: c.source, reason: c.reason, href: queueHref(ctx, { supplier: c.id }) }));
     needs = { ok: true, items, unscored: q.unscored };
     decision = Object.fromEntries(DECISIONS.map(([label, key]) => [label, q.counts[key]]));
     routing = { junior: q.counts.junior, senior: q.counts.senior };
@@ -64,7 +64,8 @@ function needsItem(c) {
   return `<a class="list-card today-item" data-today-link="qualify" data-id="${esc(c.id)}" data-routing="${esc(c.routing)}" href="${esc(c.href)}">`
     + `<span class="card-top">${decisionBadge(c.decision)}${c.source === 'manual' ? ' <span class="badge muted">Entered by hand</span>' : ''}</span>`
     + `<span class="card-name"><span class="mono">${esc(c.id)}</span> ${esc(c.name)}</span>`
-    + `<span class="card-meta quiet">Part ${part} · <span class="mono">${c.total.toFixed(1)}</span></span></a>`;
+    + `<span class="card-meta quiet">Part ${part} · <span class="mono">${c.total.toFixed(1)}</span></span>`
+    + (c.reason ? `<span class="card-meta quiet">${esc(c.reason)}</span>` : '') + '</a>';  // NOT APPROVED reason (issue 162)
 }
 
 function escalateItem(r) {

@@ -34,19 +34,19 @@ Active suppliers' commodities are set in `data/suppliers.json`.
 
 Each lives at `data/suppliers/<id>/` as a packet of markdown "documents".
 
-| ID | Commodity key | Risk | Story | Expected total | Decision | Routing (reasons) |
-|---|---|---|---|---|---|---|
-| SUP-01 | `cold_plate` | High | Strong shop, one miss | 97.5 | NOT APPROVED | Senior (NOT APPROVED; High-risk commodity) |
-| SUP-02 | `quick_disconnect` | High | Sole source, good docs | 92.1 | APPROVED | Senior (High-risk commodity; Sole source) |
-| SUP-03 | `power_module` | High | Capability problems | 90.4 | NOT APPROVED | Senior (NOT APPROVED; High-risk commodity) |
-| SUP-04 | `pcba` | Medium | Clean control case | 100.0 | APPROVED | **Junior** (APPROVED, Medium risk, second source confirmed) |
-| SUP-05 | `machined_part` | Medium | Cert expired last month | 96.0 | NOT APPROVED | Senior (NOT APPROVED) |
-| SUP-06 | `optics_cable` | Medium | Thin packet, mostly claims | 86.5 | CONDITIONAL (assumed knockout) | Senior (CONDITIONAL) |
-| SUP-07 | `cold_plate` | High | Capacity can't meet ramp | 82.6 | CONDITIONAL | Senior (CONDITIONAL; High-risk commodity) |
-| SUP-08 | `contract_mfg` | High | Big CM, ESD gap | 95.8 | NOT APPROVED | Senior (NOT APPROVED; High-risk commodity) |
-| SUP-09 | `cold_plate` | High | Third cold-plate bidder, clean | 100.0 | APPROVED | Senior (High-risk commodity) |
+| ID | Commodity key | Risk | Story | Target total (hand) | Shipped total (engine) | Decision | Routing (reasons) |
+|---|---|---|---|---|---|---|---|
+| SUP-01 | `cold_plate` | High | Strong shop, one miss | 97.5 | **84.5** | NOT APPROVED | Senior (NOT APPROVED; High-risk commodity) |
+| SUP-02 | `quick_disconnect` | High | Sole source, good docs | 92.1 | **97.8** | APPROVED | Senior (High-risk commodity; Sole source) |
+| SUP-03 | `power_module` | High | Capability problems | 90.4 | **68.4** | NOT APPROVED | Senior (NOT APPROVED; High-risk commodity) |
+| SUP-04 | `pcba` | Medium | Clean control case | 100.0 | **100.0** | APPROVED | **Junior** (APPROVED, Medium risk, second source confirmed) |
+| SUP-05 | `machined_part` | Medium | Cert expired last month | 96.0 | **97.0** | NOT APPROVED | Senior (NOT APPROVED) |
+| SUP-06 | `optics_cable` | Medium | Thin packet, mostly claims | 86.5 | **91.1** | CONDITIONAL (assumed knockout) | Senior (CONDITIONAL) |
+| SUP-07 | `cold_plate` | High | Capacity can't meet ramp | 82.6 | **84.4** | CONDITIONAL | Senior (CONDITIONAL; High-risk commodity) |
+| SUP-08 | `contract_mfg` | High | Big CM, ESD gap | 95.8 | **95.8** | NOT APPROVED | Senior (NOT APPROVED; High-risk commodity) |
+| SUP-09 | `cold_plate` | High | Third cold-plate bidder, clean | 100.0 | **100.0** | APPROVED | Senior (High-risk commodity) |
 
-Totals are computed by hand from `RUBRIC.md` under the Stark Reference v1 policy, with every criterion not in the gap matrix `verified` at score 3, and `9.second_source` verified `true` except for SUP-02. In the simulated world these are targets: `sim/run.mjs --find-demo` picks the first seed whose demo-world answer key lands every candidate on its row's decision and routing (totals may differ). SUP-01, SUP-07 and SUP-09 bid for the same Stark part, so Compare shows two acceptable bidders (SUP-09 APPROVED, SUP-07 CONDITIONAL) and SUP-01 below as NOT APPROVED.
+Totals are computed by hand from `RUBRIC.md` under the Stark Reference v1 policy, with every criterion not in the gap matrix `verified` at score 3, and `9.second_source` verified `true` except for SUP-02. In the simulated world these are targets: `sim/run.mjs --find-demo` picks the first seed whose demo-world answer key lands every candidate on its row's decision and routing (totals may differ). The shipped demo world (seed 93) lands every decision and routing target; its engine totals are the **Shipped total** column, and those are the numbers the app, README and DEMO.md show. SUP-06 routes Senior for `CONDITIONAL; Second source unconfirmed`. SUP-01, SUP-07 and SUP-09 bid for the same Stark part, so Compare shows two acceptable bidders (SUP-09 APPROVED, SUP-07 CONDITIONAL) and SUP-01 below as NOT APPROVED.
 
 ## ~~Planted gaps: 25~~ (superseded 2026-11-09)
 

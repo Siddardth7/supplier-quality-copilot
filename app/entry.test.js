@@ -172,8 +172,8 @@ test('11 UIQ-FR-15: each cold-plate test row shows Stark\'s acceptance limit fro
     assert.equal(/Optional/.test(row), r.nice, `${r.id} Optional`);
     assert.equal(/Not scored; listed as info/.test(row), r.nice, `${r.id} info note`);
   }
-  // A known string, read from the sheet: Helium leak rate ≤ 0.000001 mbar·L/s.
-  assert.ok(rowHtml(html, '4.leak_test').includes('Helium leak rate ≤ 0.000001 mbar·L/s'));
+  // A known string, read from the sheet: Helium leak rate ≤ 1 × 10⁻⁶ mbar·L/s.
+  assert.ok(rowHtml(html, '4.leak_test').includes('Helium leak rate ≤ 1 × 10⁻⁶ mbar·L/s'));
   // Criteria (not tests) carry no limit line.
   assert.doesNotMatch(rowHtml(html, '2.ctq_cpk'), /Stark limit|No limit on this sheet/);
 });
@@ -235,6 +235,24 @@ test('12 UIQ-AC-11: proven with no "where I found it" is blocked inline on that 
   const name = checklist(COLD).find((r) => r.id === '6.lead_time').name;
   assert.ok(live.includes(`<p class="status-line" role="status">Score paused: ${esc(name)} needs where I found it</p>`));
   assert.doesNotMatch(live, /<strong>82\.6<\/strong>/, 'no partial score');
+});
+
+test('12 issue 161 UIQ-AC-11: an out-of-range number is a field error on its row and pauses the score, no Engine error strip', () => {
+  const html = renderEntry(modelOf(), ctxOf(setRow(sup07Entry(), '6.capacity_ratio', { value: '-0.5' })));
+  const row = rowHtml(html, '6.capacity_ratio');
+  assert.match(row, /<p class="entry-error" data-row-error="6\.capacity_ratio" id="err-6\.capacity_ratio">expected a number &gt;= 0, got -0\.5<\/p>/);
+  for (const f of ['state', 'value', 'where', 'note']) {
+    assert.match(row, new RegExp(`data-entry-field="${f}" data-id="6\\.capacity_ratio" aria-describedby="err-6\\.capacity_ratio" aria-invalid="true"`), f);
+  }
+  const live = livePart(html);
+  const name = checklist(COLD).find((r) => r.id === '6.capacity_ratio').name;
+  assert.ok(live.includes(`<p class="status-line" role="status">Score paused: ${esc(name)} needs a value in range</p>`), live);
+  assert.doesNotMatch(live, /Engine error/);
+  assert.doesNotMatch(live, /needs where I found it/);
+  assert.match(html, /<div class="entry-gaps" data-entry-gaps><\/div>/, 'static block empty while paused');
+  // The missing-where pause keeps its own wording.
+  const where = scoreEntry(setRow(sup07Entry(), '6.lead_time', { where: '' }), { as_of: AS_OF, policy: STARK_REFERENCE });
+  assert.match(livePanel(where, ctxOf(sup07Entry())), /needs where I found it<\/p>$/);
 });
 
 test('12: issueText strips the engine "<id>: " prefix only when it names that row', () => {

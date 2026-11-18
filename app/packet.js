@@ -18,7 +18,7 @@ const OL = /^\s*\d+[.)]\s+(.*)$/;
 export function packetDir(route) {
   const p = route?.params;
   if (route?.view === 'qualify' && p?.supplier && !route.notFound) return `suppliers/${encodeURIComponent(p.supplier)}/`;
-  if (route?.view === 'eval' && p?.supplier && p?.world) return `worlds/${encodeURIComponent(p.world)}/packets/${encodeURIComponent(p.supplier)}/`;
+  if (route?.view === 'eval' && p?.supplier && p?.world && !route.notFound) return `worlds/${encodeURIComponent(p.world)}/packets/${encodeURIComponent(p.supplier)}/`;
   return null;
 }
 
@@ -117,22 +117,43 @@ export function findSection(blocks, sec) {
   return { start, end };
 }
 
-/** md -> { html, found, title }. found: null without sec, else whether the section exists. title: the cited
- *  heading's text ('' if none). The cited blocks sit in <div class="cited" data-cited>, led by an sr-only label. */
+// Numbers written with more than 3 decimals (generator floats) are shown rounded to 3 in the viewer (issue 163).
+// Lookbehind: not inside a word, code, version, date or another number; sign allowed. Lookahead: not before a word
+// char (units glued on, exponent `e-7`) and not before `.digit` (a version such as 1.2.3.4567). A sentence-final
+// period is fine: `1.9092634239762918.` -> `1.909.`
+const LONG_DECIMAL = /(?<![\w.-])-?\d+\.\d{4,}(?!\w|\.\d)/g;
+export const ROUND_NOTE = 'Long decimals are shown rounded to 3 places. The file itself is unchanged.';
+
+/** md -> { text, count }. |value| < 0.001 is left as written (0.000001 limits would read 0.000). Trailing zeros kept. */
+export function roundDecimals(md) {
+  let count = 0;
+  const text = String(md ?? '').replace(LONG_DECIMAL, (m) => {
+    const v = Number(m);
+    if (Math.abs(v) < 0.001) return m;
+    count++;
+    return v.toFixed(3);
+  });
+  return { text, count };
+}
+
+/** md -> { html, found, title, rounded }. found: null without sec, else whether the section exists. title: the cited
+ *  heading's text ('' if none). rounded: how many numbers roundDecimals changed. The cited blocks sit in
+ *  <div class="cited" data-cited>, led by an sr-only label. */
 export function renderPacket(md, sec) {
-  const blocks = parseBlocks(md);
+  const { text, count } = roundDecimals(md ?? '');
+  const blocks = parseBlocks(text);
   const range = findSection(blocks, sec);
   const found = sec == null ? null : range !== null;
-  if (!blocks.length) return { html: '<p class="quiet">This file is empty.</p>', found, title: '' };
+  if (!blocks.length) return { html: '<p class="quiet">This file is empty.</p>', found, title: '', rounded: 0 };
   const parts = blocks.map(blockHtml);
   if (range) {
     parts[range.start] = `<div class="cited" data-cited><span class="sr-only">Cited section: </span>${parts[range.start]}`;
     parts[range.end - 1] += '</div>';
   }
-  return { html: parts.join('\n'), found, title: range ? blocks[range.start].text : '' };
+  return { html: parts.join('\n'), found, title: range ? blocks[range.start].text : '', rounded: count };
 }
 
-/** The sheet's inner HTML. state: { status: 'loading'|'ready'|'missing'|'error', path, doc, sec, html?, found?, message? } */
+/** The sheet's inner HTML. state: { status: 'loading'|'ready'|'missing'|'error', path, doc, sec, html?, found?, rounded?, message? } */
 export function sheetBody(state) {
   const { status, path, doc, sec } = state;
   if (status === 'loading') return `<p class="quiet" role="status">Loading <span class="mono">${esc(path)}</span>…</p>`;
@@ -143,5 +164,5 @@ export function sheetBody(state) {
   if (status === 'error') return errorPanel({ path, message: state.message, kind: 'fetch' });
   const note = sec != null && state.found === false
     ? `<p class="quiet" role="status">Section §${esc(sec)} is not in this file. Showing the whole file.</p>` : '';
-  return note + (state.html ?? '');
+  return note + (state.html ?? '');  // the rounding note sits in the dialog header (issue 163)
 }

@@ -67,15 +67,26 @@ export function formatHash(fields) {
     .join('&');
 }
 
-/** Adds notFound for a well-formed but unknown supplier or active ID. Null while loading or when that source failed.
+// Eval packet pairs the view links from (issue 163): every miss row of every run in data/eval.json, as 'world|SUP-xx'.
+// A bad or missing file gives an empty set (every pair Not found), never a throw.
+const evalPairs = (model) => {
+  const runs = model.evalRuns?.ok ? model.evalRuns.value?.runs : null;
+  return new Set((Array.isArray(runs) ? runs : []).flatMap((r) => (Array.isArray(r?.groups) ? r.groups : [])
+    .flatMap((g) => (Array.isArray(g?.misses) ? g.misses : []).map((m) => `${m?.world}|${m?.supplier_id}`))));
+};
+
+/** Adds notFound for a well-formed but unknown supplier or active ID, and an Eval packet pair not published as a miss.
+ *  Null while loading or when that source failed (except Eval: no eval.json means no pair can open).
  *  Only Qualify checks supplier against the candidates: an Eval supplier belongs to a world packet, not to suppliers.json. */
 export function resolveRoute(route, model) {
-  const { supplier, active } = route.params;
+  const { supplier, active, world } = route.params;
   let notFound = null;
   if (model && route.view === 'qualify' && supplier !== undefined && model.suppliers.ok && !model.candidates.some((c) => c.id === supplier)) {
     notFound = { key: 'supplier', value: supplier, label: 'Not found' };
   } else if (model && active !== undefined && model.monitor.ok && !model.monitor.value.suppliers.some((s) => s.supplier_id === active)) {
     notFound = { key: 'active', value: active, label: 'Not found' };
+  } else if (model && route.view === 'eval' && world !== undefined && supplier !== undefined && !evalPairs(model).has(`${world}|${supplier}`)) {
+    notFound = { key: 'packet', value: `${supplier}, world ${world}`, label: 'Not found' };
   }
   return { ...route, notFound };
 }

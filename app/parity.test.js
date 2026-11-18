@@ -280,3 +280,15 @@ test('parity helpers throw on a missing heading or table', () => {
   assert.throws(() => jsonBlock('## Empty\n\ntext\n', 'Empty'), /no json block/);
   assert.throws(() => interval('about 5'), /cannot parse band/);
 });
+
+test('issue 161 QUAL-FR-16: RUBRIC.md § Value bounds matches rubric.js range, one row per number criterion or test', () => {
+  const rows = table(RUBRIC_MD, 'Value bounds');
+  const numbers = [...RUBRIC.criteria, ...RUBRIC.tests].filter((d) => d.type === 'number');
+  assert.deepEqual(rows.map((r) => r.ID).sort(), numbers.map((d) => d.id).sort(), 'rows = number defs, no missing, no extra');
+  const cell = (s) => (s === 'none' ? undefined : num(s));
+  for (const r of rows) {
+    const d = numbers.find((x) => x.id === r.ID);
+    const want = Object.fromEntries([['min', cell(r.Min)], ['max', cell(r.Max)]].filter(([, v]) => v !== undefined));
+    assert.deepEqual(d.range ?? {}, want, `${r.ID} range vs doc Min "${r.Min}" Max "${r.Max}"`);
+  }
+});

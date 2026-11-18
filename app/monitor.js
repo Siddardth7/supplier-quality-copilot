@@ -23,8 +23,16 @@ const TIER_TONE = { A: 'ok', B: 'ink', C: 'amber', D: 'bad' };
 const SCAR_OVER_DAYS = 60;
 const NONE = (why) => `<span aria-hidden="true">—</span><span class="sr-only">${why}</span>`;
 
-/** UIM-FR-04. s: one scorecard supplier. Tier C or D, then each distinct active alert type in engine order;
- *  metric_bad is one reason listing its metrics. Unrated alone does not escalate (decisions 58, 59). */
+// Escalation reason wording (issue 162, decision 233). Differs from chart.js ALERT_LABEL on purpose: these read as
+// sentence fragments. metric_bad is built from its metrics below; an unknown type shows raw.
+const ESCALATE_REASON = { run7: '7 months above p̄', ucl: 'Point above UCL', tier_drop: 'Tier dropped', scar_aging: 'SCAR open > 60 days' };
+const reasonText = (t, bad) => {
+  if (t === 'metric_bad') return `${bad.length ? bad.map(metricLabel).join(', ') : 'Metric'} in Bad band`;
+  return Object.hasOwn(ESCALATE_REASON, t) ? ESCALATE_REASON[t] : String(t);
+};
+
+/** UIM-FR-04. s: one scorecard supplier. Tier C or D, then each distinct active alert type in engine order, in plain
+ *  words; metric_bad is one reason listing its metrics. Unrated alone does not escalate (decisions 58, 59). */
 export function escalation(s) {
   const tier = s.current?.tier;
   const reasons = tier === 'C' || tier === 'D' ? [`Tier ${tier}`] : [];
@@ -35,7 +43,7 @@ export function escalation(s) {
     if (!types.includes(a.type)) types.push(a.type);
     if (a.type === 'metric_bad' && a.metric && !bad.includes(a.metric)) bad.push(a.metric);
   }
-  reasons.push(...types.map((t) => (t === 'metric_bad' && bad.length ? `metric_bad (${bad.join(', ')})` : t)));
+  reasons.push(...types.map((t) => reasonText(t, bad)));
   return { escalate: reasons.length > 0, reasons, text: reasons.join('; ') };
 }
 
@@ -168,6 +176,17 @@ export function renderMonitorDetail(r, ctx = {}) {
     + '<span id="scar-note" class="quiet">Arrives in v1.1</span></div>'
     + '</section>';
 }
+
+/** The active ID whose detail is on screen, else null: view is monitor, model loaded, ok, not Not found, and the ID is
+ *  in model.monitor.value.suppliers. main.js reveals and focuses that detail once per ID (issue 163). */
+export function monitorDetailKey(route, model) {
+  const active = route?.params?.active;
+  if (route?.view !== 'monitor' || !model?.monitor?.ok || route.notFound || active === undefined) return null;
+  return model.monitor.value.suppliers.some((s) => s.supplier_id === active) ? active : null;
+}
+
+/** scrollIntoView options for a freshly opened Monitor detail (issue 163): top of the detail, smooth unless reduced motion. */
+export const detailScrollOptions = (reduced) => ({ block: 'start', behavior: reduced ? 'instant' : 'smooth' });
 
 /** Table + detail. model.monitor.ok assumed (the view handles loading and errors). data-open: phone hides the table. */
 export function renderMonitor(model, ctx = {}) {

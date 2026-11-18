@@ -507,3 +507,25 @@ test('run links keep role and policy and are canonical', () => {
   const links = [...runs(html).matchAll(/href="([^"]*)"/g)].map((m) => unwrap(m[1]));
   assert.deepEqual(links, [1, 2, 3].map((n) => `#view=eval&role=junior&policy=p1.a-b&run=${n}`));
 });
+
+// ---- issue 163: the router's Not found for an unpublished packet pair shows above the page, in every state ----
+test('issue 163: renderEval shows the Not found line in the ready, none and error states', () => {
+  const notFound = { key: 'packet', value: 'SUP-07, world 999', label: 'Not found' };
+  const LINE = '<p class="status-line" role="alert">Not found: packet SUP-07, world 999</p>';
+  const ready = renderEval({ evalRuns: ok(FIXTURE_ONE) }, { role: 'senior', params: {}, notFound });
+  assert.ok(ready.startsWith('<div class="eval">' + LINE), 'first thing in the page');
+  assert.equal(ready.split('Not found').length, 2, 'once');
+  assert.ok(runs(ready), 'the runs panel still renders');
+  assert.ok(headline(ready), 'the headline still renders');
+  for (const [name, evalRuns] of [['none', null], ['404', failed('HTTP 404')], ['error', failed('HTTP 500')]]) {
+    const html = renderEval({ evalRuns }, { role: 'senior', params: {}, notFound });
+    assert.ok(html.startsWith('<div class="eval">' + LINE), name);
+    assert.match(html, /docs\/EVAL\.md/, `${name}: the footer still renders`);
+  }
+  assert.ok(viewRender({ evalRuns: ok(FIXTURE_ONE) }, { role: 'senior', params: {}, notFound }).includes(LINE), 'the view passes ctx through');
+  assert.equal(renderEval(undefined, { notFound }), '<p class="quiet">Loading data…</p>');
+  // Without notFound: no Not found and no Route line.
+  const plain = render(FIXTURE_ONE);
+  assert.doesNotMatch(plain, /Not found|data-route/);
+  assert.doesNotMatch(renderEval({ evalRuns: null }, { params: { world: 999, supplier: 'SUP-07' } }), /Not found|Route:/);
+});

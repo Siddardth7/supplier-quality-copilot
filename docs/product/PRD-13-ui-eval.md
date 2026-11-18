@@ -45,7 +45,7 @@ The agent reads documents. A panel will ask how often it gets them right. The an
 | UIE-FR-03 | A per-world table must show worlds 101–104 with catches, partials, misses, false alarms and decision agreement. The demo world and Sid's hold-out traps (#75) each get their own row, outside the pooled headline (AGENT-FR-10) | Must | manual check |
 | UIE-FR-04 | A run list must show every published run (model, date, skill git SHA, worlds) in the order run, including the Opus comparison and any re-test on worlds 105–108. The headline never switches to a later or better run (AGENT-FR-09) | Must | manual check |
 | UIE-FR-05 | The miss list must show every miss, partial and false alarm of the selected run: world, supplier, criterion, expected state and value, found state and value. The written reason for each lives in `docs/EVAL.md`, and the list links there | Must | manual check |
-| UIE-FR-06 | Activating a miss must open that world's packet in the citation viewer (PRD-05 UIQ-FR-09) at the answer key's cited section; a miss with no expected citation opens the packet's file list | Must | manual check |
+| UIE-FR-06 | Activating a miss must open that world's packet in the citation viewer (PRD-05 UIQ-FR-09) at the answer key's cited section; a miss with no expected citation opens the packet's file list. Only a `world` + `supplier` pair present as a miss in `data/eval.json` opens; any other pair in the hash shows "Not found" (issue 163). The viewer shows numbers rounded to 3 decimals (PRD-05 UIQ-FR-09), so it is a rounded copy of the file | Must | manual check |
 | UIE-FR-07 | With no `data/eval.json`, the view must read "No published run yet", explain the method in two sentences, and show no numbers | Must | manual check |
 | UIE-FR-08 | The view must link to `docs/EVAL.md` for the full write-up | Must | manual check |
 
@@ -87,6 +87,7 @@ The agent reads documents. A panel will ask how often it gets them right. The an
 
 | Date | Change |
 |---|---|
+| 2026-11-17 | Issue 163: UIE-FR-06 opens only a pair that is a miss in `data/eval.json`; any other typed pair shows "Not found" (decision 242). The viewer now shows a rounded copy of a packet number (3 decimals) whose Eval row's Found cell still shows the raw value (decisions 240, 241). Acceptance boxes unchanged. |
 | 2026-11-14 | `data/eval.json` and `docs/EVAL.md` now exist (issue 36), so the view shows the published runs and its EVAL.md link resolves. No requirement changes; the acceptance boxes stay as written. |
 | 2026-11-13 | Issue 111 built UIE-FR-01…08 (decisions 137–144). §5 adds the miss-link hash (`world` + `supplier`, DESIGN-SPEC 4.2). Miss rows in `eval.mjs --json` now carry the answer key's `expected_citation` (PRD-04), so the view links the key's section without reading the answer key. The headline is the first complete Sonnet run, else the first Sonnet run shown INCOMPLETE; decision agreement and citation accuracy have no PRD-04 target and say "no target". `data/eval.json` and `docs/EVAL.md` do not exist yet (#36): the shipped view shows "No published run yet" and its EVAL.md link 404s until then. Tests use hand-made reports built by the real `buildReport` (`app/eval.testkit.js`). The acceptance boxes stay as written. |
 | 2026-11-11 | First draft (#76), from the eval decisions (2026-11-09) and Sid's section 4 decisions. |

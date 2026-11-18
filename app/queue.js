@@ -11,7 +11,7 @@ import { formatHash } from './route.js';
 import { routeLine } from './shell.js';
 import { policyLabel } from './policy.js';
 import { sheetPart } from './model.js';
-import { requirementName, problemsModel, requirementsModel, renderProblems, renderRequirements } from './criteria.js';
+import { requirementName, notApprovedReason, problemsModel, requirementsModel, renderProblems, renderRequirements } from './criteria.js';
 import { draftsModel, renderDrafts } from './drafts.js';
 
 /** Pill order; value = hash `filter`, null = All. */
@@ -38,7 +38,8 @@ export function queueModel(model, { filter, supplier } = {}) {
   const rows = model.candidates.map((c) => {
     const ev = c.status === 'scored' ? c.evaluation : null;
     return { id: c.id, name: c.name, commodity: c.commodity, total: ev ? ev.total : null, decision: ev ? ev.decision : null,
-      routing: ev ? ev.routing.to : null, status: c.status, source: c.source, selected: supplier !== undefined && c.id === supplier };
+      routing: ev ? ev.routing.to : null, status: c.status, source: c.source, selected: supplier !== undefined && c.id === supplier,
+      reason: ev ? notApprovedReason(ev, model.pass?.conditional) : null };  // NOT APPROVED only (issue 162)
   }).sort((a, b) => (rank(a) - rank(b)) || byId(a, b));  // map() made a copy: model.candidates is not mutated
   const scored = rows.filter((r) => r.status === 'scored');
   const counts = { all: rows.length };
@@ -89,6 +90,7 @@ function card(c, ctx, focusable) {
     + `<span class="card-top">${badge(c)}${c.source === 'manual' ? ' <span class="badge muted">Entered by hand</span>' : ''}${roleTag(c, ctx.role)}</span>`
     + `<span class="card-name"><span class="mono">${esc(c.id)}</span> ${esc(c.name)}</span>`
     + `<span class="card-meta quiet">${esc(commodityLabel(c.commodity))} · ${total}${c.routing ? ` · ${ROUTING[c.routing]}` : ''}</span>`
+    + (c.reason ? `<span class="card-meta quiet">${esc(c.reason)}</span>` : '')
     + '</button>';
 }
 

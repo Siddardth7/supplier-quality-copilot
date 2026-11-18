@@ -34,6 +34,20 @@ The single source of truth for the scoring engine. If the engine and this doc di
 
 Display only, no score change: the UI labels a verified Cpk ≥ 1.67 "excellent" (UIQ-FR-19).
 
+### Value bounds
+
+A `number` value that cannot exist is refused with an error naming the criterion (`<id>: expected a number >= 0, got -1`), the same way a non-finite number is. Bounds are inclusive and checked before the bands, for `verified` values and for `assumed` claims. They are physical limits, not scoring edges, and are this project's domain sense, not a requirement of a standard. A `missing` item carries no value and is not checked. Dates, booleans and enums keep their own checks.
+
+| ID | Min | Max | Why |
+|---|---|---|---|
+| `2.ctq_cpk` | none | none | Cpk is negative when the process mean is outside the limits |
+| `3.grr` | 0 | none | % of tolerance; can exceed 100 |
+| `4.fai` | 0 | 1 | a share, 0–1 |
+| `4.fpy_data` | 0 | none | months |
+| `5.records_retention` | 0 | none | years |
+| `6.capacity_ratio` | 0 | none | a ratio of non-negative quantities |
+| `7.pcn_notice` | 0 | none | days |
+
 ## Categories and weights
 
 | # | Category | Weight |
@@ -244,6 +258,7 @@ Nice to have (not scored): `4.thermal_cycling` is `missing`, `4.coolant_compat` 
 
 - **Knockouts:** none fail (`2.ctq_cpk` scores 1) and none are assumed.
 - **Decision:** CONDITIONAL, because 70 ≤ 82.6 < 85.
+- **Not the shipped packet:** this is a hand-written reference extraction that tests the engine (`app/evaluate.test.js`). The simulated SUP-07 packet in `data/` has a different gap mix and scores **84.4** CONDITIONAL (`docs/DATASET.md`).
 - **Routing:** Senior SQE, for the reasons `CONDITIONAL` and `High-risk commodity`.
 - **Gaps:** 3 fails (`2.ctq_cpk`, `6.capacity_ratio`, `6.lead_time`), 2 assumed (`2.spc`, `6.ramp_plan`) and 2 missing (`8.subtier_named`, `8.subtier_certs`), plus `4.thermal_cycling` as `info`.
 - **RFI items:** `2.spc`, `6.ramp_plan`, `8.subtier_named`, `8.subtier_certs`.
@@ -260,6 +275,7 @@ Nice to have (not scored): `4.thermal_cycling` is `missing`, `4.coolant_compat` 
 
 | Date | Change |
 |---|---|
+| 2026-11-17 | Value bounds: a number below its minimum (or 4.fai above 1) is refused with an error naming the criterion, as a non-finite number already is (issue 161, audit B1). No scores change on data/ or worlds 93, 101-104. |
 | 2026-11-12 | Team scoring policy: a saved policy may carry `qualification.ratings` (1–5 per category) beside `weights`; the engine ignores it (issue 109). No scores change. |
 | 2026-11-12 | Basis of thresholds: the UI labels a verified Cpk ≥ 1.67 "excellent", display only (UIQ-FR-19, #41). No scores change. |
 | 2026-11-10 | Team scoring policy: a policy must carry `id` (non-empty string), `version` (integer ≥ 1) and `name` (non-empty string); the engine rejects one without them (#23). No scores change. |

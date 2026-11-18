@@ -651,14 +651,15 @@ test('render: a shared policy is checked, tagged "Shared, not saved" and offers 
   assert.match(r, /role="alert">This link's policy was refused: policy: the link is not valid base64url/);
 });
 
-test('render: an invalid field gets aria-invalid, aria-describedby and the exact engine message in that element', () => {
+test('render: an invalid field gets aria-invalid, aria-describedby and a plain sentence for the engine error in that element', () => {
   const draft = setField({ ...REF, name: 'T' }, 'qualification.conditional', '95');
   const error = checkPolicy(draft);
   const html = renderStandards(BASE, { standards: { draft, resolved: { policy: draft, kind: 'draft' }, refModel: BASE, ui: { error } } });
   const input = /<input[^>]*data-field="qualification.conditional"[^>]*>/.exec(html)[0];
   assert.match(input, /aria-invalid="true"/);
   const id = /aria-describedby="([^"]+)"/.exec(input)[1];
-  assert.match(html, new RegExp(`id="${id}" role="alert">policy\\.qualification\\.conditional: expected a number &gt;= 0 and &lt; approve \\(85\\), got 95<`));
+  // issue 162: the UI sentence, not the engine text (checkPolicy still returns the engine message).
+  assert.match(html, new RegExp(`id="${id}" role="alert">Conditional pass mark must be a number from 0 up to, but below, the Approved pass mark\\.<`));
   assert.equal((html.match(/aria-invalid="true"/g) ?? []).length, 1, 'only the field in error');
   assert.match(html, /Unsaved changes/);
   assert.match(html, /data-act="discard"/);
@@ -666,10 +667,12 @@ test('render: an invalid field gets aria-invalid, aria-describedby and the exact
 
 test('render: Save is aria-disabled while unnamed but still a button; the reference editor name is blank', () => {
   const html = renderStandards(BASE, { standards: { refModel: BASE } });
-  assert.match(html, /data-act="save" aria-disabled="true">Save</);
+  // issue 162: a visible hint names why, linked by aria-describedby.
+  assert.match(html, /data-act="save" aria-disabled="true" aria-describedby="std-save-hint">Save<\/button><span class="quiet std-save-hint" id="std-save-hint">Name the policy to save it<\/span>/);
   assert.match(html, /data-field="name" value=""/);
   const named = renderStandards(BASE, { standards: { store: { active: 'policy-1', policies: [custom()] }, refModel: BASE } });
   assert.match(named, /data-act="save">Save</);
+  assert.doesNotMatch(named, /std-save-hint/);
 });
 
 // ---- 8. requirement sheets (issue 110; UIS-FR-11, UIS-AC-06, NG2; decisions 130-136) ----
@@ -754,9 +757,9 @@ test('UIS-AC-06 / NG2: the open sheet has no edit control; the editor is replace
   assert.match(renderStandards(sheetModel(), { ...ctxOf(undefined), standards: st }), /value="Kept draft"/);
 });
 
-test('limitText: values print as stored (0.000001, 0), ≤ ≥ = operators, Yes/No, lists, strings, unknown operator raw, unit rules', () => {
+test('limitText: digits as stored, tiny values in powers of ten (1 × 10⁻⁶), 0, ≤ ≥ = operators, Yes/No, lists, strings, unknown operator raw, unit rules', () => {
   const leak = CP_SHEET.tests['4.leak_test'].conditions[0];
-  assert.equal(limitText(leak), '≤ 0.000001 mbar·L/s', 'real cold-plate leak limit, not rounded and not 1e-6');
+  assert.equal(limitText(leak), '≤ 1 × 10⁻⁶ mbar·L/s', 'real cold-plate leak limit, not rounded and not 1e-6 (issue 162)');
   assert.equal(limitText({ operator: '>=', value: 3, unit: 'ratio' }), '≥ 3 ratio');
   assert.equal(limitText({ operator: '=', value: 6, unit: 'bar' }), '= 6 bar');
   assert.equal(limitText({ operator: '=', value: 0, unit: 'count' }), '= 0 count', 'zero is not dropped');
@@ -885,13 +888,13 @@ test('renderSheet: missing fields show an en dash, bad sections render empty, Op
   assert.match(v, /<h4>Extra test <span class="mono quiet">4\.extra<\/span> <span class="badge muted">Optional<\/span><\/h4>/);
   assert.match(v, /<h4>Empty test <span class="mono quiet">4\.empty<\/span> <span class="badge">Required<\/span><\/h4><p class="quiet">No conditions listed\.<\/p>/);
   assert.match(v, /<tr class="quiet"><th scope="row">Soak<\/th><td class="mono">≥ 48 h<\/td><td>Setup<\/td><\/tr>/);
-  assert.match(v, /<tr><th scope="row">Drift <span class="badge muted">basis: vendor<\/span><\/th><td class="mono">≤ 0\.000001 V<\/td><td>Acceptance<\/td><\/tr>/);
+  assert.match(v, /<tr><th scope="row">Drift <span class="badge muted">basis: vendor<\/span><\/th><td class="mono">≤ 1 × 10⁻⁶ V<\/td><td>Acceptance<\/td><\/tr>/);
   assert.ok(v.indexOf('Extra test') < v.indexOf('Empty test'), 'tests in file order');
   assert.doesNotMatch(v, /basis: heuristic<\/span>/, 'heuristic rows are not tagged');
   // Real cold plate: leak test Required, its setup rows quiet, acceptance rows not.
   const cp = renderSheet(CP_SHEET, { role: 'senior', params: {} });
   assert.match(cp, /<h4>Leak test <span class="mono quiet">4\.leak_test<\/span> <span class="badge">Required<\/span><\/h4>/);
-  assert.match(cp, /<tr><th scope="row">Helium leak rate<\/th><td class="mono">≤ 0\.000001 mbar·L\/s<\/td><td>Acceptance<\/td>/);
+  assert.match(cp, /<tr><th scope="row">Helium leak rate<\/th><td class="mono">≤ 1 × 10⁻⁶ mbar·L\/s<\/td><td>Acceptance<\/td>/);
   assert.match(cp, /<tr class="quiet"><th scope="row">Helium differential pressure<\/th><td class="mono">= 6 bar<\/td><td>Setup<\/td>/);
   assert.match(cp, /<dt>Part number<\/dt><dd class="mono">SI-CP-0007<\/dd>/);
   assert.match(cp, /<th scope="row">Base thickness<\/th><td class="mono">3<\/td><td class="mono">2\.9<\/td><td class="mono">3\.1<\/td><td>mm<\/td>/);
@@ -929,7 +932,7 @@ test('issue 138: between limits use stored endpoints in the Standards viewer', (
   const sheet = JSON.parse(readFileSync(new URL('../data/requirements/sheet_metal.json', import.meta.url), 'utf8'));
   const cond = sheet.tests['4.coating_thickness'].conditions[0];
   assert.equal(limitText(cond), '60–100 µm');
-  assert.equal(limitText({ operator: 'between', value: [0, 0.000001] }), '0–0.000001');
+  assert.equal(limitText({ operator: 'between', value: [0, 0.000001] }), '0–1 × 10⁻⁶');  // issue 162
   assert.equal(limitText({ operator: 'between', value: [60], unit: 'µm' }), 'between 60 µm');
   assert.equal(limitText({ operator: 'between', value: [60, 100, 120], unit: 'µm' }), 'between 60, 100, 120 µm');
   assert.equal(limitText({ operator: 'between', value: 'xy' }), 'between xy');

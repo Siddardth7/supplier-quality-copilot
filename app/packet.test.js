@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { packetDir, packetPath, findSection, renderPacket, sheetBody, PACKET_FILES, fileListBody } from './packet.js';
+import { packetDir, packetPath, findSection, renderPacket, sheetBody, PACKET_FILES, fileListBody, roundDecimals, ROUND_NOTE } from './packet.js';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const SAMPLE = join(ROOT, 'data', 'samples', 'world-101', 'SUP-01', 'packets', 'SUP-01');
@@ -106,7 +106,9 @@ test('UIQ-NFR-01: packet text can never inject a tag, attribute or link', () => 
 test('UIQ-NFR-01: every sample packet renders; capability_study.md has its Cpk text, rfq.md its tables', () => {
   for (const f of FILES) assert.ok(html(sample(f)).length > 0, f);
   assert.equal(FILES.length, 10);
-  assert.ok(html(sample('capability_study.md')).includes('2.056587336187229'));
+  // Issue 163: the viewer rounds numbers with more than 3 decimals to 3; the raw float stays in the file only.
+  assert.ok(html(sample('capability_study.md')).includes('2.057'));
+  assert.ok(!html(sample('capability_study.md')).includes('2.056587336187229'));
   const rfq = sample('rfq.md');
   assert.equal(html(rfq).match(/<table>/g)?.length, rfq.match(/^\|---/gm).length);
   assert.match(html(rfq), /<td>SI-CP-0007<\/td>/);
@@ -339,4 +341,133 @@ test('issue 111: fileListBody lists the ten files as citation links built by hre
     assert.equal(m[2], PACKET_FILES[i]);
   });
   assert.ok(html.startsWith('<ul class="packet-files">') && html.endsWith('</ul>'));
+});
+
+// ---- issue 163: the viewer rounds numbers with more than 3 decimals (decisions 240, 241) ----
+
+test('issue 163: roundDecimals rounds 4+ decimals to 3, keeps trailing zeros and a sentence period', () => {
+  const r = (s) => roundDecimals(s);
+  assert.deepEqual(r('Cpk: 1.9092634239762918.'), { text: 'Cpk: 1.909.', count: 1 });
+  assert.deepEqual(r('mean: 3.008096394929193 mm'), { text: 'mean: 3.008 mm', count: 1 });
+  assert.deepEqual(r('ratio 1.5008125 and 1.32305'), { text: 'ratio 1.501 and 1.323', count: 2 });
+  assert.deepEqual(r('0.014601196529644577'), { text: '0.015', count: 1 });
+  assert.deepEqual(r('0.9996'), { text: '1.000', count: 1 }, 'rounds up, trailing zeros kept');
+  assert.deepEqual(r('2.0000001'), { text: '2.000', count: 1 });
+  assert.deepEqual(r('-3.14159'), { text: '-3.142', count: 1 });
+  assert.deepEqual(r('| Cpk | 1.9379627413054112 |'), { text: '| Cpk | 1.938 |', count: 1 }, 'table cell');
+  assert.deepEqual(r('- `7.995292807322634`'), { text: '- `7.995`', count: 1 }, 'code span in a list');
+  // Decimal-count boundary: exactly 3 decimals is left alone, 4 is rounded.
+  assert.deepEqual(r('1.234'), { text: '1.234', count: 0 });
+  assert.deepEqual(r('1.2346'), { text: '1.235', count: 1 });
+});
+
+test('issue 163: roundDecimals leaves |v| < 0.001 as written; 0.001 itself is rounded', () => {
+  const r = (s) => roundDecimals(s);
+  assert.deepEqual(r('≤ 0.000001'), { text: '≤ 0.000001', count: 0 });
+  assert.deepEqual(r('0.0009'), { text: '0.0009', count: 0 });
+  assert.deepEqual(r('-0.0009'), { text: '-0.0009', count: 0 });
+  assert.deepEqual(r('0.00099999'), { text: '0.00099999', count: 0 });
+  assert.deepEqual(r('0.0010'), { text: '0.001', count: 1 }, 'the cut-off is strict: 0.001 is not under 0.001');
+  assert.deepEqual(r('-0.0010'), { text: '-0.001', count: 1 });
+});
+
+test('issue 163: roundDecimals controls stay unchanged (IDs, dates, versions, exponents, glued units)', () => {
+  for (const s of ['REG-SUP-05-QMS', 'ISO 9001:2015', '2026-11-01', 'v1.2.3', 'SUP-07.12345', '1.2.3.45678', '1.2345.6', 'v2.10001.3', '1.2345mm',
+    '8.2147e-7', '8.239564034184113e-7', '≤ 0.000001', 'SI-CP-0007', '', 'no numbers here']) {
+    assert.deepEqual(roundDecimals(s), { text: s, count: 0 }, s);
+  }
+  assert.deepEqual(roundDecimals(null), { text: '', count: 0 });
+  assert.deepEqual(roundDecimals(undefined), { text: '', count: 0 });
+});
+
+// Every packet file the viewer can open: data/suppliers/<id>/*.md and data/worlds/<n>/packets/<id>/*.md.
+const DATA = join(ROOT, 'data');
+const dirs = (p) => readdirSync(p, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => join(p, d.name));
+const mdIn = (p) => readdirSync(p).filter((f) => f.endsWith('.md')).map((f) => join(p, f));
+const CORPUS = [...dirs(join(DATA, 'suppliers')).flatMap(mdIn),
+  ...dirs(join(DATA, 'worlds')).flatMap((w) => { try { return dirs(join(w, 'packets')); } catch { return []; } }).flatMap(mdIn)];
+
+test('issue 163: real-data scan, every rounded number is a whole whitespace-delimited token (counts pinned)', () => {
+  assert.equal(CORPUS.length, 540);
+  const NUM = /^(-?\d+\.\d{4,})(\.?)$/;
+  let rounded = 0, kept = 0, beforeSpace = 0, beforePeriod = 0, exponent = 0, changedFiles = 0, hitFiles = 0;
+  const bad = [];
+  for (const f of CORPUS) {
+    const raw = readFileSync(f, 'utf8');
+    const { text, count } = roundDecimals(raw);
+    const a = raw.split(/(\s+)/), b = text.split(/(\s+)/);
+    assert.equal(a.length, b.length, f);  // rounding never adds or removes whitespace
+    let n = 0, hit = false;
+    for (let i = 0; i < a.length; i++) {
+      const m = NUM.exec(a[i]);
+      if (a[i] !== b[i]) {
+        // Safe context: the token is the number alone (whitespace before), optionally a sentence period after.
+        if (!m || b[i] !== Number(m[1]).toFixed(3) + m[2]) bad.push(`${f}: ${a[i]} -> ${b[i]}`);
+        else { n++; rounded++; hit = true; if (m[2]) beforePeriod++; else beforeSpace++; }
+      } else if (m) {
+        if (Math.abs(Number(m[1])) < 0.001) { kept++; hit = true; if (m[2]) beforePeriod++; else beforeSpace++; }
+        else bad.push(`${f}: left unrounded ${a[i]}`);
+      } else if (/\d\.\d{4,}/.test(a[i])) {
+        if (/^\d+\.\d+e-\d+\.?$/.test(a[i])) exponent++; else bad.push(`${f}: long decimal in an unexpected context ${a[i]}`);
+      }
+    }
+    assert.equal(count, n, f);
+    if (n) changedFiles++;
+    if (hit) hitFiles++;
+  }
+  assert.deepEqual(bad, []);
+  assert.deepEqual({ rounded, kept, total: rounded + kept, beforeSpace, beforePeriod, exponent, changedFiles, hitFiles },
+    { rounded: 902, kept: 48, total: 950, beforeSpace: 638, beforePeriod: 312, exponent: 43, changedFiles: 201, hitFiles: 225 });
+});
+
+test('issue 163: renderPacket returns the rounded count; empty and null files count 0', () => {
+  assert.equal(renderPacket('## 1.1 A\n\nCpk: 1.9092634239762918. Mean 3.008096394929193 mm.').rounded, 2);
+  assert.equal(renderPacket('## 1.1 A\n\nNothing long: 1.234, ≤ 0.000001, 8.2e-7.').rounded, 0);
+  assert.equal(renderPacket('').rounded, 0);
+  assert.equal(renderPacket(null).rounded, 0);
+  assert.equal(renderPacket('   \n\n').rounded, 0);
+  const out = renderPacket('| a | b |\n|---|---|\n| Cpk | 2.056587336187229 |');
+  assert.equal(out.rounded, 1);
+  assert.match(out.html, /<td>2\.057<\/td>/);
+});
+
+const SUP08_CAP = join(DATA, 'suppliers', 'SUP-08', 'capability_study.md');
+
+test('issue 163: SUP-08 capability_study.md §1.1 is still highlighted on a rounded packet; file unchanged', () => {
+  const raw = readFileSync(SUP08_CAP, 'utf8');
+  const out = renderPacket(raw, '1.1');
+  assert.equal(out.found, true);
+  assert.equal(out.title, '1.1 Process capability');
+  assert.ok(out.rounded > 0);
+  const cited = /<div class="cited" data-cited>([\s\S]*?)<\/div>/.exec(out.html);
+  assert.ok(cited, 'the cited wrapper is present');
+  assert.match(cited[1], /^<span class="sr-only">Cited section: <\/span><h4>1\.1 Process capability<\/h4>/);
+  assert.match(cited[1], /Cpk: 1\.909\./);
+  assert.match(cited[1], /The recorded result is 1\.871\./);
+  assert.doesNotMatch(out.html, /1\.9092634239762918/);
+  // Same blocks and same cited range as the hand-rounded text: rounding changes digits only.
+  assert.equal(out.html, renderPacket(roundDecimals(raw).text, '1.1').html);
+  // The file on disk keeps the raw float (the blind eval ran on it) and rendering never writes.
+  assert.ok(raw.includes('Cpk: 1.9092634239762918.'));
+  assert.equal(readFileSync(SUP08_CAP, 'utf8'), raw);
+});
+
+test('issue 163: the rounding note lives in the viewer header, never in the scrolled sheet body', () => {
+  assert.equal(ROUND_NOTE, 'Long decimals are shown rounded to 3 places. The file itself is unchanged.');
+  const base = { status: 'ready', path: 'p', doc: 'd.md', sec: null, html: '<p>x</p>' };
+  assert.equal(sheetBody({ ...base, rounded: 2 }), '<p>x</p>');
+  assert.ok(!sheetBody({ ...base, sec: '9.9', found: false, rounded: 1 }).includes(ROUND_NOTE));
+  const html = readFileSync(new URL('./index.html', import.meta.url), 'utf8');
+  const head = html.slice(html.indexOf('<header class="sheet-head">'), html.indexOf('</header>', html.indexOf('<header class="sheet-head">')));
+  assert.match(head, /<p class="quiet" id="viewer-note" role="status" hidden><\/p>/);
+  const main = readFileSync(new URL('./main.js', import.meta.url), 'utf8');
+  assert.match(main, /note\.hidden = !\(state\.rounded > 0\)/);
+  assert.match(main, /\$\('viewer-note'\)\.hidden = true;/, 'reset on every open, so the Eval file list never inherits it');
+});
+
+test('issue 163: packetDir refuses an Eval pair the router marked Not found', () => {
+  const nf = { key: 'packet', value: 'SUP-07, world 999', label: 'Not found' };
+  assert.equal(packetDir({ view: 'eval', params: { world: 999, supplier: 'SUP-07' }, notFound: nf }), null);
+  assert.equal(packetDir({ view: 'eval', params: { world: 999, supplier: 'SUP-07', doc: 'msa.md' }, notFound: nf }), null);
+  assert.equal(packetDir({ view: 'eval', params: { world: 101, supplier: 'SUP-01' }, notFound: null }), 'worlds/101/packets/SUP-01/');
 });

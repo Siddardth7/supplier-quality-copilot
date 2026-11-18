@@ -9,6 +9,7 @@ export { RUBRIC, STARK_REFERENCE, SCORECARD };
 // Outputs per supplier: gaps, RFI items, audit focus) and docs/product/PRD-01. rubric.js is data only,
 // so the one static module above keeps this browser-safe.
 // Errors are thrown as Error with the criterion id (or field path) first ("<id>: <what>").
+// A number outside its criterion's range (RUBRIC.md § Value bounds, issue 161) also carries code 'out_of_range'.
 // Category 4 is reached only through rubric.test_criterion and the commodity profiles: no test id
 // or commodity key is written in this file (QUAL-NFR-05).
 // Scorecard: parseHistory and scorecard below, spec docs/SCORECARD.md and docs/product/PRD-02.
@@ -76,6 +77,14 @@ function applyRule(criterion, value, as_of) {
   if (type === 'number') {
     if (typeof value !== 'number' || !Number.isFinite(value)) {
       throw new Error(`${id}: expected a finite number, got ${show(value)}`);
+    }
+    // Physical bounds before the bands (issue 161); no range = no bound (Cpk, custom rubrics).
+    const { min, max } = criterion.range ?? {};
+    if ((min !== undefined && value < min) || (max !== undefined && value > max)) {
+      const want = max === undefined ? `>= ${min}` : min === undefined ? `<= ${max}` : `from ${min} to ${max}`;
+      const e = new Error(`${id}: expected a number ${want}, got ${show(value)}`);
+      e.code = 'out_of_range';
+      throw e;
     }
     // First match wins; the last row has no op (the else). No rounding: 1.3299999 is below 1.33.
     for (const band of rule) if (!('op' in band) || OPS[band.op](value, band.x)) return band.score;

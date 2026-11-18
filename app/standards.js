@@ -3,7 +3,7 @@
 // Pure: no DOM, no fetch. Policy draft operations, ratings, the knockout list, share-link encoding, the browser store,
 // the impact diff, the sheet list and the view's HTML. The engine is the only validator (validatePolicy) and the only scorer: impact()
 // compares two buildModel() outputs and computes no score; the only arithmetic here is toFixed and the display totals.
-import { esc, errorPanel } from './html.js';
+import { esc, errorPanel, fmtLimitNumber } from './html.js';
 import { uploadPreview } from './sheet-upload.js';
 import { RUBRIC, SCORECARD, STARK_REFERENCE, validatePolicy, weightsFromRatings } from './engine.js';
 import { requirementName } from './criteria.js';
@@ -121,6 +121,37 @@ export function checkPolicy(policy) {
 
 /** The form of a draft that is scored live: an empty name is shown as Untitled until Save asks for one. */
 export const livePolicy = (draft) => (typeof draft.name === 'string' && draft.name.trim() ? draft : { ...draft, name: UNTITLED });
+
+const POLICY_FALLBACK = 'That setting is not valid. Check the value and try again.';
+const metricName = (k) => (Object.hasOwn(SCORECARD.metrics, k) ? SCORECARD.metrics[k].name : k);
+
+/** UI sentence for an engine policy error { path, message } (checkPolicy). Never throws; the engine message is untouched
+ *  and the typed value is not echoed (issue 162, decision 234). Import and shared-link refusals keep the engine text. */
+export function plainPolicyError(err) {
+  const p = String(err?.path ?? '');
+  const what = String(err?.message ?? '').split(', got')[0];  // the rule only, never the typed value
+  if (['policy.id', 'policy.version', 'policy.name'].includes(p)) return 'Name the policy to save it.';
+  const [area, key, sub, leaf] = p.replace(/^policy\./, '').split('.');
+  if (area === 'qualification') {
+    if (key === 'approve') return 'Approved pass mark must be a number from 0 to 100.';
+    if (key === 'conditional') return 'Conditional pass mark must be a number from 0 up to, but below, the Approved pass mark.';
+    if (key === 'weights') return sub === undefined ? 'Category weights must add up to 100.' : `Category ${sub} weight must be a number, 0 or more.`;
+    if (key === 'knockouts_off') return 'Knockout list is not valid.';
+  }
+  if (area === 'scorecard') {
+    if (key === 'weights') return sub === undefined ? 'Metric weights must add up to 100.' : `${metricName(sub)} weight must be a number, 0 or more.`;
+    if (key === 'limits' && sub !== undefined && leaf === 'good') return `${metricName(sub)} good limit must be a number.`;
+    if (key === 'limits' && sub !== undefined && leaf === 'watch') {
+      if (what.includes('>= good')) return `${metricName(sub)} bad limit must be at least the good limit.`;
+      if (what.includes('<= good')) return `${metricName(sub)} bad limit must be at most the good limit.`;
+      return `${metricName(sub)} bad limit must be a number.`;
+    }
+    if (key === 'tiers' && sub !== undefined) {
+      return what.includes('< ') ? `Tier ${sub} lower bound must be below the next tier up.` : `Tier ${sub} lower bound must be a number.`;
+    }
+  }
+  return POLICY_FALLBACK;
+}
 
 // Inputs and blocks an engine error can point at; fieldError picks the longest match.
 const BLOCKS = ['qualification.weights', 'qualification.knockouts_off', 'scorecard.weights', 'scorecard.limits', 'scorecard.tiers'];
@@ -289,13 +320,14 @@ export const sheetHref = (ctx, part) => formatHash({ view: 'standards', role: ct
 const OPS = { '<=': '≤', '>=': '≥', '=': '=' };
 const dash = (v) => (v === undefined || v === null || v === '' ? '–' : String(v));
 
-/** One condition's limit as stored: never rounded (0.000001 stays), booleans Yes/No, lists comma-joined, unknown
+/** One condition's limit as stored: digits never rounded, but very small or large numbers are written in powers of ten
+ *  (0.000001 -> 1 × 10⁻⁶, fmtLimitNumber, issue 162), booleans Yes/No, lists comma-joined, unknown
  *  operators raw; between endpoints use an en dash (issue 138). The unit follows numbers and lists only: on booleans and strings it names the type ('boolean',
  *  'class', 'designation'), so '= Yes' and '= Class 2' carry none. */
 export function limitText(cond) {
   const v = cond?.value;
-  if (cond?.operator === 'between' && Array.isArray(v) && v.length === 2) return `${v[0]}–${v[1]}${cond.unit ? ` ${cond.unit}` : ''}`;
-  const text = Array.isArray(v) ? v.join(', ') : v === true ? 'Yes' : v === false ? 'No' : dash(v);
+  if (cond?.operator === 'between' && Array.isArray(v) && v.length === 2) return `${fmtLimitNumber(v[0])}–${fmtLimitNumber(v[1])}${cond.unit ? ` ${cond.unit}` : ''}`;
+  const text = Array.isArray(v) ? v.map(fmtLimitNumber).join(', ') : v === true ? 'Yes' : v === false ? 'No' : dash(fmtLimitNumber(v));
   const op = OPS[cond?.operator] ?? cond?.operator;
   const unitOf = (typeof v === 'number' || Array.isArray(v)) && cond?.unit ? ` ${cond.unit}` : '';
   return `${op ? `${op} ` : ''}${text}${unitOf}`;
@@ -309,7 +341,7 @@ const ROLE = { acceptance: 'Acceptance', setup: 'Setup' };
 function ctqTable(sheet) {
   const ctqs = list(sheet.ctqs);
   if (!ctqs.length) return '<p class="quiet">No CTQs listed.</p>';
-  const num = (v) => `<td class="mono">${esc(dash(v))}</td>`;
+  const num = (v) => `<td class="mono">${esc(dash(fmtLimitNumber(v)))}</td>`;  // decision 238
   const rows = ctqs.map((c) => `<tr><th scope="row">${esc(dash(c.name))}${basisTag(c.basis)}</th>`
     + `${num(c.nominal)}${num(c.lsl)}${num(c.usl)}<td>${esc(dash(c.unit))}</td></tr>`).join('');
   return '<div class="std-table-wrap"><table class="std-table"><caption class="eyebrow">CTQs</caption><thead><tr>'
@@ -389,7 +421,7 @@ function aria(f, errField) {
   if (!errField || !(f === errField || f.startsWith(`${errField}.`))) return '';
   return ` aria-invalid="true" aria-describedby="${eid(errField)}"`;
 }
-const errSlot = (key, errField, err) => (errField === key ? `<p class="std-error" id="${eid(key)}" role="alert">${esc(err.message)}</p>` : '');
+const errSlot = (key, errField, err) => (errField === key ? `<p class="std-error" id="${eid(key)}" role="alert">${esc(plainPolicyError(err))}</p>` : '');
 
 const read = (policy, path) => path.split('.').reduce((o, k) => (isObj(o) ? o[k] : undefined), policy);
 // The typed text while it still means the stored value (so "85." keeps its dot); else the stored value.
@@ -520,11 +552,11 @@ function monitorBlock(policy, e) {
 function editorPanel(policy, s, e) {
   const fromRef = !s.draft && s.resolved.kind === 'reference';
   const name = fromRef ? '' : String(policy.name ?? '');
-  const general = e.err && e.field === null ? `<p class="std-error" role="alert">${esc(e.err.message)}</p>` : '';
+  const general = e.err && e.field === null ? `<p class="std-error" role="alert">${esc(plainPolicyError(e.err))}</p>` : '';
   return '<section class="panel std-editor" aria-label="Policy editor">' + general
     + `<div class="std-field std-name"><label for="${fid('name')}">Policy name</label>`
     + `<input type="text" autocomplete="off" class="std-input" id="${fid('name')}" data-field="name" value="${esc(name)}"`
-    + ` placeholder="Name it to save it"${aria('name', e.field)}>${errSlot('name', e.field, e.err)}</div>`
+    + ` placeholder="Name the policy to save it"${aria('name', e.field)}>${errSlot('name', e.field, e.err)}</div>`
     + (fromRef ? `<p class="quiet">${esc(STARK_REFERENCE.name)} is read-only. Any change starts a new, unsaved policy.</p>` : '')
     + ratingsBlock(policy, e) + passBlock(policy, e) + knockoutBlock(policy, e) + monitorBlock(policy, e) + '</section>';
 }
@@ -559,7 +591,9 @@ function impactPanel(model, s, ctx, editorName) {
     + '<p class="eyebrow" id="std-impact-title">IMPACT vs STARK REF v1</p>'
     + impactBody(model, s, ctx)
     + '<div class="std-actions">'
-    + `<button type="button" class="button compact" data-act="save"${unnamed ? ' aria-disabled="true"' : ''}>Save</button>`
+    + `<button type="button" class="button compact" data-act="save"${unnamed ? ' aria-disabled="true" aria-describedby="std-save-hint"' : ''}>Save</button>`
+    // Visible reason beside a disabled Save (issue 162, decision 235).
+    + (unnamed ? '<span class="quiet std-save-hint" id="std-save-hint">Name the policy to save it</span>' : '')
     + '<button type="button" class="subtle-button" data-act="share">Share</button>'
     + '<button type="button" class="subtle-button" data-act="export">Export</button>'
     + '<button type="button" class="subtle-button" data-act="import">Import</button>'

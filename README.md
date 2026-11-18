@@ -33,9 +33,9 @@ The engine's result for SUP-07 in the committed dataset:
 ```
 SUP-07 Oscorp · Cold plate · NEW (NPI) · High risk
 Score 84.4 / 100 · CONDITIONAL · Route → Senior SQE (CONDITIONAL; High-risk commodity)
-Knockouts: none fail, 2 assumed · Fails: 3 · Assumed: 4 · Missing: 0
-  ✗ ★ CTQ Cpk = 1.17 (< 1.33)                 Process control · capability_study.md §1.1
-  ✗ Capacity ÷ peak demand = 0.83 (< 1.2)     Capacity & ramp · capacity.md §1.1
+Knockouts: none fail, 2 assumed · Fail or partial: 3 · Assumed: 4 · Missing: 0
+  ◐ ★ CTQ Cpk = 1.17 (< 1.33)                 Process control · capability_study.md §1.1
+  ◐ Capacity ÷ peak demand = 0.83 (< 1.2)     Capacity & ramp · capacity.md §1.1
   ✗ Quoted lead time 15 wk, need-by 12 wk     Capacity & ramp · capacity.md §9.1
   ~ CAPA process claimed, no records          Quality system · quality_manual.md §1.1
   ~ ★ Leak test claimed, no leak-rate data    Reliability · reliability_report.md §1.1
@@ -67,6 +67,8 @@ git clone https://github.com/Siddardth7/supplier-quality-copilot.git && cd suppl
 node scripts/serve.mjs            # serves the repo root on port 8000
 open http://localhost:8000/app/   # from a second terminal, or paste the URL into a browser
 ```
+
+**Install as an app.** In Chrome or Edge open the live link (or http://localhost:8000/app/) and use the install icon in the address bar; in Safari use File > Add to Dock. Once the first visit has finished caching, the whole workbench, including every citation, works offline.
 
 If port 8000 is taken, run `node scripts/serve.mjs 8001`; the URL changes to match. Every view is a deep link, for example `#view=qualify&supplier=SUP-07` or `#view=monitor&active=ACT-02`. Run the tests with `node --test`.
 

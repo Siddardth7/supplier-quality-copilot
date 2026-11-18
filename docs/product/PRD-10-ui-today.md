@@ -42,8 +42,8 @@ The SQE team has two queues: new suppliers waiting for sign-off and active suppl
 | ID | Requirement | Priority | Verified by |
 |---|---|---|---|
 | UIT-FR-01 | The app must open on Today when the hash names no view. Today shows a short intro line (the product in one sentence) and the snapshot date: "as of 2026-11-01 · M18", from `as_of` | Must | manual check + unit test (`app/today.test.js`) |
-| UIT-FR-02 | **Needs you** must list every candidate, including hand-entered ones (PRD-05 UIQ-FR-16), whose routing matches the current *Viewing as* role (Senior sees Junior and Senior items). Each item shows ID, name, part, decision and score, ordered NOT APPROVED → CONDITIONAL → APPROVED, then by ID. Unscored candidates are not listed (they have no routing); the *Needs you* panel notes how many are not scored | Must | manual check + unit test (`app/today.test.js`) |
-| UIT-FR-03 | **Escalate this week** must list every active supplier PRD-06 flags Escalate (grade C/D or an active alert), with grade, composite and the alert reasons, in PRD-06's table order (UIM-FR-03) | Must | manual check + unit test (`app/today.test.js`) |
+| UIT-FR-02 | **Needs you** must list every candidate, including hand-entered ones (PRD-05 UIQ-FR-16), whose routing matches the current *Viewing as* role (Senior sees Junior and Senior items). Each item shows ID, name, part, decision and score, and a NOT APPROVED item adds its reason (the same text as the Qualify card, PRD-05 UIQ-FR-02), ordered NOT APPROVED → CONDITIONAL → APPROVED, then by ID. Unscored candidates are not listed (they have no routing); the *Needs you* panel notes how many are not scored | Must | manual check + unit test (`app/today.test.js`) |
+| UIT-FR-03 | **Escalate this week** must list every active supplier PRD-06 flags Escalate (grade C/D or an active alert), with grade, composite and the alert reasons in plain words (PRD-06 UIM-FR-04 Escalation reasons), in PRD-06's table order (UIM-FR-03) | Must | manual check + unit test (`app/today.test.js`) |
 | UIT-FR-04 | **Queue counts** must show candidates by decision (NOT APPROVED, CONDITIONAL, APPROVED) and by routing (Junior, Senior), and active suppliers by grade (Unrated, D, C, B, A). Counts cover every candidate and every active supplier regardless of *Viewing as* | Must | manual check + unit test (`app/today.test.js`) |
 | UIT-FR-05 | Activating a *Needs you* item must open Qualify on that supplier (`#view=qualify&supplier=<id>`); an *Escalate* item must open Monitor on that supplier (`#view=monitor&active=<id>`). Back returns to Today | Must | manual check + unit test (`app/today.test.js`) |
 | UIT-FR-06 | Today must follow the active policy and role from the header: changing either re-renders the lists and counts | Must | manual check + unit test (`app/today.test.js`) |
@@ -90,6 +90,7 @@ The SQE team has two queues: new suppliers waiting for sign-off and active suppl
 
 | Date | Change |
 |---|---|
+| 2026-11-17 | Issue 162 plain-language labels: UIT-FR-02 adds the NOT APPROVED reason line (decision 230); UIT-FR-03 reasons are plain words from PRD-06 (decision 233). Acceptance boxes unchanged. |
 | 2026-11-12 | Issue 109: UIT-AC-05 verified live (TEST-PLAN L5 Today, decisions 94, 121); the box stays as written like the others. |
 | 2026-11-12 | #107: UIT-FR-02 unscored candidates are not listed, only counted in a note (decision 88); UIT-FR-04 counts ignore *Viewing as* (decision 89). Verified by adds `app/today.test.js`. |
 | 2026-11-11 | First draft (#76), from the approved walk-through (W5, W7) and Sid's section 1 decisions. |

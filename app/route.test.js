@@ -310,11 +310,61 @@ test('issue 111: the canonical Eval packet hash; round trip is stable', () => {
   assert.equal(canon(parseHash('#world=101&view=eval&supplier=sup-03&run=02')), '#view=eval&role=senior&supplier=SUP-03&run=2&world=101');
 });
 
-test('issue 111: resolveRoute checks the supplier only in Qualify; an Eval packet supplier is never Not found', () => {
-  const r = (h) => resolveRoute(parseHash(h), MODEL).notFound;
+test('issue 111: resolveRoute checks the supplier only in Qualify; an Eval packet supplier is never checked against candidates', () => {
+  // Issue 163: the Eval pair must be a published miss, so this model publishes 101|SUP-99 (not a candidate).
+  const model = { ...MODEL, evalRuns: { ok: true, value: { runs: [{ groups: [{ misses: [{ world: 101, supplier_id: 'SUP-99' }] }] }] } } };
+  const r = (h) => resolveRoute(parseHash(h), model).notFound;
   assert.equal(r('#view=eval&supplier=SUP-99&world=101'), null);
   assert.equal(r('#view=eval&supplier=SUP-99&world=101&doc=msa.md&sec=1.1'), null);
   assert.deepEqual(r('#view=qualify&supplier=SUP-99'), { key: 'supplier', value: 'SUP-99', label: 'Not found' });
   assert.deepEqual(r('#supplier=SUP-99'), { key: 'supplier', value: 'SUP-99', label: 'Not found' });
   assert.equal(r('#view=qualify&supplier=SUP-07'), null);
+});
+
+// ---- issue 163: an Eval world + supplier pair must be a published miss (decision 242) ----
+const MISS = (world, supplier_id) => ({ world, supplier_id });
+const EVAL_MODEL = { ...MODEL, evalRuns: { ok: true, value: { runs: [{ groups: [{ misses: [MISS(101, 'SUP-01')] }] }] } } };
+const NF = (supplier, world) => ({ key: 'packet', value: `${supplier}, world ${world}`, label: 'Not found' });
+
+test('issue 163: resolveRoute opens only published Eval miss pairs; any other pair is Not found', () => {
+  const r = (h, model = EVAL_MODEL) => resolveRoute(parseHash(h), model).notFound;
+  assert.equal(r('#view=eval&world=101&supplier=SUP-01'), null);
+  assert.equal(r('#view=eval&world=101&supplier=SUP-01&doc=nope.md'), null, 'doc existence is the viewer\'s job');
+  assert.deepEqual(r('#view=eval&world=999&supplier=SUP-07'), NF('SUP-07', 999));
+  assert.deepEqual(r('#view=eval&world=101&supplier=SUP-07'), NF('SUP-07', 101), 'known world, unknown supplier');
+  assert.deepEqual(r('#view=eval&world=102&supplier=SUP-01'), NF('SUP-01', 102), 'known supplier, other world');
+  assert.equal(r('#view=eval&world=999'), null, 'world only');
+  assert.equal(r('#view=eval&supplier=SUP-07'), null, 'supplier only');
+  assert.equal(r('#view=eval&world=999&supplier=SUP-07', null), null, 'loading');
+  // Hand-built routes: parseHash already drops world outside Eval, so only these exercise the view guard.
+  const hand = (view, params) => resolveRoute({ view, role: 'senior', params }, EVAL_MODEL).notFound;
+  assert.equal(hand('qualify', { supplier: 'SUP-07', world: 999 }), null, 'other views ignore it');
+  assert.equal(hand('monitor', { active: 'ACT-02', world: 999 }), null);
+});
+
+test('issue 163: with no usable eval.json every Eval pair is Not found; malformed shapes never throw', () => {
+  const h = parseHash('#view=eval&world=101&supplier=SUP-01');
+  const nf = (evalRuns) => resolveRoute(h, { ...MODEL, evalRuns }).notFound;
+  const runs = (r) => ({ ok: true, value: { runs: r } });
+  for (const [name, er] of [['absent', undefined], ['null', null], ['failed', { ok: false, error: { message: 'HTTP 404' } }],
+    ['empty runs', runs([])], ['runs not an array', runs({})], ['no value', { ok: true }], ['groups not an array', runs([{ groups: 7 }])],
+    ['null run', runs([null])], ['misses not an array', runs([{ groups: [{ misses: 'x' }] }])], ['null group', runs([{ groups: [null] }])],
+    ['null miss', runs([{ groups: [{ misses: [null] }] }])], ['string world, other pair', runs([{ groups: [{ misses: [MISS('102', 'SUP-01')] }] }])]]) {
+    assert.deepEqual(nf(er), NF('SUP-01', 101), name);
+  }
+  // A good miss beside bad entries still opens.
+  assert.equal(nf(runs([null, { groups: [null, { misses: [null, MISS(101, 'SUP-01')] }] }])), null);
+});
+
+test('issue 163: every miss pair in the real data/eval.json opens; 101|SUP-04 and 999|SUP-07 do not', () => {
+  const file = JSON.parse(readFileSync(new URL('../data/eval.json', import.meta.url), 'utf8'));
+  const model = { ...MODEL, evalRuns: { ok: true, value: file } };
+  const pairs = new Set(file.runs.flatMap((r) => r.groups.flatMap((g) => g.misses.map((m) => `${m.world}|${m.supplier_id}`))));
+  assert.equal(pairs.size, 14);
+  for (const p of pairs) {
+    const [w, s] = p.split('|');
+    assert.equal(resolveRoute(parseHash(`#view=eval&world=${w}&supplier=${s}`), model).notFound, null, p);
+  }
+  assert.deepEqual(resolveRoute(parseHash('#view=eval&world=101&supplier=SUP-04'), model).notFound, NF('SUP-04', 101));
+  assert.deepEqual(resolveRoute(parseHash('#view=eval&world=999&supplier=SUP-07'), model).notFound, NF('SUP-07', 999));
 });

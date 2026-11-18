@@ -123,6 +123,8 @@ export function scoreEntry(entry, { as_of, policy }) {
     const id = /^([^\s:]+): /.exec(message)?.[1];
     const known = id !== undefined && Object.hasOwn(rows, id);
     if (known) rows[id].issue = message;
+    // ponytail: an impossible value (issue 161) reuses the paused path above, no new result kind.
+    if (known && e?.code === 'out_of_range') return { rows, blocked: true, result: null };
     return { rows, blocked, result: { ok: false, error: { id: known ? id : null, message } } };
   }
 }

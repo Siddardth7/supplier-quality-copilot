@@ -119,7 +119,8 @@ function checkItem(add, item, p, { def, idProblem, seen, packetFiles }) {
   } else if (state === 'verified' && value == null) {
     add(`${p}.value`, `${label}verified needs a value`);
   } else if (claims && value != null && id && def(id)) {
-    // Type check only (AGENT-FR-03): stand-in state and citation so applyRule's type error is the only throw.
+    // Type and range check (AGENT-FR-03, RUBRIC.md § Value bounds, issue 161): stand-in state and citation so
+    // applyRule's type or out-of-range error is the only throw.
     try { scoreCriterion(def(id), { state: 'verified', value, citation: '-' }, AS_OF); } catch (e) { add(`${p}.value`, e.message); }
   }
 

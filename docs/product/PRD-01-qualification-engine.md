@@ -8,7 +8,7 @@
 | Milestone | v1.0 · M2 Engine |
 | ID prefix | `QUAL` |
 | Specs referenced | `docs/RUBRIC.md` (all numbers and rules), `docs/DATASET.md` (extraction format) |
-| Last updated | 2026-11-09 |
+| Last updated | 2026-11-17 |
 
 ## 1. Problem
 
@@ -57,6 +57,7 @@ Two engineers scoring the same packet against the same checklist reach different
 | QUAL-FR-13 | The output must carry each criterion's state, value, citation and note through unchanged, so the UI can show and link them | Must | unit test |
 | QUAL-FR-14 | `evaluate` must take a team scoring policy (`RUBRIC.md` § Team scoring policy) and use its weights, `approve`, `conditional` and `knockouts_off` in place of the reference values. With no policy it must use Stark Reference v1. An invalid policy must throw an error naming the field | Must | unit test |
 | QUAL-FR-15 | The output must carry the policy's `id`, `version` and `name` | Must | unit test |
+| QUAL-FR-16 | The engine must throw an error naming the criterion when a `number` value is outside the criterion's bounds in `RUBRIC.md` § Value bounds (a negative duration, ratio or Gage R&R; a first-article share outside 0–1). Cpk is not bounded | Must | unit test |
 | QUAL-NFR-01 | The engine must be pure: no I/O, no `Date.now()`, no randomness. The evaluation date comes in as `as_of` | Must | review + determinism test |
 | QUAL-NFR-02 | The engine must be a dependency-free ES module that runs unchanged in the browser and under `node --test` | Must | review |
 | QUAL-NFR-03 | The rubric must live as data in one module, `app/rubric.js`. A test must check its IDs, weights, knockouts and bands against `RUBRIC.md` | Must | parity test |
@@ -159,6 +160,7 @@ UI and tests import everything from `app/engine.js`; the engine has no DOM, fetc
 - [ ] QUAL-AC-09: The README SUP-07 block matches the engine's output for the worked example. *(proves G4)*
 - [ ] QUAL-AC-11: With no policy, every result equals the Stark Reference v1 result. A policy with SUP-07's weights moved so its total crosses 85 flips it to APPROVED; switching off `2.ctq_cpk` turns a Cpk-0 NOT APPROVED into a total-based decision; `approve` 90 makes a 87 total CONDITIONAL; weights summing to 99, or `conditional` ≥ `approve`, throw. The output names the policy. *(proves QUAL-FR-14, -15)*
 - [ ] QUAL-AC-10: A test-only rubric fixture adds a commodity with 100 generated required tests (mixed bool and number). The unchanged engine scores it, fails it when any one test is 0, and lists that test as the knockout. A grep finds no test ID or commodity key in `app/engine.js` or `app/*.js` UI code. *(proves QUAL-NFR-05)*
+- [ ] QUAL-AC-12: Each bounded number criterion has a test below, at and above its bound; Cpk -0.5 still scores 0; evaluating `data/` and worlds 93, 101-104 gives unchanged scores. *(proves QUAL-FR-16)*
 
 ## 7. Open questions
 
@@ -183,6 +185,7 @@ UI and tests import everything from `app/engine.js`; the engine has no DOM, fetc
 
 | Date | Change |
 |---|---|
+| 2026-11-17 | QUAL-FR-16, QUAL-AC-12 (issue 161): a `number` value outside its `RUBRIC.md` § Value bounds is refused with an error naming the criterion; Cpk is unbounded. No scores change on `data/` or worlds 93, 101-104. |
 | 2026-11-12 | §5 Engine API (issue 109): adds `validatePolicy(policy)`, which runs the existing qualification and scorecard policy checks in that order and throws their field-named error unchanged. `evaluate` and `scorecard` are unchanged. No scores change. |
 | 2026-11-10 | §5 (#23): `evaluate` outputs `policy` `{ id, version, name }` (QUAL-FR-15); a policy without a valid `id`, `version` and `name` throws (QUAL-FR-14, `RUBRIC.md`); evidence `value` must be a primitive and `citation`/`note` a string or `null` (QUAL-FR-13); `★ off` badge comes from the policy passed in; Engine API table is the single export surface. |
 | 2026-11-09 | QUAL-FR-09 and §5: `info` items (nice-to-have tests that are not `verified`, so `missing` or `assumed`) live only in `nice_to_have`, not in `gaps` (Sid, #19). |

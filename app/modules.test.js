@@ -177,8 +177,8 @@ test('DS-AC-04: live views handle routed params and escaped Not found', () => {
     // Qualify (#39) and Monitor (#44) prove their route with the list and detail instead of the Route line.
     // Today (#107) and Compare (issue 108) have no Route line and no supplier Not found: the router drops supplier and
     // active keys on both. Compare's own part Not found is tested in compare.test.js.
-    // Eval (issue 111) has no Route line and never shows a supplier Not found: its supplier is a world packet's.
-    if (['today', 'compare', 'standards', 'eval'].includes(v.meta.name)) {
+    // Eval (issue 111) has no Route line; since issue 163 it shows the router's Not found (an unpublished packet pair).
+    if (['today', 'compare', 'standards'].includes(v.meta.name)) {
       assert.doesNotMatch(html, /data-route|Not found/);
       assert.doesNotMatch(v.render(OK, { role: 'senior', params: {}, notFound: { key: 'supplier', value: 'SUP-99', label: 'Not found' } }), /Not found/);
       continue;

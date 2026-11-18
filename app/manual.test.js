@@ -228,6 +228,31 @@ test('6: thresholds pass through the form unchanged (engine edges: cpk 1.33 vs 1
   assert.equal(dscore('2026-10-31'), 0);
 });
 
+test('6 issue 161 UIQ-AC-11: an out-of-range number pauses the score with the engine message on that row', () => {
+  const rows = checklist(HIGH).filter((r) => r.type === 'number' && !r.nice);
+  const id = rows.find((r) => defOf(r.id).range?.min === 0 && defOf(r.id).range.max === undefined).id;
+  const unbounded = rows.find((r) => !defOf(r.id).range).id;  // Cpk
+  const msg = `${id}: expected a number >= 0, got -0.5`;
+  const v = scoreEntry(setRow(fullEntry(HIGH), id, { value: '-0.5' }), CTX);
+  assert.equal(v.blocked, true);
+  assert.equal(v.result, null);
+  assert.equal(v.rows[id].issue, msg);
+  assert.equal(Object.values(v.rows).filter((r) => r.issue).length, 1, 'only that row');
+  // Claimed is checked the same way.
+  const claimed = scoreEntry(setRow(fullEntry(HIGH), id, { state: 'assumed', value: '-0.5', where: '' }), CTX);
+  assert.equal(claimed.blocked, true);
+  assert.equal(claimed.rows[id].issue, msg);
+  // Unbounded Cpk -0.5 scores (0), no pause.
+  const cpk = scoreEntry(setRow(fullEntry(HIGH), unbounded, { value: '-0.5' }), CTX);
+  assert.equal(cpk.blocked, false);
+  assert.equal(cpk.result.ok, true);
+  assert.equal(cpk.result.evaluation.categories.flatMap((c) => c.criteria).find((r) => r.id === unbounded).score, 0);
+  // Import refuses the same value with the engine message.
+  const r = record(HIGH, 'NEW-01');
+  const bad = { ...r, criteria: r.criteria.map((c) => (c.id === id ? { ...c, value: -0.5 } : c)) };
+  assert.deepEqual(importRecord(JSON.stringify(bad), [], CTX), { ok: false, error: msg });
+});
+
 // ---- 7. storage ----
 
 test('7 UIQ-FR-16: writeManual stores the array and loadData reads it back (reload keeps saved suppliers)', async () => {

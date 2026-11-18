@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs';
 import { buildModel } from './model.js';
 import { STARK_REFERENCE, parseHistory, scorecard } from './engine.js';
 import { formatHash, parseHash } from './route.js';
-import { METRICS, TIER_RANK, BAND_GLYPH, escalation, byTier, monitorModel, formatMetric, bandLabel, monitorHref, renderMonitor } from './monitor.js';
+import { METRICS, TIER_RANK, BAND_GLYPH, escalation, byTier, monitorModel, formatMetric, bandLabel, monitorHref, renderMonitor, monitorDetailKey, detailScrollOptions } from './monitor.js';
 import * as monitor from './views/monitor.js';
 
 // ---- hand-built scorecard suppliers ----
@@ -46,7 +46,7 @@ const REAL = buildModel(data(), STARK_REFERENCE);
 const rowsIn = (html) => [...html.matchAll(/<tr data-id="([^"]*)" data-href="([^"]*)"([^>]*)>([\s\S]*?)<\/tr>/g)]
   .map(([, id, href, rest, inner]) => ({ id, href, selected: /class="selected"/.test(rest), inner, cells: [...inner.matchAll(/<t[dh]([^>]*)>([\s\S]*?)<\/t[dh]>/g)].map((c) => ({ attrs: c[1], html: c[2] })) }));
 const text = (html) => html.replace(/<span class="sr-only">[\s\S]*?<\/span>/g, '').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&');
-const unescape = (s) => s.replace(/&amp;/g, '&');
+const unescape = (s) => s.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
 
 test('UIM-FR-03 sort: Unrated, D, C, B, A; composite ascending; ID breaks ties; input not mutated', () => {
   const suppliers = [
@@ -80,22 +80,22 @@ test('UIM-FR-04 escalation: tier C/D or an active alert; reasons in engine order
   const e = (tier, alerts = [], composite = 75) => escalation(card('ACT-01', tier, composite, { alerts }));
   assert.deepEqual(e('C', [], 55), { escalate: true, reasons: ['Tier C'], text: 'Tier C' });
   assert.equal(e('D', [alert('scar_aging'), alert('metric_bad', true, 'repeat_nc'), alert('metric_bad', true, 'scar_aging')], 35).text,
-    'Tier D; scar_aging; metric_bad (repeat_nc, scar_aging)');
-  assert.deepEqual(e('B', [alert('metric_bad', true, 'otd')], 80), { escalate: true, reasons: ['metric_bad (otd)'], text: 'metric_bad (otd)' });
+    'Tier D; SCAR open > 60 days; Repeat NC, SCAR aging in Bad band');  // issue 162: plain words
+  assert.deepEqual(e('B', [alert('metric_bad', true, 'otd')], 80), { escalate: true, reasons: ['On-time in Bad band'], text: 'On-time in Bad band' });
   assert.equal(e('A', [], 100).escalate, false);
-  assert.deepEqual(e('A', [alert('ucl')], 100).reasons, ['ucl']);
+  assert.deepEqual(e('A', [alert('ucl')], 100).reasons, ['Point above UCL']);
   assert.equal(e('A', [alert('ucl', false), alert('run7', false), alert('metric_bad', false, 'dppm')], 100).escalate, false);
-  assert.deepEqual(e('A', [alert('run7', false), alert('ucl')], 100).reasons, ['ucl']);
+  assert.deepEqual(e('A', [alert('run7', false), alert('ucl')], 100).reasons, ['Point above UCL']);
   assert.equal(e(null, [], null).escalate, false);
-  assert.deepEqual(e(null, [alert('run7')], null), { escalate: true, reasons: ['run7'], text: 'run7' });
-  assert.equal(e('A', [alert('ucl'), alert('ucl')]).text, 'ucl');  // distinct types
+  assert.deepEqual(e(null, [alert('run7')], null), { escalate: true, reasons: ['7 months above p̄'], text: '7 months above p̄' });
+  assert.equal(e('A', [alert('ucl'), alert('ucl')]).text, 'Point above UCL');  // distinct types
   // Cut-off edges: the engine's tier decides, read here as given.
   assert.equal(e('C', [], 50.0).escalate, true);
   assert.equal(e('C', [], 69.9).escalate, true);
   assert.equal(e('B', [], 70.0).escalate, false);
   // Real engine: ACT-03 D, ACT-04 B + metric_bad otd, ACT-02 A, ACT-01 A, ACT-06 Unrated.
   const flags = Object.fromEntries(monitorModel(REAL).rows.map((r) => [r.id, r.escalateText]));
-  assert.equal(flags['ACT-04'], 'metric_bad (otd)');
+  assert.equal(flags['ACT-04'], 'On-time in Bad band');
   assert.match(flags['ACT-03'], /^Tier D; /);
   assert.equal(flags['ACT-01'], '');
 });
@@ -160,7 +160,7 @@ test('UIM-FR-02 columns in order, one row per scorecard supplier, Unrated texts,
     assert.ok(r.cells[9].html.startsWith(`<span class="mono">${s.alerts.filter((a) => a.active).length}</span>`), r.id);
   }
   const c = rowsIn(renderMonitor(fake([card('ACT-05', 'C', 55, { alerts: [alert('scar_aging'), alert('metric_bad', true, 'repeat_nc'), alert('metric_bad', true, 'scar_aging'), alert('ucl', false)] })]), CTX()))[0];
-  assert.match(c.cells[9].html, /^<span class="mono">3<\/span> <span class="badge amber" title="Tier C; scar_aging; metric_bad \(repeat_nc, scar_aging\)">/);
+  assert.match(c.cells[9].html, /^<span class="mono">3<\/span> <span class="badge amber" title="Tier C; SCAR open &gt; 60 days; Repeat NC, SCAR aging in Bad band">/);
 });
 
 test('UIM-FR-11 / -02 hrefs: row link and data-href are the canonical monitor hash; role and policy kept, month dropped', () => {
@@ -336,12 +336,12 @@ test('UIM-FR-04 escalation edges: D alone, tier reason first, metric_bad without
   const e = (tier, alerts = []) => escalation(card('ACT-01', tier, 50, { alerts }));
   assert.deepEqual(e('D'), { escalate: true, reasons: ['Tier D'], text: 'Tier D' });
   assert.deepEqual(e('B'), { escalate: false, reasons: [], text: '' });
-  assert.equal(e('C', [alert('ucl'), alert('run7')]).text, 'Tier C; ucl; run7');
-  assert.equal(e('C', [alert('run7'), alert('ucl')]).text, 'Tier C; run7; ucl');  // engine order, not alphabetical
-  assert.equal(e('A', [alert('metric_bad')]).text, 'metric_bad');
+  assert.equal(e('C', [alert('ucl'), alert('run7')]).text, 'Tier C; Point above UCL; 7 months above p̄');
+  assert.equal(e('C', [alert('run7'), alert('ucl')]).text, 'Tier C; 7 months above p̄; Point above UCL');  // engine order, not alphabetical
+  assert.equal(e('A', [alert('metric_bad')]).text, 'Metric in Bad band');
   assert.equal(e('A', [alert('metric_bad', true, 'otd'), alert('ucl'), alert('metric_bad', true, 'otd'), alert('metric_bad', true, 'dppm')]).text,
-    'metric_bad (otd, dppm); ucl');
-  assert.equal(e('A', [alert('metric_bad', false, 'dppm'), alert('metric_bad', true, 'otd')]).text, 'metric_bad (otd)');
+    'On-time, DPPM in Bad band; Point above UCL');
+  assert.equal(e('A', [alert('metric_bad', false, 'dppm'), alert('metric_bad', true, 'otd')]).text, 'On-time in Bad band');
   assert.equal(e('A', [{ ...alert('ucl'), active: 'yes' }]).escalate, false);  // only active === true counts
   assert.deepEqual(escalation({ supplier_id: 'ACT-01' }), { escalate: false, reasons: [], text: '' });
   // The Alerts count is active alerts only; an A with only past alerts shows 0 and no badge.
@@ -448,7 +448,7 @@ test('#45 detail panels: no-chart supplier lists alerts without svg or toggle; c
   const none = renderMonitor(fake([card('ACT-01', 'C', 55, { alerts: [alert('tier_drop')] })]), CTX({ active: 'ACT-01' }));
   assert.match(none, /No p-chart: no receipts in the baseline \(M1–M6\)\./);
   assert.doesNotMatch(none, /<svg|data-pchart-toggle/);
-  assert.match(none, /ALERTS \(1\)<\/p><p class="escalate-line">[\s\S]*Tier C; tier_drop[\s\S]*Tier drop/);
+  assert.match(none, /ALERTS \(1\)<\/p><p class="escalate-line">[\s\S]*Tier C; Tier dropped[\s\S]*Tier drop/);
   const s = fake([withChart(card('ACT-01', 'A', 100))]);
   const chart = renderMonitor(s, { ...CTX({ active: 'ACT-01' }), chartTable: false });
   const table = renderMonitor(s, { ...CTX({ active: 'ACT-01' }), chartTable: true });
@@ -468,7 +468,7 @@ test('QA #46 L3: the alerts-panel Escalate line equals the table badge tooltip f
     const badge = rowsIn(html).find((r) => r.id === id).inner.match(/<span class="badge amber" title="([^"]*)">/)?.[1] ?? null;
     const line = html.match(/<p class="escalate-line"><span class="badge amber">▲ ESCALATE<\/span> <span class="mono">([^<]*)<\/span><\/p>/)?.[1] ?? null;
     assert.equal(line, badge, id);
-    assert.equal(line, want.escalate ? want.text : null, id);
+    assert.equal(line === null ? null : unescape(line), want.escalate ? want.text : null, id);
   }
   // ACT-03 (D) and ACT-04 (OTD Bad) escalate, ACT-01 does not: the check above covered both branches.
   assert.ok(escalation(REAL.monitor.value.suppliers.find((x) => x.supplier_id === 'ACT-03')).escalate);
@@ -533,4 +533,25 @@ test('issue 46: an Unrated composite reads "no composite score" to screen reader
 test('issue 140: both Monitor row-header tables keep normal font weight', () => {
   const css = readFileSync(new URL('./app.css', import.meta.url), 'utf8');
   assert.match(css, /\.tier-table th\[scope=row\],\.scar-table th\[scope=row\]\{font-weight:400\}/);
+});
+
+// ---- issue 163: once-only detail reveal (decisions 243, 244) ----
+test('issue 163: monitorDetailKey names the active ID only when its detail is on screen', () => {
+  const model = fake([card('ACT-02', 'Preferred', 90), card('ACT-03', 'Approved', 80)]);
+  const k = (h, m = model, notFound = null) => monitorDetailKey({ ...parseHash(h), notFound }, m);
+  assert.equal(k('#view=monitor&active=ACT-02'), 'ACT-02');
+  assert.equal(k('#view=monitor&active=ACT-03&month=4'), 'ACT-03');
+  assert.equal(k('#view=monitor'), null, 'no active');
+  assert.equal(k('#view=monitor&active=ACT-02', null), null, 'loading');
+  assert.equal(k('#view=monitor&active=ACT-02', {}), null, 'no monitor source');
+  assert.equal(k('#view=monitor&active=ACT-02', { monitor: { ok: false, error: {} } }), null, 'monitor failed');
+  assert.equal(k('#view=monitor&active=ACT-99'), null, 'unknown ID');
+  assert.equal(k('#view=monitor&active=ACT-02', model, { key: 'active', value: 'ACT-02', label: 'Not found' }), null, 'notFound');
+  assert.equal(monitorDetailKey({ view: 'today', params: { active: 'ACT-02' } }, model), null, 'other view');
+  assert.equal(monitorDetailKey(null, model), null);
+});
+
+test('issue 163: detailScrollOptions scrolls to the detail top, instant under reduced motion', () => {
+  assert.deepEqual(detailScrollOptions(true), { block: 'start', behavior: 'instant' });
+  assert.deepEqual(detailScrollOptions(false), { block: 'start', behavior: 'smooth' });
 });

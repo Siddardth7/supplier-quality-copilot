@@ -67,7 +67,10 @@ function zeroValue(d) {
   assert.equal(d.type, 'number', d.id);
   assert.equal(d.rule.at(-1).score, 0, d.id);
   const xs = d.rule.slice(0, -1).map((b) => b.x);
-  return d.rule[0].op.startsWith('>') ? Math.min(...xs) - 1 : Math.max(...xs) + 1;
+  const x = d.rule[0].op.startsWith('>') ? Math.min(...xs) - 1 : Math.max(...xs) + 1;
+  // Kept inside the criterion's physical range (issue 161): 4.fai -0.5 -> 0, still a 0 score.
+  const { min = -Infinity, max = Infinity } = d.range ?? {};
+  return Math.min(max, Math.max(min, x));
 }
 
 // ---- 1. SUP-07 worked example ----

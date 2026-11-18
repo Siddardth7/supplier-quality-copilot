@@ -9,7 +9,8 @@ import { findCriterion, RUBRIC } from './engine.js';
 export const CITATION = /^([a-z0-9_]+\.md) §([0-9]+(?:\.[0-9]+)*)$/;
 
 /** Chip per kind: [tone, glyph, word] (DESIGN-SPEC 5). Glyph and word always render; colour is never the only cue. */
-export const CHIP = { fail: ['bad', '✗', 'Fail'], assumed: ['amber', '~', 'Assumed'], missing: ['bad', '?', 'Missing'],
+// partial (issue 162): a verified gap row scoring 1-2; Fail is score 0 only (decision 231).
+export const CHIP = { fail: ['bad', '✗', 'Fail'], partial: ['amber', '◐', 'Partial'], assumed: ['amber', '~', 'Assumed'], missing: ['bad', '?', 'Missing'],
   verified: ['ok', '✓', 'Verified'], info: ['muted', 'i', 'Info'] };
 
 // Per-criterion display formats (DESIGN-SPEC 6, decision 34). Core criterion IDs only; display, never scoring.
@@ -25,6 +26,14 @@ const defOf = (id) => { try { return findCriterion(RUBRIC, id); } catch { return
 export function requirementName(id) {
   const def = defOf(id);
   return def ? def.requirement ?? def.name ?? null : null;
+}
+
+/** Why a scored candidate is NOT APPROVED, or null for any other decision. conditionalMark = model.pass.conditional.
+ *  One string for Compare, the Qualify cards and Today (issue 162, decision 230). */
+export function notApprovedReason(ev, conditionalMark) {
+  if (ev?.decision !== 'NOT APPROVED') return null;
+  const failed = ev.knockouts?.failed ?? [];
+  return failed.length ? `Knockout failed: ${failed.map((id) => requirementName(id) ?? id).join('; ')}` : `Below pass mark ${conditionalMark}`;
 }
 
 /** { doc, sec } | null. Null for a non-string, '' or anything the PRD-04 pattern rejects. */
@@ -50,9 +59,11 @@ export function formatValue(def, row) {
   return { text, label, empty: false, sr: null };
 }
 
-/** A verified row below full marks reads Fail (same word as Problems); otherwise the evidence state (decision 34). */
+/** A verified row below full marks reads Partial at score 1-2 and Fail at 0 (issue 162, decision 231); otherwise the
+ *  evidence state (decision 34). A missing score reads Fail. */
 export function chipKind(row) {
-  return row.gap === 'fail' ? 'fail' : row.state;
+  if (row.gap !== 'fail') return row.state;
+  return row.score >= 1 ? 'partial' : 'fail';
 }
 
 function rowModel(r, kind) {
@@ -65,11 +76,15 @@ function rowModel(r, kind) {
 
 const rowsOf = (ev) => (ev.categories ?? []).flatMap((c) => c.criteria ?? []);
 
-/** Gaps grouped fail -> assumed -> missing (engine order inside each), then info from nice_to_have. Empty groups dropped. */
+/** Gaps grouped fail -> assumed -> missing (engine order inside each), then info from nice_to_have. Empty groups dropped.
+ *  Rows in the fail group carry their own chip, Fail or Partial (issue 162); the group keeps kind 'fail'. */
 export function problemsModel(ev) {
   const byId = new Map(rowsOf(ev).map((r) => [r.id, r]));
   const groups = GAP_ORDER.map((kind) => ({ kind,
-    rows: ev.gaps.filter((g) => g.type === kind).map((g) => rowModel({ id: g.id, score: g.score, ...byId.get(g.id) }, kind)) }));
+    rows: ev.gaps.filter((g) => g.type === kind).map((g) => {
+      const r = { id: g.id, score: g.score, ...byId.get(g.id) };
+      return rowModel(r, kind === 'fail' ? chipKind({ ...r, gap: 'fail' }) : kind);
+    }) }));
   groups.push({ kind: 'info', rows: ev.nice_to_have.map((n) => ({ id: n.id, name: requirementName(n.id) ?? n.id, kind: 'info', state: n.state })) });
   return { groups: groups.filter((g) => g.rows.length), empty: !ev.gaps.length && !ev.nice_to_have.length, total: ev.gaps.length };
 }
@@ -111,6 +126,8 @@ function citation(r, href) {
   return `<span class="quiet">${esc(r.rawCitation)}</span>`;  // not a PRD-04 citation: text only, never a link
 }
 
+// Group heading override: the fail group holds Fail and Partial rows (issue 162, decision 232).
+const TITLE = { fail: 'Fail or partial' };
 const GAP_COLS = [['State'], ['Requirement'], ['Value', 'cell-num'], ['Score', 'cell-num'], ['Citation']];
 
 function gapRow(r, href) {
@@ -127,7 +144,7 @@ function gapRow(r, href) {
 export function renderProblems(pm, href) {
   if (pm.empty) return '<p class="quiet">No problems: every requirement scored 3.</p>';
   return pm.groups.map((g) => {
-    const title = `${CHIP[g.kind][2]} (${g.rows.length})`;
+    const title = `${TITLE[g.kind] ?? CHIP[g.kind][2]} (${g.rows.length})`;
     return `<section class="gap-group" data-kind="${g.kind}"><h4>${title}</h4><table class="gap-table">`
       + `<caption class="sr-only">${title}</caption>${head(GAP_COLS)}<tbody>${g.rows.map((r) => gapRow(r, href)).join('')}</tbody></table></section>`;
   }).join('');

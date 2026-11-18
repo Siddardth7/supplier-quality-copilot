@@ -8,7 +8,7 @@
 | Milestone | v1.0 · M6 Ship |
 | ID prefix | `SHIP` |
 | Specs referenced | PRD-00 (OVR-NFR-01…03), `docs/ROADMAP.md` (demo script) |
-| Last updated | 2026-11-14 |
+| Last updated | 2026-11-17 |
 
 ## 1. Problem
 
@@ -43,6 +43,7 @@ The project only counts if a panel can open it from a link in under a minute, fo
 | SHIP-FR-05 | **Demo script** (`docs/DEMO.md`) must list each step with its deep link, what to say and a time budget summing to ≤ 3:00 | Must | timed dry run |
 | SHIP-FR-06 | **Handout** (`docs/HANDOUT.md`, printable to one page): problem, how it works (pipeline diagram), the routing rule, one screenshot per view, the catch rate, three questions for the panel | Must | print preview fits one page |
 | SHIP-FR-07 | **Release.** `/release v1.0` opens `test → main`; after Sid merges, tag `v1.0` and publish a GitHub Release whose notes list delivered requirement IDs per milestone and the catch rate | Must | release page |
+| SHIP-FR-08 | **Installable and offline.** A web app manifest (name, icons, start_url) and a root service worker make the workbench installable (Chrome, Edge, Safari Add to Dock). After one online visit every view, citation and Eval packet works offline from a versioned cache of exactly the files the app fetches; a release bumps the cache version so it updates. localStorage is untouched | Should | scripts/pwa.test.mjs and the manual offline checklist |
 | SHIP-NFR-01 | Every page of the app shows the synthetic-data banner and the fan-made footer, and the README states that all data is synthetic and the Marvel names are fan use, not affiliated with Marvel | Must | checklist |
 
 ## 5. Interfaces
@@ -76,10 +77,12 @@ Marvel company and character names are allowed (`DATASET.md`) and must not be on
 - [ ] The handout prints on one page.
 - [ ] `docs/EVAL.md` is published with the catch rate.
 - [ ] `v1.0` is tagged and the GitHub Release is published.
+- [ ] Installed from the live link, the app opens every view and the 11 demo links offline after one visit (SHIP-FR-08).
+- [ ] Demo day: after the last release, open the app online once and wait for the `sqc-<VERSION>` worker to activate (DevTools > Application > Service workers) before going to the venue, so the first visit's caching never happens on venue Wi-Fi.
 
 ## 6. Acceptance criteria
 
-- [ ] SHIP-AC-01: Every box in the ship checklist is ticked, with evidence in the release PR. *(proves SHIP-FR-01…-07, SHIP-NFR-01, G1–G3)*
+- [ ] SHIP-AC-01: Every box in the ship checklist is ticked, with evidence in the release PR. *(proves SHIP-FR-01…-08, SHIP-NFR-01, G1–G3)*
 
 ## 7. Open questions
 
@@ -99,6 +102,7 @@ Marvel company and character names are allowed (`DATASET.md`) and must not be on
 
 | Date | Change |
 |---|---|
+| 2026-11-17 | SHIP-FR-08 added (issue 169): installable PWA with offline mode, option A of the desktop-app question; option B (Electron or Tauri) is v2.0. |
 | 2026-11-14 | Public repo named (issue 50, Sid): `Siddardth7/supplier-quality-copilot`; this private repo is renamed when #49 publishes. Live link `https://siddardth7.github.io/supplier-quality-copilot/`; root `index.html` redirects to `app/` (SHIP-FR-03, #49). The README (SHIP-FR-04) links it before #49 lands, so it does not resolve until then. |
 | 2026-11-14 | `node scripts/scrub.mjs` added (issue 48): tree and commit messages by default, `--history` adds every blob, exit 0/1/2. Known hits in README fixed, and the JD path moved from `CLAUDE.md` to the gitignored `CLAUDE.local.md`. Issue and PR bodies are not scanned by the script; the public repo has none (checklist item 3). |
 | 2026-11-14 | Root `index.html` (forwards to `app/`, keeping the hash) and `.nojekyll` added for Pages (issue 49, SHIP-FR-03). `.scrub-terms` has no hiring-team names yet: Sid does not have the panel list, so that part of SHIP-FR-01 is **pending** and the scrub is re-run when he does. |

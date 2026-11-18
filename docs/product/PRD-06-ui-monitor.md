@@ -46,14 +46,14 @@ A monthly table shows where each supplier is now, but not where it's heading. Th
 | UIM-FR-01 | The app must load `data/history.csv`, run the scorecard engine with `as_of` and the active policy (PRD-12: metric weights, Good/Watch/Bad limits, tier cut-offs), and render from its output only. A policy change re-grades the view without a reload | Must | manual check + review |
 | UIM-FR-02 | The **tier table** must have one row per active supplier: ID, name, M18 composite, tier, the five M18 metric values with their band, active alert count and the Escalate flag | Must | manual check |
 | UIM-FR-03 | Rows must sort by tier (Unrated first, then D, C, B, A), then composite ascending, then ID. Unrated rows show "Unrated" and the null metric. Ties on composite break by ID, so a tier A supplier with composite 100 sorts by ID | Must | manual check |
-| UIM-FR-04 | **Escalate** must show when the tier is C or D or any alert is active. Its tooltip and accessible name give the reasons, e.g. "Tier C; scar_aging". Reasons: `Tier <C\|D>` first, then each distinct active alert type in engine order; `metric_bad` lists its metrics, e.g. `Tier C; scar_aging; metric_bad (repeat_nc, scar_aging)` | Must | manual check |
+| UIM-FR-04 | **Escalate** must show when the tier is C or D or any alert is active. Its tooltip and accessible name give the reasons in plain words, e.g. "Tier C; SCAR open > 60 days". Reasons: `Tier <C\|D>` first, then each distinct active alert type in engine order, worded per the Escalation reasons table below; `metric_bad` is one reason naming its metrics, e.g. `Tier C; SCAR open > 60 days; Repeat NC, SCAR aging in Bad band` | Must | manual check |
 | UIM-FR-05 | Metric cells must show value and band (good / watch / bad) by text and color together. A `null` metric shows "—" with "no receipts" as its accessible name | Must | manual check |
 | UIM-FR-06 | The **p-chart** must plot M1–M18 with the baseline shaded, a p̄ line and a per-month UCL step line; points above the UCL and points in an active or past `run7` run are marked in the alert color with a distinct shape | Must | manual check (ACT-02, ACT-03) |
 | UIM-FR-07 | Each chart point must be focusable; focus or hover shows month, n, p and UCL. Arrow keys move between points | Must | manual check |
 | UIM-FR-08 | A "Show as table" toggle must show the chart data as a table | Must | manual check |
 | UIM-FR-09 | The **alert list** must show active alerts first, then past alerts newest first, each with type label, month and detail. Selecting an alert focuses its chart point | Must | manual check |
 | UIM-FR-10 | The supplier detail must list open SCARs at M18 with ID, opened date and age, with ages over 60 days marked | Must | manual check (ACT-05) |
-| UIM-FR-11 | Hash (DESIGN-SPEC §4.2): `#view=monitor&active=<id>` opens a supplier; `&month=<n>` focuses a chart point. Back and forward restore state | Must | manual check |
+| UIM-FR-11 | Hash (DESIGN-SPEC §4.2): `#view=monitor&active=<id>` opens a supplier; `&month=<n>` focuses a chart point. Back and forward restore state. Opening a supplier by link, row click or Back/Forward to another ID scrolls its detail into view and focuses its heading (instant under reduced motion); a re-render for the same supplier does not, and an explicit `month` keeps its chart-point focus (issue 163) | Must | manual check |
 | UIM-FR-12 | Error states: a failed CSV fetch or a parse error shows the message and row; an unknown ID shows "Not found" and the table | Must | manual check |
 | UIM-FR-13 | The detail must show a disabled **Draft SCAR** button with the line "Arrives in v1.1", in the place v1.1 fills, so v1.1 needs no layout change | Should | review |
 | UIM-FR-14 | Every supplier flagged Escalate must also appear in Today's *Escalate this week* (PRD-10 UIT-FR-03), and the Monitor detail must link back to Today | Must | manual check |
@@ -69,6 +69,18 @@ A monthly table shows where each supplier is now, but not where it's heading. Th
 | `metric_bad` | `<metric>` bad | — | yes, plus the metric cell |
 
 `ucl` and `run7` rows select their point; the other three types have no chart mark. A point that is both above the UCL and in a run shows both marks, the ring around the triangle. The Escalate reasons (UIM-FR-04) also show as visible text at the top of the alert list.
+
+**Escalation reasons** (UIM-FR-04; worded as fragments of a sentence, so they differ from the list labels above)
+
+| Type | Reason |
+|---|---|
+| tier C / D | `Tier C` / `Tier D` |
+| `metric_bad` | `<metric labels, joined ", "> in Bad band`, e.g. `DPPM in Bad band`; with no metric, `Metric in Bad band` |
+| `run7` | `7 months above p̄` |
+| `ucl` | `Point above UCL` |
+| `tier_drop` | `Tier dropped` |
+| `scar_aging` | `SCAR open > 60 days` |
+| any other type | the type as given |
 
 ## 5. Interfaces
 
@@ -114,6 +126,8 @@ Monitor is one of the six header tabs (DESIGN-SPEC §4.1).
 
 | Date | Change |
 |---|---|
+| 2026-11-17 | Issue 163: UIM-FR-11 opening a supplier scrolls its detail into view and focuses its heading once; reduced motion scrolls instantly; an explicit `month` keeps its chart-point focus (decisions 243, 244). Acceptance boxes unchanged. |
+| 2026-11-17 | Issue 162 plain-language labels: UIM-FR-04 escalation reasons are plain words (Escalation reasons table, decision 233); the alert-list labels are unchanged. Today reads the same text. No engine change; acceptance boxes unchanged. |
 | 2026-11-12 | #107: Today imports the escalation flags and order via `monitorModel` (UIM-FR-14). No requirement text change. |
 | 2026-11-12 | #45: UIM-FR-06 a point both above the UCL and in a run shows both marks (ring around triangle). UIM-FR-07 each point has a 24 px hit area (the chart scrolls inside its panel below 760 px) and Home / End go to the first / last plotted point. UIM-FR-09 only `ucl` and `run7` rows link to their point; the Escalate reasons show as text in the alerts panel. UIM-FR-11 `month` focuses the point, or that month's row in table mode. "Show as table" is local state, not a hash key. |
 | 2026-11-12 | #44: Escalate reasons format (UIM-FR-04); composite ties break by ID, so ACT-03 (A, 100.0) sorts after ACT-01 and UIM-AC-03 no longer says "ACT-01 last" (UIM-FR-03). |

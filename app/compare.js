@@ -6,7 +6,7 @@ import { esc, errorPanel, formatError } from './html.js';
 import { formatHash } from './route.js';
 import { routeLine } from './shell.js';
 import { sheetPart } from './model.js';
-import { requirementName } from './criteria.js';
+import { requirementName, notApprovedReason } from './criteria.js';
 import { categoryBars, commodityLabel, decisionBadge, detailModel, queueHref } from './queue.js';
 
 export const SOURCING_LINE = 'Quality decides who is acceptable. Sourcing picks among them.';
@@ -42,13 +42,11 @@ export function compareModel(model, { role = 'senior', policy, part } = {}) {
   const bidder = (c) => {
     const ev = c.evaluation;
     const d = detailModel(c, { part: cur, role, params: ctx.params });
-    const failed = ev.knockouts.failed;
     return { id: c.id, name: c.name, source: c.source, decision: ev.decision, total: d.total, signs: d.signs.label,
       conditions: ev.decision === 'CONDITIONAL' ? [...ev.rfi_items] : [],
       problems: ev.audit_focus.slice(0, 2).map(nameOf),  // decision 99: the engine's own ranking
       categories: d.categories, policy: d.policy, href: queueHref(ctx, { supplier: c.id }),
-      reason: ev.decision !== 'NOT APPROVED' ? null
-        : failed.length ? `Knockout failed: ${failed.map(nameOf).join('; ')}` : `Below pass mark ${model.pass.conditional}` };
+      reason: notApprovedReason(ev, model.pass.conditional) };  // shared with Qualify and Today cards (issue 162)
   };
   const scored = all.filter((c) => c.status === 'scored').sort(byDecision).map(bidder);  // filter() copies: model untouched
   const unscored = all.filter((c) => c.status !== 'scored').sort(byId).map((c) => ({ id: c.id, name: c.name, source: c.source,

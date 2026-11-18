@@ -5,6 +5,7 @@ import { esc, errorPanel } from './html.js';
 import { formatHash, parseHash } from './route.js';
 import { parseCitation } from './criteria.js';
 import { checkEval } from './data.js';
+import { routeLine } from './shell.js';
 
 const EVAL_MD = '../docs/EVAL.md';  // the served repo root holds docs/ beside app/ (decision 143)
 const SONNET = 'claude-sonnet-5-5';  // PRD-13 UIE-FR-02: the headline model
@@ -186,8 +187,10 @@ export function renderEval(model, ctx = {}) {
   if (!model) return '<p class="quiet">Loading data…</p>';
   const s = evalState(model.evalRuns ?? null);
   if (s.kind === 'loading') return '<p class="quiet">Loading data…</p>';
-  if (s.kind === 'none') return `<div class="eval">${EMPTY}${footer}</div>`;
-  if (s.kind === 'error') return `<div class="eval"><div class="status">${errorPanel(s.error)}</div>${footer}</div>`;
+  // An Eval world/supplier pair that is not a published miss (issue 163): Not found above the page, in every state.
+  const nf = ctx.notFound ? routeLine(ctx) : '';
+  if (s.kind === 'none') return `<div class="eval">${nf}${EMPTY}${footer}</div>`;
+  if (s.kind === 'error') return `<div class="eval">${nf}<div class="status">${errorPanel(s.error)}</div>${footer}</div>`;
   const c = { role: ctx.role ?? 'senior', policy: ctx.params?.policy };
   const want = ctx.params?.run;
   const fallback = (s.headline.index ?? 0) + 1;  // decision 139: the headline run, else run 1
@@ -195,7 +198,7 @@ export function renderEval(model, ctx = {}) {
   const note = want !== undefined && selected !== want
     ? `<p class="status-line" role="status">Run ${esc(want)} is not published; showing run ${selected}.</p>` : '';
   const hl = s.headline.index === null ? null : s.runs[s.headline.index];
-  return '<div class="eval">'
+  return '<div class="eval">' + nf
     + (hl ? headlinePanel(hl) + worldsPanel(hl) : '<p class="quiet">No Sonnet run on worlds 101-104 is published yet.</p>')
     + runsPanel(s, selected, c)
     + note

@@ -117,17 +117,19 @@ test('UIQ-FR-08 requirementsModel: every row, engine order, open only with a gap
   });
   assert.deepEqual(rm.categories.filter((c) => c.open).map((c) => c.n), [1, 2]);
   const cpk = rm.categories[1].rows.find((r) => r.id === '2.ctq_cpk');
-  assert.deepEqual([cpk.score, cpk.kind, cpk.value.text], [1, 'fail', '1.00'], 'Cpk 1.00: score 1, Fail chip');
+  assert.deepEqual([cpk.score, cpk.kind, cpk.value.text], [1, 'partial', '1.00'], 'Cpk 1.00: score 1, Partial chip (issue 162)');
   assert.equal(rm.info, e.nice_to_have.length);
   assert.ok(requirementsModel(ev(CP)).categories.every((c) => !c.open && c.rows.every((r) => r.kind === 'verified')));
 });
 
-test('chipKind: verified below 3 is fail; otherwise the evidence state; every chip has a glyph and a word', () => {
-  assert.equal(chipKind({ state: 'verified', gap: 'fail', score: 1 }), 'fail');
+test('chipKind: verified gap at 0 is fail, at 1-2 partial; otherwise the evidence state; every chip has a glyph and a word', () => {
+  assert.equal(chipKind({ state: 'verified', gap: 'fail', score: 0 }), 'fail');
+  assert.equal(chipKind({ state: 'verified', gap: 'fail', score: 1 }), 'partial');
+  assert.equal(chipKind({ state: 'verified', gap: 'fail', score: 2 }), 'partial');
   assert.equal(chipKind({ state: 'verified', gap: null, score: 3 }), 'verified');
   assert.equal(chipKind({ state: 'assumed', gap: 'assumed', score: 0 }), 'assumed');
   assert.equal(chipKind({ state: 'missing', gap: 'missing', score: 0 }), 'missing');
-  assert.deepEqual(Object.keys(CHIP), ['fail', 'assumed', 'missing', 'verified', 'info']);
+  assert.deepEqual(Object.keys(CHIP), ['fail', 'partial', 'assumed', 'missing', 'verified', 'info']);
   for (const [tone, glyph, word] of Object.values(CHIP)) assert.ok(tone && glyph && word);
 });
 
@@ -237,7 +239,7 @@ test('escaping: hand-built hostile id, category, state, score, value, note, cita
 // #41 review F3: the colour half of "text + color" is pinned too (DESIGN-SPEC 5), not only glyph and word.
 test('DESIGN-SPEC 5: each state chip pairs its colour token with its glyph and word', async () => {
   const { CHIP } = await import('./criteria.js');
-  assert.deepEqual(CHIP, { fail: ['bad', '✗', 'Fail'], assumed: ['amber', '~', 'Assumed'], missing: ['bad', '?', 'Missing'],
+  assert.deepEqual(CHIP, { fail: ['bad', '✗', 'Fail'], partial: ['amber', '◐', 'Partial'], assumed: ['amber', '~', 'Assumed'], missing: ['bad', '?', 'Missing'],
     verified: ['ok', '✓', 'Verified'], info: ['muted', 'i', 'Info'] });
 });
 
