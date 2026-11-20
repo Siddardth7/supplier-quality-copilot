@@ -21,8 +21,11 @@ import { queueHref } from './queue.js';
 import { importSheet } from './sheet-import.js';
 import { loadSheets, writeSheets, uploadModel, exportSheet, editPreview, previewFields, savePreview, applyPreviewJson } from './sheet-upload.js';
 import { registerOffline } from './offline.js';
+import { initTheme } from './theme.js';
+import { startCoolant } from './coolant.js';
 
-if (typeof document !== 'undefined') { boot(); registerOffline(); }  // issue 169: offline mode, never throws
+// issue 178: theme first (so the canvas reads the right tokens), then the backdrop; issue 169: offline mode. All never throw.
+if (typeof document !== 'undefined') { initTheme(); startCoolant(); boot(); registerOffline(); }
 
 function boot() {
   const $ = (id) => document.getElementById(id);

@@ -4,25 +4,63 @@
 
 :root{
   color-scheme:dark;
-  --bg:#08111b; --bg-plot:#08121e;
-  --surface-1:#0b1622; --surface-2:#0c1723; --surface-3:#0d1b29; --panel:#0e1b28;
-  --hover:#112332; --selected:#142c3b; --pressed:#173442;
-  --line:#26394a; --line-table:#213242; --line-input:#344758; --line-active:#507b8e;
-  --ink:#edf4fa; --ink-soft:#c1cddb; --ink-lede:#b8c8d8; --muted:#9aadbf;
-  --cyan:#79d8f1; --cyan-hover:#aff0ff; --on-cyan:#061520; --amber:#ffd08a;
-  --ok:#7fd7a8; --bad:#ff9b9b;
-  --card-gradient:linear-gradient(140deg,#173142,#101f2e);
-  --scrim:#040a10b8; /* behind modal sheets (::backdrop inherits custom properties: Chrome 122, Firefox 120, Safari 17.4) */
+  /* Coolant Loop, dark (default; issue 178). Stays the first :root block: manifest.json and scripts/icons.mjs read --bg/--cyan from it.
+     glass = --surface-1 (translucent + blur), dense = --surface-dense (tables, forms, sticky bars), inset = --surface-3, --panel opaque. */
+  --bg:#030a14; --bg-plot:#040d19;
+  --surface-1:#08182be6; --surface-dense:#071624f0; --surface-3:#00000066; --panel:#071624;
+  --hover:#5ef2ff14; --selected:#5ef2ff22; --pressed:#5ef2ff22; --badge-bg:#ffffff14;
+  --line:#ffffff1f; --line-table:#ffffff14; --line-glass:#ffffff24; --line-input:#ffffff80; --line-active:#5ef2ff;
+  --ink:#eef8ff; --ink-soft:#c7e3f2; --ink-lede:#c7e3f2; --muted:#8fb3c9;
+  --cyan:#5ef2ff; --cyan-hover:#b6fbff; --on-cyan:#021018; --amber:#ffb86b; --ok:#6dffc2; --bad:#ff8fa3;
+  --glow:#5ef2ff80; --scrim:#02060cb8; /* scrim: behind modal sheets (::backdrop inherits custom properties: Chrome 122, Firefox 120, Safari 17.4) */
+  --blob-1:#0077ff40; --blob-2:#00e5ff26; --blob-3:#6a00ff40; --blob-4:#00ffd120;
+  --flow-1:#5ef2ff; --flow-2:#7b6dff; --flow-alpha:.55;
+  --shadow-panel:0 12px 40px #0009,inset 0 1px 0 #ffffff26;
+  --radius-panel:20px; --radius-ctl:10px; --glass-blur:blur(18px) saturate(150%);
+  --card-gradient:linear-gradient(140deg,#ffffff14,#ffffff05);
   --sans:Inter,Segoe UI,system-ui,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
   --gutter:48px; --max:1540px;
   font-family:var(--sans); font-size:15px; color:var(--ink); background:var(--bg);
 }
+/* Coolant Loop, light (issue 178): token overrides only. Explicit choice via data-theme (app/theme.js), otherwise the OS
+   preference. Screen only, so print keeps the dark values the print rules in app.css assume (decision D5).
+   The two blocks below must hold identical declarations (app/shell.test.js). */
+@media screen{
+  :root[data-theme="light"]{
+    color-scheme:light;
+    --bg:#eaf6fb; --bg-plot:#f4fafd;
+    --surface-1:#ffffffe0; --surface-dense:#fffffff2; --surface-3:#005f7d0f; --panel:#ffffff;
+    --hover:#005f7d14; --selected:#005f7d22; --pressed:#005f7d22; --badge-bg:#005f7d14;
+    --line:#06223a1f; --line-table:#06223a14; --line-glass:#06223a24; --line-input:#005f7d; --line-active:#005f7d;
+    --ink:#06223a; --ink-soft:#1c4660; --ink-lede:#1c4660; --muted:#38586d;
+    --cyan:#005f7d; --cyan-hover:#004a63; --on-cyan:#ffffff; --amber:#7a4200; --ok:#08603e; --bad:#a31d39;
+    --glow:#005f7d33; --scrim:#06223a99;
+    --blob-1:#3aa0ff2e; --blob-2:#00c8e024; --blob-3:#8a6bff2e; --blob-4:#00d8b01f;
+    --flow-1:#0a7f9f; --flow-2:#6a5ae0; --flow-alpha:.35;
+    --shadow-panel:0 12px 40px #06223a26,inset 0 1px 0 #ffffffcc;
+  }
+  @media (prefers-color-scheme:light){
+    :root:not([data-theme="dark"]){
+    color-scheme:light;
+    --bg:#eaf6fb; --bg-plot:#f4fafd;
+    --surface-1:#ffffffe0; --surface-dense:#fffffff2; --surface-3:#005f7d0f; --panel:#ffffff;
+    --hover:#005f7d14; --selected:#005f7d22; --pressed:#005f7d22; --badge-bg:#005f7d14;
+    --line:#06223a1f; --line-table:#06223a14; --line-glass:#06223a24; --line-input:#005f7d; --line-active:#005f7d;
+    --ink:#06223a; --ink-soft:#1c4660; --ink-lede:#1c4660; --muted:#38586d;
+    --cyan:#005f7d; --cyan-hover:#004a63; --on-cyan:#ffffff; --amber:#7a4200; --ok:#08603e; --bad:#a31d39;
+    --glow:#005f7d33; --scrim:#06223a99;
+    --blob-1:#3aa0ff2e; --blob-2:#00c8e024; --blob-3:#8a6bff2e; --blob-4:#00d8b01f;
+    --flow-1:#0a7f9f; --flow-2:#6a5ae0; --flow-alpha:.35;
+    --shadow-panel:0 12px 40px #06223a26,inset 0 1px 0 #ffffffcc;
+  }
+  }
+}
 @media(max-width:1100px){:root{--gutter:28px}}
 @media(max-width:760px){:root{--gutter:20px}}
 
 /* Base */
-*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg)}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:transparent}
 button,input,select{font:inherit;color:var(--ink)} a{color:inherit;text-decoration:none} button{cursor:pointer}
 :is(a,button,input,select,summary,canvas):focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
@@ -39,10 +77,10 @@ h3{font-size:22px;font-weight:500;letter-spacing:-.6px;margin:0}
 .eyebrow.muted{color:var(--muted)}
 .lede{font-size:16px;line-height:1.8;color:var(--ink-lede);max-width:560px}
 .quiet{color:var(--muted);font-size:12px;line-height:1.7}
-.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin:0 7px 1px 0;box-shadow:0 0 10px #79d8f160}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin:0 7px 1px 0;box-shadow:0 0 10px var(--glow)}
 
 /* Buttons & links */
-.button{display:inline-flex;justify-content:space-between;align-items:center;gap:24px;background:var(--cyan);color:var(--on-cyan)!important;border:1px solid var(--cyan);padding:15px 20px;border-radius:5px;font-weight:650;font-size:14px;transition:background .2s}
+.button{display:inline-flex;justify-content:space-between;align-items:center;gap:24px;background:var(--cyan);color:var(--on-cyan)!important;border:1px solid var(--cyan);padding:15px 20px;border-radius:var(--radius-ctl);font-weight:650;font-size:14px;transition:background .2s}
 .button:hover{background:var(--cyan-hover)} .button.compact{padding:11px 16px;font-size:12px}
 .text-link{color:var(--cyan);font-size:13px} .text-link span{margin-left:14px}
 .subtle-button{background:none;border:0;color:var(--cyan);padding:4px 0;font-size:11px}
@@ -50,15 +88,15 @@ h3{font-size:22px;font-weight:500;letter-spacing:-.6px;margin:0}
 
 /* Pills (filter tabs) */
 .pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:18px}
-.pills button{border:1px solid var(--line);background:transparent;padding:10px 15px;border-radius:5px;white-space:nowrap;font-size:12px}
+.pills button{border:1px solid var(--line);background:transparent;padding:10px 15px;border-radius:var(--radius-ctl);white-space:nowrap;font-size:12px}
 .pills button span{color:var(--muted);font:11px var(--mono);margin-left:9px}
-.pills button:hover{border-color:#608394}
-.pills button[aria-pressed=true]{background:var(--pressed);border-color:var(--line-active);color:var(--cyan)}
+.pills button:hover{border-color:var(--line-active)}
+.pills button[aria-pressed=true]{background:linear-gradient(var(--pressed),var(--pressed)) var(--surface-dense);border-color:var(--line-active);color:var(--cyan)}
 
 /* Segmented control */
-.segmented{display:inline-flex;gap:1px;border:1px solid #354b5f;background:#0a1725;border-radius:4px;padding:2px}
+.segmented{display:inline-flex;gap:1px;border:1px solid var(--line-input);background:var(--panel);border-radius:var(--radius-ctl);padding:2px}
 .segmented button{border:0;background:none;font:11px var(--mono);color:var(--muted);padding:6px 9px;border-radius:2px}
-.segmented button[aria-pressed=true]{background:var(--cyan);color:#04131d}
+.segmented button[aria-pressed=true]{background:var(--cyan);color:var(--on-cyan)}
 
 /* Underline tabs */
 .tabs{display:flex;gap:25px;border-bottom:1px solid var(--line)}
@@ -66,7 +104,7 @@ h3{font-size:22px;font-weight:500;letter-spacing:-.6px;margin:0}
 .tabs button[aria-selected=true]{color:var(--cyan);border-color:var(--cyan)}
 
 /* Input */
-.search{display:flex;align-items:center;gap:8px;border:1px solid var(--line-input);border-radius:4px;background:var(--bg);padding:0 10px}
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--line-input);border-radius:var(--radius-ctl);background:var(--bg);padding:0 10px}
 .search input{width:100%;background:none;border:0;font-size:12px;padding:11px 0}
 
 /* Stats & metrics */
@@ -78,12 +116,12 @@ h3{font-size:22px;font-weight:500;letter-spacing:-.6px;margin:0}
 .metric small{display:block;color:var(--muted);font:11px var(--mono);margin-top:6px}
 
 /* Cards */
-.panel{border:1px solid var(--line);border-radius:8px;background:var(--surface-1);overflow:hidden}
-.list-card{display:block;text-align:left;background:transparent;border:1px solid transparent;border-radius:5px;width:100%;padding:10px;transition:background .15s}
-.list-card:hover{background:var(--hover)} .list-card[aria-pressed=true]{background:var(--selected);border-color:#3d778a}
-.badge{font:11px var(--mono);letter-spacing:.6px;text-transform:uppercase;color:#c6e6eb;background:#112733ee;padding:4px 6px;border-radius:2px}
-.feature-card{background:var(--card-gradient);border:1px solid #365569;border-radius:8px;padding:30px}
-.feature-card ul{list-style:none;padding:0;display:grid;gap:13px;font-size:12px;color:#bdd0de}
+.panel{border:1px solid var(--line-glass);border-radius:var(--radius-panel);background:var(--surface-1);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);box-shadow:var(--shadow-panel);overflow:hidden}
+.list-card{display:block;text-align:left;background:transparent;border:1px solid transparent;border-radius:12px;width:100%;padding:10px;transition:background .15s}
+.list-card:hover{background:var(--hover)} .list-card[aria-pressed=true]{background:var(--selected);border-color:var(--line-active)}
+.badge{font:11px var(--mono);letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft);background:var(--badge-bg);padding:4px 10px;border-radius:999px}
+.feature-card{background:var(--card-gradient);border:1px solid var(--line-glass);border-radius:var(--radius-panel);padding:30px}
+.feature-card ul{list-style:none;padding:0;display:grid;gap:13px;font-size:12px;color:var(--ink-soft)}
 .feature-card li:before{content:'\2197';color:var(--cyan);margin-right:10px}
 
 /* Policy chip (DESIGN-SPEC 4.1): cyan for Stark Reference v1, amber for a custom policy */
@@ -92,9 +130,9 @@ h3{font-size:22px;font-weight:500;letter-spacing:-.6px;margin:0}
 
 /* Table */
 table{border-collapse:collapse;width:100%;text-align:left;font-size:11px}
-thead{color:#8ba2b7;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+thead{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
 th,td{padding:12px 14px 12px 0;border-bottom:1px solid var(--line-table)} th{font-weight:500}
-td.num{font:11px var(--mono);color:#b1c3d3}
+td.num{font:11px var(--mono);color:var(--ink-soft)}
 .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--amber);margin-right:7px} .dot.cyan{background:var(--cyan)}
 
 /* Divider sections */
@@ -103,4 +141,4 @@ td.num{font:11px var(--mono);color:#b1c3d3}
 @media(max-width:760px){
   h1{font-size:48px;letter-spacing:-2px} .metrics{grid-template-columns:repeat(2,1fr);row-gap:24px}
 }
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}.coolant{display:none}}

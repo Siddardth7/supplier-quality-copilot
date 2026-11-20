@@ -1,5 +1,20 @@
 /* App shell layout only. Every colour and font comes from design/tokens.css via var(). No transitions here. */
 
+/* Coolant Loop backdrop (issue 178; DESIGN-SPEC DS-FR-09): four drifting blobs behind everything, then the particle canvas
+   (app/coolant.js). Both are fixed, so they never add scroll width; tokens.css turns the motion off under reduced motion. */
+body::before{content:'';position:fixed;inset:-20%;z-index:-2;pointer-events:none;will-change:transform;filter:blur(40px);
+  background:radial-gradient(40% 35% at 20% 30%,var(--blob-1),transparent 70%),radial-gradient(35% 40% at 80% 20%,var(--blob-2),transparent 70%),
+    radial-gradient(45% 40% at 60% 85%,var(--blob-3),transparent 70%),radial-gradient(25% 25% at 40% 55%,var(--blob-4),transparent 70%);
+  animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(5%,-4%,0) rotate(10deg) scale(1.12)}}
+.coolant{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:var(--flow-alpha)}
+.live-dot{animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 18px var(--glow)}}
+/* Light / dark toggle (DS-FR-08): icon + word, state in aria-pressed (app/theme.js). */
+.theme-toggle{display:inline-flex;align-items:center;gap:8px;min-height:24px;padding:4px 12px;border:1px solid var(--line-input);border-radius:999px;background:transparent;font-size:12px}
+.theme-toggle[aria-pressed=true]{background:linear-gradient(var(--pressed),var(--pressed)) var(--surface-dense);border-color:var(--line-active);color:var(--cyan)}
+@media(max-width:759px){.theme-toggle{min-height:44px}}
+
 .app-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:20px}
 .brand{margin:0;font-size:15px;font-weight:600;letter-spacing:0;line-height:1.3}
 .brand a{display:inline-block}
@@ -10,22 +25,33 @@
 .role-label{font-size:12px;color:var(--muted)}
 .role .pills{padding-bottom:0;gap:4px;overflow:visible}
 .role .pills button{min-height:24px;padding:4px 10px}
-.pills button[aria-checked=true]{background:var(--pressed);border-color:var(--line-active);color:var(--cyan)}
+.pills button[aria-checked=true]{background:linear-gradient(var(--pressed),var(--pressed)) var(--surface-dense);border-color:var(--line-active);color:var(--cyan)}
 .dev-note{flex-basis:100%;margin:0;font-family:var(--mono)}
 
 /* Shared labels and navigation stay together without assuming a header height (issue 47). */
 :root{scroll-padding-top:96px}
-.shell-bar{position:sticky;top:0;z-index:5;background:var(--bg)}
+.shell-bar{position:sticky;top:0;z-index:5;background:var(--surface-dense);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 .synthetic-label{padding-block:8px}
 .synthetic-label .badge{max-width:100%;white-space:normal;overflow-wrap:anywhere}
-.tab-bar{background:var(--bg);border-bottom:1px solid var(--line)}
+.tab-bar{background:transparent;border-bottom:1px solid var(--line)}
 .tab-bar .tabs{border-bottom:0;overflow-x:auto}
 .tabs button{white-space:nowrap;min-height:24px}
 .tabs .num{font-family:var(--mono);color:var(--muted);margin-right:4px}
 .tabs button[aria-selected=true] .num{color:inherit}
 
 main{padding-block:40px}
-.view h2{margin-bottom:8px}
+/* View title: solid --ink first, the ink-to-cyan gradient only where clipped text works, solid again in forced colours. */
+.view h2{font-size:clamp(32px,4.2vw,52px);font-weight:600;letter-spacing:-2px;color:var(--ink);overflow-wrap:anywhere;margin-bottom:8px}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .view h2{display:inline-block;background:linear-gradient(90deg,var(--ink) 20%,var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+}
+@media(forced-colors:active){.view h2{background:none;-webkit-text-fill-color:currentColor}}
+/* Surfaces (DESIGN-SPEC 7): .panel is glass (tokens.css); data-heavy panels and sticky bars are dense; a panel nested in a
+   panel is an inset well with no second blur. Contrast for every pair is checked in app/shell.test.js (DS-NFR-04). */
+.queue,.qualify .detail{padding:16px 20px;border:1px solid var(--line-glass);border-radius:var(--radius-panel);background:var(--surface-1);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);box-shadow:var(--shadow-panel)}
+.monitor .panel,.eval .panel,.standards .panel,.compare-panel,.knockout-banner,.error-panel,.entry-live,.entry-packet,.sheet-upload{background:var(--surface-dense)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.panel,.queue,.qualify .detail{background:var(--surface-dense)}}
+.draft-panel,.compare-col{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface-3);box-shadow:none}
 .status{display:grid;gap:16px;max-width:760px;margin-top:28px}
 .status-line{margin:0;font:13px var(--mono);color:var(--ink-soft)}
 .status-problems{margin:8px 0 0;padding-left:18px;font-size:12px;line-height:1.7;color:var(--ink-soft)}
@@ -72,7 +98,7 @@ main{padding-block:40px}
 .detail-metrics .metric{min-width:0;overflow-wrap:anywhere}
 .detail-metrics .badge{display:inline-block}
 .detail-tabs{overflow-x:auto}
-.detail-panel{padding-top:20px;min-width:0;overflow-wrap:anywhere}
+.detail-panel{padding:20px;min-width:0;overflow-wrap:anywhere;background:var(--surface-dense);border:1px solid var(--line-glass);border-radius:var(--radius-panel)}
 .detail-panel p.quiet{margin:0 0 12px}
 .bars{list-style:none;margin:0;padding:0;display:grid;gap:10px;max-width:640px}
 .bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:13px}
@@ -141,7 +167,7 @@ main{padding-block:40px}
 .entry-step{display:grid;gap:16px;max-width:480px}
 .entry-field{display:grid;gap:4px;font-size:12px;min-width:0}
 .entry-field p{margin:0}
-.entry-input{width:100%;min-height:44px;background:var(--bg);border:1px solid var(--line-active);border-radius:4px;padding:0 8px;font-size:13px}
+.entry-input{width:100%;min-height:44px;background:var(--bg);border:1px solid var(--line-input);border-radius:var(--radius-ctl);padding:0 8px;font-size:13px}
 .entry-input[aria-invalid=true]{border-color:var(--bad)}
 .entry-input:disabled{opacity:.5}
 .entry-error{color:var(--bad);font-size:12px;line-height:1.6;margin:4px 0 0}
@@ -191,11 +217,11 @@ main{padding-block:40px}
   .entry-packet .entry-actions>button,.entry-packet-confirm>button{width:100%}
 }
 /* Citation viewer (#42; DESIGN-SPEC 4.4, 4.9, 7): a native modal <dialog> sheet on the right, full-screen on phone */
-.sheet{margin:0 0 0 auto;padding:0;border:0;overflow:hidden;border-left:1px solid var(--line);width:min(560px,100%);max-width:none;height:100dvh;max-height:100dvh;background:var(--surface-1);color:var(--ink);display:flex;flex-direction:column}
+.sheet{margin:0 0 0 auto;padding:0;border:0;overflow:hidden;border-left:1px solid var(--line-glass);width:min(560px,100%);max-width:none;height:100dvh;max-height:100dvh;background:var(--panel);color:var(--ink);display:flex;flex-direction:column}
 .sheet:not([open]){display:none}
 .sheet::backdrop{background:var(--scrim)}
 body:has(dialog[open]){overflow:hidden}
-.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface-1)}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel)}
 .sheet-head>div{min-width:0}
 .sheet-head .viewer-label{margin:0 0 8px;white-space:normal;overflow-wrap:anywhere}
 .viewer-disclaimer{flex:none;margin:0;padding:12px 20px;border-top:1px solid var(--line)}
@@ -241,6 +267,8 @@ body:has(dialog[open]){overflow:hidden}
 .monitor-metrics{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:24px}
 .monitor-metrics .metric{min-width:0}
 .monitor-detail .back-link{display:inline-block}
+/* review 178: Monitor detail data sits on a dense surface, never on the bare page (DESIGN-SPEC §5 surface policy) */
+.monitor-detail .detail-head,.monitor-metrics{background:var(--surface-dense);border:1px solid var(--line-glass);border-radius:var(--radius-panel);padding:16px 20px}
 .monitor-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start;margin-bottom:20px}
 .monitor-side{display:grid;gap:16px;min-width:0}
 .detail-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
@@ -316,7 +344,7 @@ strong.alert-status{color:var(--amber);font-weight:500}
 .today-count-groups{display:flex;flex-wrap:wrap;gap:16px 48px}
 .today-counts dl{display:flex;flex-wrap:wrap;gap:8px 24px;margin:0}
 .today-count dt{font:11px var(--mono);letter-spacing:.6px;color:var(--muted)}
-.today-count dd{margin:4px 0 0;font-size:20px}
+.today-count dd{margin:4px 0 0;font-size:20px;color:var(--ink);text-shadow:0 0 18px var(--glow)}
 .today .mono{font-variant-numeric:tabular-nums}
 .today-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
 .today-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
@@ -335,15 +363,15 @@ a.list-card.today-item{position:relative;display:block;text-decoration:none;colo
 .compare p{margin:0 0 8px}
 .compare .mono{font-variant-numeric:tabular-nums}
 .compare-parts{display:flex;flex-wrap:wrap;gap:8px}
-.compare-parts a{display:inline-flex;align-items:center;min-height:24px;padding:4px 12px;border:1px solid var(--line);border-radius:5px;font-size:12px}
+.compare-parts a{display:inline-flex;align-items:center;min-height:24px;padding:4px 12px;border:1px solid var(--line);border-radius:var(--radius-ctl);font-size:12px}
 .compare-parts a span{color:var(--muted);font:11px var(--mono);margin-left:9px}
 .compare-parts a:hover{border-color:var(--line-active)}
-.compare-parts a[aria-current=true]{background:var(--pressed);border-color:var(--line-active);color:var(--cyan)}
+.compare-parts a[aria-current=true]{background:linear-gradient(var(--pressed),var(--pressed)) var(--surface-dense);border-color:var(--line-active);color:var(--cyan)}
 .compare-part{font-size:15px}
 .compare-line{color:var(--ink-lede)}
 .compare .text-link{display:inline-block;min-height:24px;padding-block:4px}
 .compare-grid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:16px;overflow-x:auto;padding:6px}
-.compare-col{min-width:0;overflow-wrap:anywhere;display:grid;gap:8px;align-content:start;padding:12px;border:1px solid var(--line);border-radius:5px}
+.compare-col{min-width:0;overflow-wrap:anywhere;display:grid;gap:8px;align-content:start;padding:12px;border:1px solid var(--line);border-radius:12px}
 .compare-col p,.compare-col h3{margin:0}
 .compare-name{font-size:15px}
 .compare-score strong{font-size:20px}
@@ -365,14 +393,14 @@ a.list-card.today-item{position:relative;display:block;text-decoration:none;colo
 .standards .subtle-button{font-size:12px;padding-inline:4px}
 .std-list{display:grid;gap:4px}
 .std-row{display:grid;gap:2px}
-.std-radio{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:5px;padding:8px 10px;font-size:13px}
+.std-radio{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:var(--radius-ctl);padding:8px 10px;font-size:13px}
 .std-radio:hover{background:var(--hover)}
 .std-radio[aria-checked=true]{background:var(--selected);border-color:var(--line-active);color:var(--cyan)}
 .std-radio .badge{display:inline-block;margin-left:4px}
 .std-row-actions,.std-confirm{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px;padding-left:10px;font-size:12px}
 .std-select{display:none}
 .std-select label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
-.std-select select{width:100%;background:var(--bg);border:1px solid var(--line-active);border-radius:4px;padding:0 8px}
+.std-select select{width:100%;background:var(--bg);border:1px solid var(--line-input);border-radius:var(--radius-ctl);padding:0 8px}
 .std-new{display:block;margin-top:8px}
 .std-sheets-title{margin:24px 0 8px}
 .std-block{border:0;margin:0 0 24px;padding:0;min-width:0}
@@ -380,7 +408,7 @@ a.list-card.today-item{position:relative;display:block;text-decoration:none;colo
 .std-block p.quiet{margin:0 0 8px}
 .std-field{display:grid;gap:4px;margin-bottom:12px;min-width:0}
 .std-field label{font-size:12px}
-.std-input{width:100%;max-width:120px;background:var(--bg);border:1px solid var(--line-active);border-radius:4px;padding:0 8px;font-size:13px}
+.std-input{width:100%;max-width:120px;background:var(--bg);border:1px solid var(--line-input);border-radius:var(--radius-ctl);padding:0 8px;font-size:13px}
 .std-name .std-input{max-width:360px}
 .std-input[aria-invalid=true]{border-color:var(--bad)}
 .std-error{color:var(--bad);font-size:12px;line-height:1.6;margin:4px 0 0}
@@ -410,7 +438,7 @@ a.list-card.std-impact-item{position:relative;display:block;text-decoration:none
 .std-status{font-size:12px;color:var(--ink-soft);margin:8px 0 0;min-height:1em}
 /* Requirement sheets (issue 110): plain links in the policies panel, the view-only viewer in the editor column. */
 .std-sheet-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-.std-sheet-link{display:flex;align-items:center;gap:6px;min-height:44px;padding:8px 10px;border:1px solid transparent;border-radius:5px;font-size:13px;color:var(--cyan);text-decoration:none}
+.std-sheet-link{display:flex;align-items:center;gap:6px;min-height:44px;padding:8px 10px;border:1px solid transparent;border-radius:var(--radius-ctl);font-size:13px;color:var(--cyan);text-decoration:none}
 .std-sheet-link:hover{background:var(--hover)}
 .std-sheet-link[aria-current=page]{background:var(--selected);border-color:var(--line-active)}
 .std-sheet-failed{padding:8px 10px;font-size:13px;color:var(--muted)}
@@ -523,4 +551,9 @@ textarea:focus-visible,[role=tabpanel][tabindex]:focus-visible,
   .sheet[open]::backdrop{display:none}
   .sheet-scroll{overflow:visible;height:auto;max-height:none}
   .sheet-head .subtle-button{display:none}
+  /* Coolant Loop (issue 178): no backdrop on paper; solid headings. Light tokens are screen-only, so --bg/--ink above stay dark (D5). */
+  body::before{content:none!important}
+  .coolant{opacity:0!important}
+  .view h2{-webkit-text-fill-color:currentColor!important}
+  .panel,.queue,.qualify .detail,.shell-bar{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 }

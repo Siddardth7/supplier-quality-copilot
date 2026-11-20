@@ -8,6 +8,8 @@ Ingest a supplier's qualification packet → the agent extracts evidence with ci
 
 ![Qualify view for SUP-07 Oscorp, a cold plate supplier: score 84.4, CONDITIONAL, signed by a Senior SQE, two knockouts assumed, and the first failing requirement with its citation. Synthetic data.](docs/img/screenshot.png)
 
+*Screenshot predates the Coolant Loop theme (#178); to be recaptured.*
+
 ![Demo: the Qualify queue, SUP-07's problems with citations, the cited capability study, the drafted RFI, and the Monitor run-rule alert for ACT-02. Synthetic data.](docs/img/demo.gif)
 
 The demo path: queue -> SUP-07 -> citation -> RFI draft -> Monitor run-rule alert, 24 s.
@@ -17,6 +19,8 @@ The demo path: queue -> SUP-07 -> citation -> RFI draft -> Monitor run-rule aler
 **v1.0** is released: product docs, engine, simulated dataset, agent, workbench UI and ship (milestones M1 to M6). See the [release notes](docs/RELEASE-v1.0.md) and [docs/ROADMAP.md](docs/ROADMAP.md).
 
 **v1.0.2** adds **Upload packet** to + New supplier: the browser reads a supplier packet in this project's format with rules (no AI), fills the checklist for the engineer to confirm, and the engine scores it. The plan for reading any supplier file, with and without AI, is [docs/AI-READER-PLAN.md](docs/AI-READER-PLAN.md). See the [patch release notes](docs/RELEASE-v1.0.md#patch-releases).
+
+**v1.0.3** brings the **Coolant Loop** look to every view, with a **Light / Dark toggle** in the header. It follows your system setting until you choose, and every text pair passes WCAG AA in both themes.
 
 The agent was measured on its first Sonnet run over four unseen simulated worlds (101 to 104, pooled). The answer keys were locked by hash before the run, the results are published as measured, and the skill was not tuned afterward.
 

@@ -58,6 +58,20 @@ records it.
 
 ## Patch releases
 
+### v1.0.3 (2026-11-20)
+
+- **Coolant Loop theme on every view** (#178, PR #179):
+  - Dark (default): deep blue-black, drifting coolant light, particles flowing along sine "pipes", frosted-glass panels.
+  - Light: pale ice, white glass, deeper accents that pass AA on white.
+- **Light / Dark toggle** in the header (☀). It follows the system setting until you choose. The choice is remembered and still works with storage blocked, and it is applied before first paint, so the page never flashes the wrong theme.
+- **Readability:**
+  - Every text and UI colour pair passes WCAG 2.2 AA in both themes, measured against the moving background behind it (`app/shell.test.js`).
+  - Tables, forms, the sticky score strip and Monitor's figures sit on near-opaque panels.
+  - The packet viewer and the chart tooltip are fully opaque.
+- **Motion:** *reduce motion* stops all animation. Particles pause in hidden tabs and are capped at 110 (50 on phones).
+- No new dependencies. Offline copies re-cache on the next visit (`sw.js` VERSION v1.0.3).
+- Known: the README screenshot and demo GIF still show the earlier navy design.
+
 ### v1.0.2 (2026-11-20)
 
 - **Upload packet in + New supplier** (#172, PR #175). After the name and a Stark part, the engineer uploads the

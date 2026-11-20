@@ -39,7 +39,7 @@
 
 ## 3. Traceability matrix
 
-Every FR / NFR in PRD-00…13 and DESIGN-SPEC (193 live requirements; 2 dropped rows kept struck). "Issue" is the M2–M8 issue that delivers it; #14 refines these.
+Every FR / NFR in PRD-00…13 and DESIGN-SPEC (196 live requirements; 2 dropped rows kept struck). "Issue" is the M2–M8 issue that delivers it; #14 refines these.
 
 | ID | Doc | Priority | Verified by | Issue |
 |---|---|---|---|---|
@@ -172,6 +172,9 @@ Every FR / NFR in PRD-00…13 and DESIGN-SPEC (193 live requirements; 2 dropped 
 | `DS-NFR-01` | DESIGN-SPEC | Must | a11y checklist (§9) | #46 |
 | `DS-NFR-02` | DESIGN-SPEC | Must | review | #37 (then every M5 PR) |
 | `DS-NFR-03` | DESIGN-SPEC | Must | review | #37 (then every M5 PR) |
+| `DS-FR-08` | DESIGN-SPEC | Must | unit test (`app/theme.test.js`, `app/shell.test.js`) + manual check | #178 |
+| `DS-FR-09` | DESIGN-SPEC | Must | unit test (`app/coolant.test.js`, `app/shell.test.js`) + manual check | #178 |
+| `DS-NFR-04` | DESIGN-SPEC | Must | unit test (`app/shell.test.js`) + manual check | #178 |
 | `SHIP-FR-01` | PRD-07 | Must | script output in the release PR | #48 |
 | `SHIP-FR-02` | PRD-07 | Must | checklist | #49 |
 | `SHIP-FR-03` | PRD-07 | Must | live link check | #49 |
@@ -311,12 +314,26 @@ Run at 1280 px and 390 px, with keyboard only and then with VoiceOver. Tick it i
 - [x] With a run: headline, per-world table, the demo and hold-out rows apart, the run list and the miss list all match `eval.mjs --json`. (UIE-FR-01…-05) Ticked 2026-11-13 for issue 111 (headless Chrome, 1280/1100/1099/760/759/390 px, keyboard; VoiceOver stays with #46) on `app/eval.testkit.js` fixtures built with the real `buildReport`/`renderJson`, not a published run (#36): one run shows "Caught 20.0% 4 of 20 target ≥ 90% FAIL" and the other three stats from the file, 4 world rows then demo world 93 and hold-out traps apart below the divider, 1 run and 26 miss rows; with three runs the list reads Run 1 · Sonnet, Run 2 · Opus comparison, Run 3 · Re-test, and clicking run 2 or 3 moves `aria-current` and the miss list while the headline and per-world text stay identical; `run=999` falls back to run 1 with a status line; an incomplete first Sonnet run shows INCOMPLETE on every verdict, "world(s) 103, 104" and no PASS or FAIL. A miss opens its packet file at the answer key's section in the viewer (world, supplier, `[data-cited]`), a miss with no citation opens the ten-file list, and Close or Escape returns focus to the miss row. `.stats` goes 4/2/1 columns and the tables scroll inside their panels. Value-by-value equality with the file is also unit-tested in `app/eval.test.js`.
 - [ ] A miss opens its packet section in the citation viewer; the EVAL.md link works. (UIE-FR-06, -08)
 
+**Coolant Loop theme (issue 178; DS-FR-08, DS-FR-09, DS-NFR-03, DS-NFR-04), at 1280 and 390 px, both themes unless stated**
+- [ ] Each of the six views (Today, Qualify with queue / detail / knockout banner / drafts, Compare, Monitor with p-chart and tooltip, Standards with policy editor and sheet upload / preview, Eval): no text over a bare blob except headings and captions; tables crisp; no horizontal scroll at 390 px.
+- [ ] + New supplier steps 1 and 2: the sticky live strip stays legible while fields scroll under it; packet panel and sample-packet flow; inputs have a visible border.
+- [ ] Citation viewer opens, packet text readable, Close and Escape work, backdrop scrim visible.
+- [ ] p-chart: dots, UCL, run rings, amber triangles, tooltip and "Show as table" readable.
+- [ ] Theme toggle: Tab, Enter and Space work; the screen reader reads "Light mode, toggle button, pressed / not pressed"; 44 px tall at 390 px; the choice survives a reload; with storage blocked it still flips and the next load follows the OS; no flash of the wrong theme on a hard reload with an explicit choice; an OS scheme change with no explicit choice flips page, button and particles.
+- [ ] Reduced motion (OS setting or devtools emulation): blobs static, no particles, no live-dot pulse; turning it off restarts the particles without a reload.
+- [ ] Hide the tab for 10 s and return: no jump; CPU idle while hidden.
+- [ ] Offline: load once online, go offline, reload: the themed page renders and the canvas runs; the installed-app window background matches `--bg`.
+- [ ] Print preview of Today and of an open packet: dark ink on white in both themes, no blobs or canvas, headings solid.
+- [ ] Zoom 200 % and forced colours: headings readable, focus ring visible.
+- [ ] Smoothness: 60 fps feel while scrolling at 1280 px with blobs and particles on.
+
 **Every view:** the DESIGN-SPEC §9 checklist. Headless half passed 2026-11-13 for issue 46: focus visible, targets ≥ 24 px, contrast, 390/320 px overflow, 200% zoom (1280 px at 200% = a 640 px viewport), reduced motion; VoiceOver stays with Sid.
 
 ## 5. Changelog
 
 | Date | Change |
 |---|---|
+| 2026-11-20 | Issue 178 Coolant Loop theme: matrix rows DS-FR-08 (theme toggle), DS-FR-09 (blob and particle backdrop), DS-NFR-04 (composited contrast, both themes) (196 live); DS-NFR-03 now covers all animation. Eleven open L5 boxes for the two themes, reduced motion, pause when hidden, offline, print and smoothness. |
 | 2026-11-20 | Issue 172, partial L5 run (Playwright Chromium, local server, boxes stay open): 1280 px, Enter on Upload packet opens the picker; ten sample files + two wrong-name files read to "Read 9 files: 30 proven, 2 claimed, 1 missing." with focus on the summary, both refusals listed with reasons, 0 Check flags, 90.5 CONDITIONAL Senior SQE; Use the sample packet on filled rows asks Replace (focused), Escape keeps the rows, Replace re-reads; Save → NEW-01 tagged Entered by hand in Qualify, Today and Compare; reload keeps it; the reliability_report.md §1.1 citation opens the uploaded page with §1.1 highlighted; no horizontal scroll. 390 px keyboard only: name, part, Continue, sample by Enter, focus on the summary, no horizontal scroll, drop hint hidden. Not run: drag and drop, Export → Delete → Import in the browser, blocked storage, offline, a record with no packet. |
 | 2026-11-19 | Issue 172 packet upload: matrix rows UIQ-FR-21…24 and UIQ-NFR-03 (193 live). Two open L5 Qualify boxes (sample packet end to end at 1280 and 390 px incl. keyboard-only, blocked storage and offline; viewer on the uploaded page). Reader accuracy is `scripts/reader-accuracy.mjs` (UIQ-AC-13). |
 | 2026-11-13 | Issue 46 round 2: the 16 remaining Qualify and Monitor L5 rows assigned to #46 are ticked from a headless run at 1280 and 390 px, keyboard-driven, in the seed-93 dev world (SUP-01 failed and SUP-06 assumed knockouts, SUP-07 CONDITIONAL Senior, ACT-02 creep story) plus error-state copies of it; VoiceOver stays with Sid. |

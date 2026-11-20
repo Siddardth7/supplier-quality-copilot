@@ -8,7 +8,7 @@
 | Milestone | v1.0 · M5 Workbench UI |
 | ID prefix | `DS` |
 | Specs referenced | `design/tokens.css`, PRD-05, PRD-06, PRD-10…PRD-13, wireframe artifact `1r2p43AZkDzkMa2AvJW8oj` (RoLaMGAS template) |
-| Last updated | 2026-11-13 |
+| Last updated | 2026-11-20 |
 
 ## 1. Problem
 
@@ -35,7 +35,10 @@ Six views built issue by issue will drift in spacing, color meaning and keyboard
 | DS-FR-07 | Every view's state must use the single hash scheme in §4.2. An unknown view or key value falls back to that view's default and is not an error | Must | manual check + unit test of the parser |
 | DS-NFR-01 | **WCAG 2.2 AA**: text contrast ≥ 4.5:1 (≥ 3:1 for ≥ 18.7 px bold or 24 px); UI component and focus contrast ≥ 3:1; target size ≥ 24 × 24 px; visible focus on every interactive element; no keyboard trap | Must | a11y checklist (§9) |
 | DS-NFR-02 | No text smaller than 11 px; body data at 12–13 px | Must | review |
-| DS-NFR-03 | `prefers-reduced-motion` disables transitions (already in tokens) | Must | review |
+| DS-FR-08 | A Light / Dark toggle: a real `<button id="theme-toggle">` in `.header-tools` after *Viewing as*, icon + the word "Light mode", state in `aria-pressed` (true = light). With no explicit choice the theme follows `prefers-color-scheme`; an explicit choice persists in `localStorage` key `sqc:theme` and is applied by an inline head script before first paint. Every storage access is in try/catch: blocked storage still flips the theme for the session. 44 px tall at 759 px and below | Must | unit test (`app/theme.test.js`, `app/shell.test.js`) + manual check |
+| DS-FR-09 | Coolant Loop backdrop: four token-coloured blobs drifting behind the page (`body::before`) and a particle canvas (`<canvas id="coolant">`, `app/coolant.js`) with colours from `--flow-1` / `--flow-2` only. Both are `position:fixed`, `pointer-events:none`, behind content, and never add scroll width; the canvas is `aria-hidden`, pauses while the tab is hidden, caps particles (110, 50 below 760 px) and device pixel ratio (1.5), and follows a theme change | Must | unit test (`app/coolant.test.js`, `app/shell.test.js`) + manual check |
+| DS-NFR-03 | `prefers-reduced-motion` disables transitions and all animation (blobs static, no particles, no live-dot pulse); changing the setting at runtime stops or restarts the particles | Must | review + unit test |
+| DS-NFR-04 | Contrast is measured against the composited effective background in both themes: every text token ≥ 4.5:1 and every control border / focus colour ≥ 3:1 over `--bg` and over the two strongest blobs stacked at full alpha; text on a surface is also checked with a particle (`--flow-1` at `--flow-alpha`) behind the surface and under each overlay (hover, selected, badge, inset). Translucent tokens are composited, never read as opaque | Must | unit test (`app/shell.test.js`) |
 
 ## 4. Layout
 
@@ -248,9 +251,9 @@ Gutters come from `--gutter` (48 / 28 / 20 px). Values in every layout sketch ar
 | Meaning | Token | Glyph + label |
 |---|---|---|
 | Interactive (links, buttons, focus, selected) | `--cyan` | — |
-| `verified` · pass · Good band | `--ok` (new, `#7fd7a8`) | ✓ Verified · Good |
+| `verified` · pass · Good band | `--ok` (dark `#6dffc2`, light `#08603e`) | ✓ Verified · Good |
 | `assumed` · partial (verified, score 1–2) · Watch band · alert · CONDITIONAL | `--amber` | ~ Assumed · ◐ Partial · Watch · ● Alert |
-| `missing` · fail (verified, score 0) · Bad band · NOT APPROVED · knockout | `--bad` (new, `#ff9b9b`) | ? Missing · ✗ Fail · Bad · ★ Knockout |
+| `missing` · fail (verified, score 0) · Bad band · NOT APPROVED · knockout | `--bad` (dark `#ff8fa3`, light `#a31d39`) | ? Missing · ✗ Fail · Bad · ★ Knockout |
 | APPROVED | `--ok` | ✓ APPROVED |
 | `info` (nice-to-have) | `--muted` | i Info |
 | Tier A / B / C / D | `--ok` / `--ink` / `--amber` / `--bad` | letter always shown |
@@ -259,13 +262,28 @@ Gutters come from `--gutter` (48 / 28 / 20 px). Values in every layout sketch ar
 | *Entered by hand* / *Uploaded* tag | `--muted` | text always present |
 | Disabled control (Draft SCAR until v1.1) | `--muted`, 0.45 opacity | label plus the reason ("Arrives in v1.1") |
 
-Measured contrast on `--bg` (`#08111b`): `--ok` 11.0, `--bad` 9.4, `--amber` 13.2, `--cyan` 11.7, `--muted` 8.2 (all ≥ 7:1). Borders `--line` are decoration only (1.6:1). Any border that identifies a control (inputs, the pressed pill) uses `--line-active` (4.1:1).
+**Coolant Loop themes (issue 178).** Dark is the default (`:root`, `--bg #030a14`); light (`--bg #eaf6fb`) applies with `data-theme="light"` or, with no explicit choice, `prefers-color-scheme: light`, on screen only (print always uses the dark values, which the print rules assume). Surfaces: **glass** `--surface-1` (translucent, backdrop blur) for Today panels, the Qualify queue and detail; **dense** `--surface-dense` for tables, forms and sticky bars (Monitor, Standards, Eval, Compare, the detail sub-tab panel, knockout banner, error panels, + New supplier panels, shell bar); **inset** `--surface-3` for nested wells; **opaque** `--panel` for the citation viewer and the chart tooltip; the p-chart keeps opaque `--bg-plot`. Only headings, eyebrows, ledes, captions, the header and the footer sit on the bare page.
+
+Minimum contrast measured against composited backgrounds (the strongest blob pair at full alpha over `--bg`; surfaces also with a particle behind and under the selected overlay). `app/shell.test.js` recomputes these from the tokens:
+
+| Check (minimum over all bases) | Dark | Light |
+|---|---|---|
+| Bare page: ink / ink-soft / muted / cyan / amber / ok / bad | 9.83 / 7.91 / 4.77 / 7.87 / 6.21 / 8.43 / 4.89 | 10.53 / 6.52 / 4.90 / 4.66 / 5.24 / 4.96 / 4.89 |
+| Glass, any overlay, particle behind: muted / amber / bad | 4.94 / 6.43 / 5.07 | 5.64 / 6.03 / 5.63 |
+| Dense, any overlay: muted | 5.43 | 5.91 |
+| `--line-active` (and focus `--cyan`) on glass / dense (≥ 3) | 11.59 / 12.61 | 6.56 / 6.90 |
+| `--line-input` over glass / dense / its `--bg` fill (≥ 3) | 4.94 / 5.14 / 5.35 | 6.56 / 6.90 / 6.50 |
+| `--on-cyan` on `--cyan` (button) | 14.33 | 7.16 |
+| muted / bad / amber / cyan on `--bg-plot` (p-chart) | 8.78 / 9.02 / 11.44 / 14.51 | 7.16 / 7.14 / 7.65 / 6.80 |
+| View title gradient end `--cyan` on all four blobs (large text, ≥ 3) | 6.25 | 4.21 |
+
+Borders `--line` are decoration only. Any border that identifies a control (inputs, the pressed pill, the toggle) uses `--line-input` or `--line-active`.
 
 ## 6. Type and numbers
 
 | Use | Style |
 |---|---|
-| View title | `h2` from tokens (32 px) |
+| View title | `.view h2`: `clamp(32px, 4.2vw, 52px)`, weight 600, an `--ink` → `--cyan` gradient clipped to the text where supported; solid `--ink` without `background-clip:text`, in forced colours and in print |
 | Panel title | `.eyebrow` (11 px mono, uppercase, cyan) |
 | Body and table text | 12–13 px `--sans` |
 | Big score | `.stats strong` (42 px mono) |
@@ -338,10 +356,13 @@ A verified Cpk ≥ 1.67 shows an `excellent` label beside its value (display onl
 | SCAR row | table row | UIM-FR-10 | over 60 days: `--bad` text + "Over 60 days" |
 | Error / empty panel | `.panel` | UIQ-FR-12, UIM-FR-12, UIT-FR-07/08, UIE-FR-07 | message + path or row |
 | Draft SCAR (disabled) | `.button` disabled | UIM-FR-13 | "Arrives in v1.1" beside it |
+| Glass panel | `.panel` (glass by default; dense via the view's panel rule; nested `.draft-panel` / `.compare-col` are inset wells with no second blur) | every view | `--radius-panel`, `--line-glass` border, `--shadow-panel`; surface per §5; falls back to dense without `backdrop-filter` |
+| Theme toggle | `.theme-toggle` (new) | every view (header) | DS-FR-08; ☀ in both themes (Sid, 2026-11-20), the word "Light mode" always shown, `aria-pressed` carries the state |
+| Coolant canvas | `.coolant` (new) | every view (backdrop) | DS-FR-09; decorative, `aria-hidden`, no pointer events, hidden under reduced motion and in print |
 
 ## 8. Keyboard
 
-- Tab order: brand → policy chip → *Viewing as* → view tabs → the view's main list → its detail → footer. A skip link goes to the main content.
+- Tab order: brand → policy chip → *Viewing as* → theme toggle → view tabs → the view's main list → its detail → footer. A skip link goes to the main content.
 - Enter activates links (citation links, row ID links, alert links, Today cards, Compare part pills, Eval run links); Enter or Space activates buttons (queue cards, filter pills, tabs). A table row's pointer click is a convenience; its ID link is the keyboard path (decision 172).
 - In the p-chart, arrows move between points, and Home / End go to M1 / M18 (the first / last plotted point when a month has no receipts). Enter or Space on a chart point sets `month`; arrows only move focus.
 - Escape closes the citation viewer, and focus returns to the citation link. Tab stays inside the sheet while it is open.
@@ -358,7 +379,9 @@ A verified Cpk ≥ 1.67 shows an `excellent` label beside its value (display onl
 - [ ] The page passes keyboard-only operation of the demo script.
 - [ ] Screen reader (VoiceOver): queue cards, decision, routing reasons, gap rows, chart points, policy edits (via the impact panel) and eval stats are announced with their values.
 - [ ] Zoom to 200%: no content lost, no horizontal scroll at 390 px.
-- [ ] `prefers-reduced-motion`: no transitions.
+- [ ] `prefers-reduced-motion`: no transitions, blobs static, no particles, no live-dot pulse.
+- [ ] Both themes (dark and light): every text and control readable, tables and the packet viewer crisp, nothing but headings and captions on a bare blob.
+- [ ] Theme toggle: keyboard operable, announced as "Light mode, toggle button, pressed / not pressed", 44 px tall at 390 px.
 
 ## 10. Acceptance criteria
 
@@ -366,11 +389,15 @@ A verified Cpk ≥ 1.67 shows an `excellent` label beside its value (display onl
 - [ ] DS-AC-02: The §9 checklist passes for all six views at both widths. *(proves DS-NFR-01…-03, OVR-NFR-05)*
 - [ ] DS-AC-04: Every hash in §4.2 opens its screen from a fresh load, and an unknown value falls back to the view's default. *(proves DS-FR-06, -07)*
 - [ ] DS-AC-03: No hex color literal in `app/` outside `design/tokens.css`. *(proves DS-FR-01)*
+- [ ] DS-AC-05: The composited contrast test passes for every token pair in both themes. *(proves DS-NFR-01, DS-NFR-04)*
+- [ ] DS-AC-06: The theme toggle flips the theme, the choice survives a reload, and with storage blocked it still flips for the session with no error. *(proves DS-FR-08)*
 
 ## 11. Changelog
 
 | Date | Change |
 |---|---|
+| 2026-11-20 | Issue 178 review: pressed controls (theme toggle, *Viewing as* and policy pills, current Compare part) put a dense layer under `--pressed` so their cyan text passes AA on the bare page (light worst case 3.90 → 5.70); Monitor's detail head and metric strip sit on a dense surface, per the §5 surface policy. `app/shell.test.js` checks `--pressed` both on the bare page and as a surface overlay. |
+| 2026-11-20 | Issue 178 Coolant Loop theme: §3 adds DS-FR-08 (Light / Dark toggle), DS-FR-09 (blob and particle backdrop), DS-NFR-04 (composited contrast, both themes) and widens DS-NFR-03 to all animation. §5 new `--ok` / `--bad` values per theme, the surface policy (glass, dense, inset, opaque) and the two-theme contrast table replace the single-`--bg` paragraph. §6 view title. §7 adds Glass panel, Theme toggle and Coolant canvas. §9 and §10 add the theme and reduced-motion checks (DS-AC-05, DS-AC-06). |
 | 2026-11-19 | Issue 172 packet upload: §4.4 the + New supplier bullet adds the step-2 packet panel (above the live strip; Upload packet, Use the sample packet, Remove packet; drop zone hidden at 759 px and below; summary, refused and unmatched lists; amber "Check:" row flags; replace-confirm; help text verbatim) and the step-1 hint line; the viewer bullet reads a hand-entered supplier's saved packet instead of fetching. |
 | 2026-11-17 | Issue 169 installable app: §4.1 the installed window (display: standalone) shows the same badge row, tabs and footer; the OS title bar replaces the browser chrome. No install button in the app. Decisions 245–254. |
 | 2026-11-17 | Issue 163 viewer and navigation: §4.2 and §4.8 an Eval `world` + `supplier` pair opens only when it is a miss row in `data/eval.json`, else "Not found" (replaces "never Not found" from issue 111). §4.4 the citation viewer shows numbers with more than 3 decimals rounded to 3 with a one-line note; files unchanged. §4.5 opening a Monitor supplier focuses the detail heading and scrolls it into view once (reduced motion: instant). Decisions 240–244. |
