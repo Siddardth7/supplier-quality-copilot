@@ -18,6 +18,10 @@ import { renderCompare } from './compare.js';
 import * as qualify from './views/qualify.js';
 import { blankEntry, checklist, entryFromRecord, scoreEntry, setPart, setRow, toExtraction, toRecord, WHERE_REQUIRED } from './manual.js';
 import { entryFocusScroll, revealEntryFocus, issueText, liveGaps, livePanel, profileLine, renderEntry, sheetFor } from './entry.js';
+import { packetPanel, packetSummary } from './entry.js';
+import { FORMAT_HELP, NO_MATCH, SAMPLE_DIR, readPacket } from './packet-reader.js';
+import { PACKET_FILES } from './packet.js';
+import { REFUSED, entryRows } from './manual.js';
 
 const AS_OF = '2026-11-01';
 const COLD = 'cold_plate';
@@ -561,4 +565,108 @@ test('issue 138: new-supplier Stark limit shows the stored between range', () =>
   const row = rowHtml(renderEntry(modelOf(), ctxOf(entry)), '4.coating_thickness');
   assert.match(row, /Stark limit:/);
   assert.ok(row.includes('60–100 µm'));
+});
+
+// ---- 19. packet panel (issue 172; PRD-05 UIQ-FR-21, -22, UIQ-AC-14, -15) ----
+
+const SAMPLE_FILES = PACKET_FILES.map((name) => ({ name, text: readFileSync(new URL(`../data/${SAMPLE_DIR}${name}`, import.meta.url), 'utf8') }));
+const withUi = (entry, packetUi) => { const c = ctxOf(entry); return { ...c, entry: { ...c.entry, packetUi } }; };
+// What main.js applyPacket does with a reading (raw-text rows, flags in read).
+function applied(result, files, refused = []) {
+  const base = setPart({ ...blankEntry(), name: 'Brand Corporation', step: 2 }, CP);
+  return { ...base, rows: entryRows(result.rows),
+    packet: { files },
+    read: { flags: Object.fromEntries(Object.entries(result.rows).filter(([, x]) => x.flag).map(([id, x]) => [id, x.flag])),
+      counts: result.counts, files: result.files, unmatched: result.unmatched, refused, warnings: result.warnings } };
+}
+const panelOf = (html) => html.slice(html.indexOf('<section class="panel entry-packet"'), html.indexOf('<div class="panel entry-live"'));
+
+test('19 UIQ-FR-21: step 1 has the packet hint line; step 2 has the panel between the head and the live strip', () => {
+  const s1 = renderEntry(modelOf(), ctxOf(blankEntry()));
+  assert.ok(s1.includes('<p class="quiet entry-hint">After you continue, you can load a supplier packet to fill the checklist.</p>'));
+  const s2 = renderEntry(modelOf(), ctxOf(sup07Entry()));
+  const head = s2.indexOf('data-act="entry-change-part"'), panel = s2.indexOf('<section class="panel entry-packet" aria-labelledby="entry-packet-title" data-packet-drop>');
+  assert.ok(head > 0 && panel > head && s2.indexOf('data-entry-live') > panel);
+  assert.ok(s2.includes('<h4 id="entry-packet-title" tabindex="-1">Read a supplier packet (optional)</h4>'));
+  assert.ok(s2.includes(`<p class="quiet">${esc(FORMAT_HELP)}</p>`));
+  assert.match(s2, /data-act="packet-upload">Upload packet</);
+  assert.match(s2, /data-act="packet-sample">Use the sample packet</);
+  assert.ok(s2.includes('or drop the .md files here'));
+  assert.doesNotMatch(s2, /packet-clear|entry-packet-confirm/, 'no Remove or confirm without a packet');
+  assert.match(panelOf(s2), /<div id="entry-packet-summary" tabindex="-1" role="status"><\/div>/);
+});
+
+test('19 UIQ-AC-14: the sample read renders the summary, Files list, no refused or unmatched, and scores 90.5 CONDITIONAL', () => {
+  const r = readPacket(SAMPLE_FILES, CP.commodity, CP.part_no);
+  const e = applied(r, SAMPLE_FILES);
+  const html = renderEntry(modelOf(), ctxOf(e));
+  const p = panelOf(html);
+  assert.equal(packetSummary(e.read), 'Read 9 files: 30 proven, 2 claimed, 1 missing.');
+  assert.match(p, /<div id="entry-packet-summary" tabindex="-1" role="status"><p>Read 9 files: 30 proven, 2 claimed, 1 missing\.<\/p><\/div>/);
+  assert.match(p, /<h5>Refused files<\/h5><p class="quiet">None<\/p>/);
+  assert.match(p, /<details class="entry-unmatched"><summary>Unmatched content \(0\)<\/summary><p class="quiet">None<\/p><\/details>/);
+  assert.ok(p.includes(`<li>rfq.md: ${esc('buyer requirements, not read as supplier evidence')}</li>`));
+  assert.ok(p.includes('<li>capability_study.md: 1 section matched</li>'));
+  assert.match(p, /data-act="packet-clear">Remove packet</);
+  assert.match(livePart(html), /<strong>90\.5<\/strong>/);
+  assert.match(livePart(html), /CONDITIONAL/);
+  // Save: the record (with its packet) scores the same in the app model, tagged as hand-entered.
+  const rec = toRecord(e, { id: 'NEW-01', saved_at: '2026-11-20' });
+  assert.deepEqual(rec.packet, { files: SAMPLE_FILES });
+  const c = modelOf([rec]).candidates.find((x) => x.id === 'NEW-01');
+  assert.deepEqual([c.source, c.status, c.evaluation.total, c.evaluation.decision], ['manual', 'scored', 90.5, 'CONDITIONAL']);
+});
+
+test('19 UIQ-FR-22: a flagged row shows the Check line, described-by both ids; others keep err- only; plural summary', () => {
+  const md = '## 1.1 Lot traceability\n\nRecorded result: yes.\n## 1.2 Corrective-action program\n\nResults are measured.\n## 1.3 Widget\n\nx\n';
+  const r = readPacket([{ name: 'quality_manual.md', text: md }], CP.commodity, 'SI-CP-0001');
+  const e = applied(r, [{ name: 'quality_manual.md', text: md }], [{ name: 'notes.md', reason: REFUSED.name }]);
+  const html = renderEntry(modelOf(), ctxOf(e));
+  const lot = rowHtml(html, '5.lot_trace');
+  assert.ok(lot.includes(`<p class="entry-flag" id="flag-5.lot_trace">${esc(e.read.flags['5.lot_trace'])}</p>`));
+  assert.match(e.read.flags['5.lot_trace'], /^Check: found "yes"/);
+  for (const f of ['state', 'value', 'where', 'note']) assert.match(lot, new RegExp(`data-entry-field="${f}" data-id="5\\.lot_trace" aria-describedby="err-5\\.lot_trace flag-5\\.lot_trace"`), f);
+  const cpk = rowHtml(html, '2.ctq_cpk');
+  assert.match(cpk, /aria-describedby="err-2\.ctq_cpk"/);
+  assert.doesNotMatch(cpk, /entry-flag/);
+  const p = panelOf(html);
+  assert.ok(p.includes(esc('Read 1 file: 0 proven, 2 claimed, 31 missing. 2 rows need a check.')));
+  assert.ok(!p.includes('Check: The cover letter'), 'no cover letter, no warning');
+  assert.ok(p.includes(`<li>notes.md: ${esc(REFUSED.name)}</li>`));
+  assert.match(p, /<details class="entry-unmatched" open><summary>Unmatched content \(1\)<\/summary><ul class="entry-packet-list"><li>quality_manual\.md §1\.3 · Widget · no checklist row has this title<\/li>/);
+  assert.equal(packetSummary({ counts: { proven: 1, claimed: 0, missing: 0, flagged: 1 }, files: [{ status: 'read' }] }), 'Read 1 file: 1 proven, 0 claimed, 0 missing. 1 row needs a check.');
+});
+
+test('19 UIQ-FR-21: the part warning renders as a Check line', () => {
+  const r = readPacket(SAMPLE_FILES, CP.commodity, 'SI-CP-0001');
+  const p = panelOf(renderEntry(modelOf(), ctxOf(applied(r, SAMPLE_FILES))));
+  assert.ok(p.includes('<p class="entry-flag">Check: The cover letter names part SI-CP-0007 but you picked SI-CP-0001.</p>'));
+});
+
+test('19 UIQ-AC-15: a refused read shows the error as an alert with its refused list; the rows are untouched', () => {
+  const e = sup07Entry();
+  const html = renderEntry(modelOf(), withUi(e, { error: NO_MATCH, refused: [{ name: 'msa.md', reason: 'not UTF-8 text' }] }));
+  const p = panelOf(html);
+  assert.ok(p.includes(`<div id="entry-packet-summary" tabindex="-1" role="alert"><p class="entry-error">${esc(NO_MATCH)}</p></div>`));
+  assert.ok(p.includes('<h5>Refused files</h5><ul class="entry-packet-list"><li>msa.md: not UTF-8 text</li></ul>'));
+  assert.match(livePart(html), /<strong>82\.6<\/strong>/, 'SUP-07 rows still score as before');
+  assert.match(packetPanel(e, { error: 'x' }), /<h5>Refused files<\/h5><p class="quiet">None<\/p>/);
+});
+
+test('19 D7: the replace confirm shows Replace and Keep my rows only when asked', () => {
+  const on = packetPanel(sup07Entry(), { confirm: true });
+  assert.ok(on.includes('<div class="entry-packet-confirm" role="group" aria-label="Confirm replace"><p>This replaces the rows you have filled in.</p>'
+    + '<button type="button" class="button compact" data-act="packet-replace">Replace</button>'
+    + '<button type="button" class="subtle-button" data-act="packet-keep">Keep my rows</button></div>'));
+  assert.doesNotMatch(packetPanel(sup07Entry(), { confirm: false }), /packet-replace/);
+});
+
+test('19 UIQ-FR-23: Edit of a record with a saved packet says so and offers Remove packet; flags are not restored', () => {
+  const rec = toRecord(applied(readPacket(SAMPLE_FILES, CP.commodity, CP.part_no), SAMPLE_FILES), { id: 'NEW-02', saved_at: 's' });
+  const html = renderEntry(modelOf([rec]), ctxOf(entryFromRecord(rec)));
+  const p = panelOf(html);
+  assert.ok(p.includes('<p>This supplier has a saved packet (10 files). Citations open its pages.</p>'));
+  assert.match(p, /packet-clear/);
+  assert.doesNotMatch(html, /class="entry-flag"/);
+  assert.ok(packetPanel({ packet: { files: [{ name: 'msa.md', text: 'x' }] } }, {}).includes('(1 file)'));
 });

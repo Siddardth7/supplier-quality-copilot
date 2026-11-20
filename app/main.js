@@ -10,12 +10,13 @@ import { parseHash, formatHash, resolveRoute } from './route.js';
 import { announcementKey, chip, roleSwitch } from './shell.js';
 import { copyWithFallback } from './clipboard.js';
 import { VIEWS } from './views/index.js';
-import { ROUND_NOTE, fileListBody, packetDir, packetPath, renderPacket, sheetBody } from './packet.js';
+import { PACKET_FILES, ROUND_NOTE, fileListBody, packetDir, packetPath, renderPacket, sheetBody } from './packet.js';
+import { MAX_FILE_BYTES, NOTHING, SAMPLE_DIR, decodeFiles, readPacket, uploadedFile } from './packet-reader.js';
 import { monitorDetailKey, detailScrollOptions } from './monitor.js';
 import { draftsModel, copyPayload } from './drafts.js';
 import { WHERE_REQUIRED, blankEntry, entryFromRecord, exportRecord, importRecord, nextId, remove, scoreEntry, setPart, setRow, toRecord,
-  upsert, writeManual } from './manual.js';
-import { revealEntryFocus, issueText, liveGaps, livePanel, profileLine, sheetFor } from './entry.js';
+  upsert, writeManual, entryRows } from './manual.js';
+import { revealEntryFocus, issueText, liveGaps, livePanel, packetSummary, profileLine, sheetFor } from './entry.js';
 import { queueHref } from './queue.js';
 import { importSheet } from './sheet-import.js';
 import { loadSheets, writeSheets, uploadModel, exportSheet, editPreview, previewFields, savePreview, applyPreviewJson } from './sheet-upload.js';
@@ -59,6 +60,9 @@ function boot() {
   let entry = null;
   const manualUi = { saveNote: null, importError: null, confirm: null, entryError: null };
   let entryFocus = null;      // a Qualify selector to focus after the next render
+  // Packet upload (issue 172): a refused read or a read waiting for "Replace"; neither touches the entry until applied.
+  let packetUi = { error: null, refused: [], pending: null };
+  let packetRead = 0;         // read sequence: a stale async read (file read, sample fetch) is dropped
 
   if (source.overridden) {
     $('dev-note').textContent = `Local dev data: ${source.path}`;
@@ -211,13 +215,17 @@ function boot() {
   }
 
   async function showPacket(key, rel, doc, sec) {
-    const path = source.label + rel;
+    // A hand-entered supplier with a saved packet reads its own files, never data/suppliers/ (issue 172, UIQ-FR-24).
+    // Not cached: a re-save must show the new text.
+    const rec = route.view === 'qualify' ? data?.manual?.records.find((r) => r.supplier_id === route.params.supplier && r.packet) : null;
+    const path = rec ? `uploaded packet/${doc}` : source.label + rel;
     const fill = (state) => {
       sheet.scrollTop = 0; sheet.innerHTML = sheetBody({ path, doc, sec, ...state });
       // In the header, not the scroller, so it stays visible when the cited section is scrolled to the top (issue 163).
       const note = $('viewer-note'); note.hidden = !(state.rounded > 0); note.textContent = note.hidden ? '' : ROUND_NOTE;
     };
-    let text = cache.get(rel);
+    let text = rec ? uploadedFile(rec, doc) : cache.get(rel);
+    if (text === null) { fill({ status: 'missing' }); return; }
     if (text === undefined) {
       fill({ status: 'loading' });
       try {
@@ -900,19 +908,21 @@ function boot() {
   // A supplier that is not a hand-entered record gets no entry: the normal detail or Not found shows.
   function syncEntry() {
     if (manualUi.confirm !== route.params.supplier) manualUi.confirm = null;
-    if (!route.params.new) { entry = null; manualUi.entryError = null; return; }
+    if (!route.params.new) { if (entry) resetPacketUi(); entry = null; manualUi.entryError = null; return; }
     if (!model?.suppliers.ok) return;
     const want = route.params.supplier ?? null;
     if (entry && entry.id === want) return;
     const rec = want === null ? null : data.manual.records.find((r) => r.supplier_id === want);
     entry = want === null ? blankEntry() : rec ? entryFromRecord(rec) : null;
     manualUi.entryError = null;
+    resetPacketUi();
     if (entry) entryFocus ??= '#entry-title';
   }
 
   const blockedNote = () => manualUi.saveNote ?? (storage.ok ? null : "Can't save in this browser");
   function qualifyState() {
-    return { entry: entry && { state: entry, policy: resolved.policy, saveNote: blockedNote(), error: manualUi.entryError },
+    return { entry: entry && { state: entry, policy: resolved.policy, saveNote: blockedNote(), error: manualUi.entryError,
+      packetUi: { error: packetUi.error, refused: packetUi.refused, confirm: !!packetUi.pending } },
       manualConfirm: manualUi.confirm, manualNote: manualUi.saveNote, importError: manualUi.importError };
   }
   const announce = (msg) => { $('announce').textContent = msg; };
@@ -1005,6 +1015,71 @@ function boot() {
     location.hash = toQueue();
   }
 
+  // ---- Packet upload (issue 172; PRD-05 UIQ-FR-21..24): rules reader in step 2, the engine still scores ----
+  function resetPacketUi() { packetRead++; packetUi = { error: null, refused: [], pending: null }; }
+  const packetInput = document.createElement('input');
+  packetInput.type = 'file'; packetInput.multiple = true; packetInput.hidden = true;
+  packetInput.accept = '.md,text/markdown';
+  document.body.append(packetInput);
+  // At most MAX_FILE_BYTES + 1 bytes per file: enough for decodeFiles to refuse an oversized one without reading it all.
+  const fileEntries = (list) => Promise.all([...list].map(async (f) => ({ name: f.name, bytes: new Uint8Array(await f.slice(0, MAX_FILE_BYTES + 1).arrayBuffer()) })));
+  const sampleEntries = () => Promise.all(PACKET_FILES.map(async (name) => ({ name, bytes: new TextEncoder().encode(await fetchText(SAMPLE_DIR + name)) })));
+  const blankRows = (rows) => Object.values(rows).every((r) => r.state === 'missing' && !String(r.value).trim() && !String(r.where).trim() && !String(r.note).trim());
+
+  function packetFail(error, refused, unmatched = []) {
+    packetUi = { error, refused, unmatched, pending: null };
+    announce(error);
+    entryFocus = '#entry-packet-summary';
+    render();
+  }
+
+  async function loadPacket(load, failPrefix) {
+    const sequence = ++packetRead;
+    let entries;
+    try { entries = await load(); } catch (e) {
+      if (sequence === packetRead && entry?.step === 2) packetFail(`${failPrefix}: ${e?.message ?? e}`, []);
+      return;
+    }
+    if (sequence !== packetRead || entry?.step !== 2) return;
+    const { files, refused } = decodeFiles(entries);
+    const result = files.length ? readPacket(files, entry.commodity, entry.part_no) : { ok: false, error: NOTHING };
+    if (!result.ok) { packetFail(result.error, refused, result.unmatched); return; }
+    const pending = { result, files, refused };
+    if (blankRows(entry.rows)) { applyPacket(pending); return; }
+    packetUi = { error: null, refused: [], pending };
+    announce('This replaces the rows you have filled in.');
+    entryFocus = '[data-act="packet-replace"]';
+    render();
+  }
+
+  // Reader rows -> the entry's raw-text rows (bool -> 'true'/'false', what the selects and parseValue expect); flags
+  // stay in entry.read, never on a row and never stored.
+  function applyPacket({ result, files, refused }) {
+    const rows = entryRows(result.rows);
+    const flags = Object.fromEntries(Object.entries(result.rows).filter(([, x]) => x.flag).map(([id, x]) => [id, x.flag]));
+    entry = { ...entry, rows, packet: { files },
+      read: { flags, counts: result.counts, files: result.files, unmatched: result.unmatched, refused, warnings: result.warnings } };
+    packetUi = { error: null, refused: [], pending: null };
+    announce(packetSummary(entry.read));
+    entryFocus = '#entry-packet-summary';
+    render();
+  }
+
+  // A person edited a flagged row's state, value or where: the flag has done its job (spec 3.5, D6).
+  function clearFlag(id) {
+    if (!entry.read?.flags?.[id]) return;
+    const { [id]: _, ...flags } = entry.read.flags;
+    entry = { ...entry, read: { ...entry.read, flags } };
+    $(`flag-${id}`)?.remove();
+    for (const el of $('view-qualify').querySelectorAll(`[data-entry-field][data-id="${CSS.escape(id)}"]`)) el.setAttribute('aria-describedby', `err-${id}`);
+  }
+
+  packetInput.addEventListener('change', () => {
+    const list = [...(packetInput.files ?? [])];
+    packetInput.value = '';
+    if (list.length) loadPacket(() => fileEntries(list), "Couldn't read the files");
+  });
+
   // A second detached file input for Import, like the Standards one: it survives re-renders while the picker is open.
   const manualFile = document.createElement('input');
   manualFile.type = 'file';
@@ -1034,6 +1109,7 @@ function boot() {
     const f = el.dataset?.entryField;
     if (!f || !entry || el.tagName === 'SELECT') return;  // selects go through change
     entry = el.dataset.id ? setRow(entry, el.dataset.id, { [f]: el.value }) : { ...entry, [f]: el.value };
+    if (el.dataset.id && f !== 'note') clearFlag(el.dataset.id);
     refreshEntry();
   });
   // A step-2 select changes the form's shape (disabled value, required label): full render, focus kept. Step 1's part
@@ -1045,7 +1121,8 @@ function boot() {
     if (f === 'part_no') {
       const sheet = sheetFor(uploadModel(model, sheetStore), el.value);
       entry = sheet ? setPart(entry, sheet) : { ...entry, part_no: null, commodity: null };
-    } else entry = setRow(entry, el.dataset.id, { [f]: el.value });
+      resetPacketUi();
+    } else { entry = setRow(entry, el.dataset.id, { [f]: el.value }); clearFlag(el.dataset.id); }
     if (entry.step === 1) { refreshEntry(); return; }
     entryFocus = el.dataset.id ? `[data-entry-field="${f}"][data-id="${CSS.escape(el.dataset.id)}"]` : `[data-entry-field="${f}"]`;
     render();
@@ -1055,7 +1132,7 @@ function boot() {
     if (!btn) return;
     const { act, id } = btn.dataset;
     if (act === 'entry-continue') continueEntry();
-    else if (act === 'entry-change-part') { entry = { ...entry, step: 1 }; manualUi.entryError = null; entryFocus = '#entry-part'; render(); }
+    else if (act === 'entry-change-part') { entry = { ...entry, step: 1 }; manualUi.entryError = null; resetPacketUi(); entryFocus = '#entry-part'; render(); }
     else if (act === 'entry-save') saveEntry();
     else if (act === 'entry-cancel') { entry = null; entryFocus = '.queue-actions [data-href]'; location.hash = toQueue(); }
     else if (act === 'manual-export') {
@@ -1068,6 +1145,17 @@ function boot() {
     else if (act === 'manual-cancel') { manualUi.confirm = null; entryFocus = '[data-act="manual-delete"]'; render(); }
     else if (act === 'manual-confirm-delete') deleteManual(id);
     else if (act === 'manual-import') { manualUi.importError = null; manualFile.click(); }
+    else if (act === 'packet-upload') packetInput.click();
+    else if (act === 'packet-sample') loadPacket(sampleEntries, "Couldn't load the sample packet");
+    else if (act === 'packet-replace' && packetUi.pending) applyPacket(packetUi.pending);
+    else if (act === 'packet-keep') { resetPacketUi(); announce('Kept your rows'); entryFocus = '[data-act="packet-upload"]'; render(); }
+    else if (act === 'packet-clear') {
+      resetPacketUi();
+      entry = { ...entry, packet: null, read: null };
+      announce('Packet removed. The rows are unchanged.');
+      entryFocus = '[data-act="packet-upload"]';
+      render();
+    }
   });
   // WCAG 2.4.11: the browser doesn't scroll a field it sees as on screen, so Shift+Tab can land one under the sticky
   // score strip (or the tab bar above it). Scroll it clear of the strip; scroll-padding in app.css covers the rest.
@@ -1086,11 +1174,26 @@ function boot() {
     revealEntryFocus(e.target, window, entryFocusClearance(e.target));
   });
   qv.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && packetUi.pending) {  // Escape = Keep my rows
+      e.preventDefault();
+      resetPacketUi(); announce('Kept your rows'); entryFocus = '[data-act="packet-upload"]'; render();
+      return;
+    }
     if (e.key !== 'Escape' || !manualUi.confirm) return;
     e.preventDefault();
     manualUi.confirm = null;
     entryFocus = '[data-act="manual-delete"]';
     render();
+  });
+
+  // Drop .md files on the packet panel (pointer enhancement; the Upload packet button is the keyboard path).
+  const fileDrag = (e) => e.target.closest?.('[data-packet-drop]') && [...(e.dataTransfer?.types ?? [])].includes('Files');
+  qv.addEventListener('dragover', (e) => { if (fileDrag(e)) { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; } });
+  qv.addEventListener('drop', (e) => {
+    if (!fileDrag(e)) return;
+    e.preventDefault();
+    const list = [...(e.dataTransfer.files ?? [])];
+    if (list.length && entry?.step === 2) loadPacket(() => fileEntries(list), "Couldn't read the files");
   });
 
   window.addEventListener('hashchange', render);

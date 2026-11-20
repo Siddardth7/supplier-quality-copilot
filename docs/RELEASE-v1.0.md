@@ -5,7 +5,7 @@
 | Release | v1.0 MVP |
 | Milestones | M1, M2, M3b, M4, M5, M6 (M3 was superseded by M3b) |
 | Product requirements | [PRD-07](product/PRD-07-ship.md) SHIP-FR-07 |
-| Last updated | 2026-11-14 |
+| Last updated | 2026-11-20 |
 
 All data is synthetic. The buyer is Stark Industries and the suppliers carry Marvel comic-book company names; this
 project is fan-made and not affiliated with Marvel.
@@ -55,6 +55,30 @@ records it.
 - Deferred to later releases: Draft SCAR (v1.1, PRD-08), the Quality Engineering Skills port (v1.2, PRD-09), showing
   an uploaded sheet's own part in Qualify detail, Today and Compare (#141), PDF sheet upload and employee logins
   (v2.0).
+
+## Patch releases
+
+### v1.0.2 (2026-11-20)
+
+- **Upload packet in + New supplier** (#172, PR #175). After the name and a Stark part, the engineer uploads the
+  supplier's packet (`.md` files, the file picker, drag and drop, or **Use the sample packet**). A rules-based reader
+  in the browser, with no AI and no dependencies, fills the checklist: a recorded result means Proven, prose means
+  Claimed, no section means Missing. Anything it cannot read, or evidence that contradicts itself, stays Claimed with
+  a visible *Check:* line. Every row stays editable before Save, the engine is still the only scorer, and citations
+  open the supplier's own uploaded pages.
+- **Measured:** on every shipped packet with an answer key (worlds 93 and 101 to 104, 45 packets, 1440 rows), the
+  reader agrees on state, value and citation 1440/1440, and the engine's total, decision, knockouts and routing agree
+  45/45 (`scripts/reader-accuracy.mjs`, pinned by a test).
+- **Demo packet:** `data/samples/brand-corporation/`, a new fictional cold-plate bidder for SI-CP-0007: 90.5,
+  CONDITIONAL, Senior SQE (the leak test is only claimed).
+- **Known limitation:** the reader reads only packets in this project's format. Real PDFs, scans, spreadsheets and
+  free-form packets are planned in [AI-READER-PLAN.md](AI-READER-PLAN.md) (#173, PR #174): assisted mapping without
+  AI, and an optional AI reader that proposes evidence the page then verifies.
+- Offline copies re-cache on the next visit (`sw.js` VERSION v1.0.2).
+
+### v1.0.1 (2026-11-18)
+
+- Installable desktop app with offline mode (#169), plain-language labels and viewer fixes (PR #167, #168, #170).
 
 ## Ship checklist
 

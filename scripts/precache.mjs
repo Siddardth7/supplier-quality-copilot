@@ -1,6 +1,7 @@
 // issue 169: the offline precache list (decisions 247, 248). node scripts/precache.mjs  ->  rewrites the
 // BEGIN/END precache block in sw.js and prints "N files". precacheList() is also used by scripts/pwa.test.mjs.
-// Built from disk: the shell plus exactly the data files the app can fetch (data.js loadData, packet.js viewer).
+// Built from disk: the shell plus exactly the data files the app can fetch (data.js loadData, packet.js viewer,
+// the + New supplier sample packet).
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -37,6 +38,7 @@ export function precacheList(root = ROOT) {
     ...dirs(join(data, 'suppliers')).map((id) => `data/suppliers/${id}/`),
     ...dirs(join(data, 'worlds')).flatMap((n) => dirs(join(data, 'worlds', n, 'packets')).map((id) => `data/worlds/${n}/packets/${id}/`)),
   ];
+  packets.push('data/samples/brand-corporation/');  // issue 172: the "Use the sample packet" button fetches it
   for (const dir of packets) for (const f of PACKET_FILES) out.push(dir + f);
   const files = [...SHELL, ...moduleClosure(root), ...out].filter((p) => p.endsWith('/') || existsSync(join(root, p)));
   return [...new Set(files)].sort();

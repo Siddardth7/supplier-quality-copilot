@@ -75,6 +75,8 @@ function fetchable() {
     if (!existsSync(join(ROOT, 'data/worlds', n, 'packets'))) continue;
     for (const id of dirs(`data/worlds/${n}/packets`)) data.push(...files(`data/worlds/${n}/packets/${id}`).map((f) => `data/worlds/${n}/packets/${id}/${f}`));
   }
+  // issue 172: the sample packet the + New supplier button fetches (its README is never fetched).
+  data.push(...files('data/samples/brand-corporation').filter((f) => f !== 'README.md').map((f) => `data/samples/brand-corporation/${f}`));
   const modules = walk('app').filter((p) => p.endsWith('.js') && !/\.test\.js$|\.testkit\.js$/.test(p));
   const shell = ['./', 'index.html', 'manifest.json', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png',
     'app/', 'app/index.html', 'app/app.css', 'design/tokens.css'];
@@ -98,11 +100,13 @@ test('every packet directory holds exactly PACKET_FILES (the oracle above lists 
   for (const d of packetDirs) assert.deepEqual(files(d).sort(), [...PACKET_FILES].sort(), d);
 });
 
-test('precache list: sorted, unique, on disk, no answer keys, facts, simulation, samples or tests', () => {
+test('precache list: sorted, unique, on disk, no answer keys, facts, simulation, other samples or tests', () => {
   assert.deepEqual(PRECACHE, [...PRECACHE].sort(), 'sorted');
   assert.equal(new Set(PRECACHE).size, PRECACHE.length, 'no duplicates');
   for (const p of PRECACHE) if (p !== './' && p !== 'app/') assert.ok(existsSync(join(ROOT, p)), `${p} exists`);
-  for (const p of PRECACHE) assert.doesNotMatch(p, /answer_key|facts\/|simulation\/|samples\/|\.test\.|\.testkit\./, p);
+  for (const p of PRECACHE) assert.doesNotMatch(p, /answer_key|facts\/|simulation\/|samples\/(?!brand-corporation\/)|\.test\.|\.testkit\./, p);
+  for (const f of PACKET_FILES) assert.ok(PRECACHE.includes(`data/samples/brand-corporation/${f}`), `sample ${f}`);
+  assert.ok(!PRECACHE.includes('data/samples/brand-corporation/README.md'), 'sample README is not fetched');
   assert.ok(PRECACHE.includes('app/views/today.js') && PRECACHE.includes('app/offline.js'), 'module closure');
 });
 

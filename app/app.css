@@ -172,6 +172,24 @@ main{padding-block:40px}
   :root:has(.entry-live){scroll-padding-top:96px}  /* the strip is static here; only the shell bar sticks */
   .entry-fields{grid-template-columns:minmax(0,1fr)}
 }
+/* Packet upload panel in + New supplier step 2 (issue 172; DESIGN-SPEC 4.4). Amber "Check:" lines always carry the word. */
+.entry-packet{padding:16px 20px;margin-bottom:20px;min-width:0;overflow-wrap:anywhere}
+.entry-packet h4{margin:0 0 8px;font-size:13px}
+.entry-packet h5{margin:16px 0 4px;font-size:12px;font-weight:500}
+.entry-packet p{margin:8px 0 0}
+.entry-packet .entry-actions{margin-top:12px}
+.entry-packet-list{margin:0;padding-left:20px;font-size:12px;line-height:1.7}
+.entry-packet-confirm{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:12px}
+.entry-packet-confirm p{flex-basis:100%}
+.entry-unmatched{margin-top:16px;font-size:12px}
+.entry-unmatched summary{min-height:24px;padding-block:4px;cursor:pointer}
+#entry-packet-summary:empty{display:none}
+.entry-hint{margin:0;font-size:12px}
+.entry-flag{color:var(--amber);font-size:12px;line-height:1.6;margin:4px 0 0;overflow-wrap:anywhere}
+@media(max-width:759px){
+  .entry-drop-hint{display:none}
+  .entry-packet .entry-actions>button,.entry-packet-confirm>button{width:100%}
+}
 /* Citation viewer (#42; DESIGN-SPEC 4.4, 4.9, 7): a native modal <dialog> sheet on the right, full-screen on phone */
 .sheet{margin:0 0 0 auto;padding:0;border:0;overflow:hidden;border-left:1px solid var(--line);width:min(560px,100%);max-width:none;height:100dvh;max-height:100dvh;background:var(--surface-1);color:var(--ink);display:flex;flex-direction:column}
 .sheet:not([open]){display:none}

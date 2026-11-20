@@ -9,6 +9,7 @@ import { sheetRows, limitText } from './standards.js';
 import { banner, detailModel, metrics, queueHref } from './queue.js';
 import { problemsModel, renderProblems } from './criteria.js';
 import { draftsModel, renderDrafts } from './drafts.js';
+import { FORMAT_HELP } from './packet-reader.js';
 
 const KO = '<span class="ko-star" aria-hidden="true">★</span><span class="sr-only">Knockout</span>';
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -72,6 +73,7 @@ function step1(model, s, ctx) {
       : '<p class="quiet">No requirement sheets loaded</p>')
     + `<p class="entry-error" id="entry-part-error"${partErr ? ' role="alert"' : ''}>${partErr}</p>`
     + `<p class="quiet" id="entry-profile">${esc(profileLine(s.commodity))}</p></div>`
+    + '<p class="quiet entry-hint">After you continue, you can load a supplier packet to fill the checklist.</p>'
     + '<div class="entry-actions">'
     + `<button type="button" class="button compact" data-act="entry-continue"${ready ? '' : ' aria-disabled="true"'}${parts.length ? '' : ' disabled'}>Continue</button>`
     + '<button type="button" class="subtle-button" data-act="entry-cancel">Cancel</button></div></div>';
@@ -96,10 +98,10 @@ function valueInput(r, v, attrs) {
   return `<input type="text" class="entry-input"${hint} autocomplete="off" value="${esc(v.value)}"${attrs('value')}${dis}>`;
 }
 
-function row(r, v, issue, sheet) {
+function row(r, v, issue, sheet, flag) {
   const id = esc(r.id);
   const proven = v.state === 'verified';
-  const attrs = (field) => ` data-entry-field="${field}" data-id="${id}" aria-describedby="err-${id}"${issue ? ' aria-invalid="true"' : ''}`;
+  const attrs = (field) => ` data-entry-field="${field}" data-id="${id}" aria-describedby="err-${id}${flag ? ` flag-${id}` : ''}"${issue ? ' aria-invalid="true"' : ''}`;
   const state = `<select class="entry-input"${attrs('state')}>`
     + STATES.map(([k, label]) => `<option value="${k}"${k === v.state ? ' selected' : ''}>${label}</option>`).join('') + '</select>';
   return `<fieldset class="entry-row" data-row="${id}"><legend>${r.knockout ? KO : ''}${esc(r.name)} <span class="mono">${id}</span>`
@@ -112,7 +114,8 @@ function row(r, v, issue, sheet) {
     + `<label class="entry-field">Where I found it${proven ? ' <span class="quiet">(required)</span>' : ''}`
     + `<input type="text" class="entry-input" autocomplete="off" value="${esc(v.where)}"${attrs('where')}${proven ? ' aria-required="true"' : ''}></label>`
     + `<label class="entry-field">Note <span class="quiet">(optional)</span><input type="text" class="entry-input" autocomplete="off" value="${esc(v.note)}"${attrs('note')}></label>`
-    + `</div><p class="entry-error" data-row-error="${id}" id="err-${id}">${esc(issueText(r.id, issue))}</p></fieldset>`;
+    + `</div><p class="entry-error" data-row-error="${id}" id="err-${id}">${esc(issueText(r.id, issue))}</p>`
+    + (flag ? `<p class="entry-flag" id="flag-${id}">${esc(flag)}</p>` : '') + '</fieldset>';
 }
 
 function step2(model, s, ctx) {
@@ -123,18 +126,65 @@ function step2(model, s, ctx) {
   const groups = RUBRIC.categories.map(({ n, name }) => {
     const rows = list.filter((r) => r.cat === n);
     return rows.length ? `<details class="entry-cat" open><summary>${esc(`${n} ${name}`)}</summary>`
-      + rows.map((r) => row(r, s.rows[r.id], view.rows[r.id]?.issue ?? null, sheet)).join('') + '</details>' : '';
+      + rows.map((r) => row(r, s.rows[r.id], view.rows[r.id]?.issue ?? null, sheet, s.read?.flags?.[r.id] ?? null)).join('') + '</details>' : '';
   }).join('');
   return '<div class="entry-head"><div>'
     + `<p class="eyebrow">${esc(profile?.name ?? s.commodity)} · ${esc(profile?.risk ?? '')} risk · <span class="mono">${esc(s.part_no)}</span></p>`
     + `<p class="entry-name">${esc(s.name)}</p></div>`
     + '<button type="button" class="subtle-button" data-act="entry-change-part">Change part</button></div>'
+    + packetPanel(s, ctx.entry.packetUi ?? {})
     + `<div class="panel entry-live" data-entry-live>${livePanel(view, ctx)}</div>`
     + `<div class="entry-gaps" data-entry-gaps>${liveGaps(view, ctx)}</div>`
     + groups
     + '<div class="entry-actions"><button type="button" class="button compact" data-act="entry-save">Save</button>'
     + '<button type="button" class="subtle-button" data-act="entry-cancel">Cancel</button></div>'
     + (ctx.entry.error ? `<p class="entry-error" role="alert">${esc(ctx.entry.error)}</p>` : '');
+}
+
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+/** One line after a read, shown in the panel and announced: "Read 8 files: 22 proven, 3 claimed, 2 missing. ..." */
+export function packetSummary(read) {
+  const c = read.counts;
+  return `Read ${plural(read.files.filter((f) => f.status === 'read').length, 'file', 'files')}: ${c.proven} proven, ${c.claimed} claimed, ${c.missing} missing.`
+    + (c.flagged ? ` ${plural(c.flagged, 'row needs', 'rows need')} a check.` : '');
+}
+
+const none = '<p class="quiet">None</p>';
+const items = (list) => (list.length ? `<ul class="entry-packet-list">${list.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : none);
+
+/** Step 2's "Read a supplier packet" panel (issue 172, PRD-05 UIQ-FR-21, -22). s: the entry; ui: { error, refused,
+ *  confirm } from main.js (a refused read and the replace-confirm; neither touches the entry). Packet text (file
+ *  names, titles, reasons) only through esc. */
+export function packetPanel(s, ui) {
+  const r = s.read;
+  const unmatched = (sections) =>
+    `<details class="entry-unmatched"${sections.length ? ' open' : ''}><summary>Unmatched content (${sections.length})</summary>`
+      + `${items(sections.map((u) => `${u.file}${u.section === null ? '' : ` §${u.section}`} · ${u.title} · ${u.reason}`))}</details>`;
+  let summary = '';
+  if (ui.error) summary = `<div id="entry-packet-summary" tabindex="-1" role="alert"><p class="entry-error">${esc(ui.error)}</p></div>`
+    + `<h5>Refused files</h5>${items((ui.refused ?? []).map((x) => `${x.name}: ${x.reason}`))}` + (ui.unmatched?.length ? unmatched(ui.unmatched) : '');
+  else if (r) {
+    const refused = [...r.refused.map((x) => `${x.name}: ${x.reason}`),
+      ...r.files.filter((f) => f.status === 'refused').map((f) => `${f.name}: ${f.detail}`)];
+    summary = `<div id="entry-packet-summary" tabindex="-1" role="status"><p>${esc(packetSummary(r))}</p></div>`
+      + r.warnings.map((w) => `<p class="entry-flag">${esc(`Check: ${w}`)}</p>`).join('')
+      + `<h5>Refused files</h5>${items(refused)}`
+      + unmatched(r.unmatched)
+      + `<h5>Files</h5>${items(r.files.filter((f) => f.status !== 'refused').map((f) => `${f.name}: ${f.detail}`))}`;
+  } else summary = '<div id="entry-packet-summary" tabindex="-1" role="status">'
+    + (s.packet ? `<p>${esc(`This supplier has a saved packet (${plural(Array.isArray(s.packet.files) ? s.packet.files.length : 0, 'file', 'files')}). Citations open its pages.`)}</p>` : '') + '</div>';
+  const confirm = ui.confirm
+    ? '<div class="entry-packet-confirm" role="group" aria-label="Confirm replace"><p>This replaces the rows you have filled in.</p>'
+      + '<button type="button" class="button compact" data-act="packet-replace">Replace</button>'
+      + '<button type="button" class="subtle-button" data-act="packet-keep">Keep my rows</button></div>' : '';
+  return '<section class="panel entry-packet" aria-labelledby="entry-packet-title" data-packet-drop>'
+    + '<h4 id="entry-packet-title" tabindex="-1">Read a supplier packet (optional)</h4>'
+    + `<p class="quiet">${esc(FORMAT_HELP)}</p>`
+    + '<div class="entry-actions"><button type="button" class="button compact" data-act="packet-upload">Upload packet</button>'
+    + '<button type="button" class="subtle-button" data-act="packet-sample">Use the sample packet</button>'
+    + (s.packet ? '<button type="button" class="subtle-button" data-act="packet-clear">Remove packet</button>' : '')
+    + '<span class="quiet entry-drop-hint">or drop the .md files here</span></div>'
+    + confirm + summary + '</section>';
 }
 
 /** The detail column while + New supplier (or Edit) is open. ctx.entry: { state, policy, saveNote, error }. */

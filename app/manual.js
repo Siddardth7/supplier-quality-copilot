@@ -4,11 +4,20 @@
 import { RUBRIC, evaluate } from './engine.js';
 import { MANUAL_KEY } from './data.js';
 import { parseNumber } from './standards.js';
+import { PACKET_FILES } from './packet.js';
 
 export const SCHEMA = 'sqc-manual/1';
 /** [engine state, UI label] (PRD-05 UIQ-FR-15: proven, claimed, missing). */
 export const STATES = [['verified', 'Proven'], ['assumed', 'Claimed'], ['missing', 'Missing']];
 export const WHERE_REQUIRED = 'Where I found it is required when proven';
+
+// Uploaded packet files saved with a record (issue 172, PRD-05 UIQ-FR-21, -23). The packet reader re-exports the caps
+// and uses the same refusal reasons; importRecord measures text in UTF-8 bytes like the reader does.
+export const MAX_FILE_BYTES = 64 * 1024;   // shipped max is 4.7 KB
+export const MAX_TOTAL_BYTES = 256 * 1024;
+export const REFUSED = { name: `not one of the packet file names (${PACKET_FILES.join(', ')})`, empty: 'empty file',
+  big: 'larger than 64 KB', text: 'not UTF-8 text', twice: 'selected twice, the first copy is used',
+  total: 'the files together are larger than 256 KB' };
 
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (s) => (typeof s === 'string' && s.trim() !== '' ? s.trim() : null);
@@ -54,9 +63,10 @@ export function parseValue(type, raw) {
 const blankRow = () => ({ state: 'missing', value: '', where: '', note: '' });
 const rawOf = (v) => (v === null || v === undefined ? '' : String(v));
 
-/** Entry state (main.js holds it in memory; never stored). rows: { [id]: { state, value (raw text), where, note } }. */
+/** Entry state (main.js holds it in memory; never stored). rows: { [id]: { state, value (raw text), where, note } }.
+ *  packet: null or { files: [{ name, text }] } (saved with the record); read: null or the last reading (never stored). */
 export function blankEntry() {
-  return { step: 1, id: null, name: '', part_no: null, commodity: null, rows: {} };
+  return { step: 1, id: null, name: '', part_no: null, commodity: null, rows: {}, packet: null, read: null };
 }
 
 /** Edit: step 2, the record's ID kept (decision 165), values back to raw text. */
@@ -64,17 +74,18 @@ export function entryFromRecord(record) {
   const rows = Object.fromEntries((checklist(record.commodity) ?? []).map((r) => [r.id, blankRow()]));
   for (const c of Array.isArray(record.criteria) ? record.criteria : []) {
     if (isObj(c) && typeof c.id === 'string') {
-      rows[c.id] = { state: c.state, value: rawOf(c.value), where: rawOf(c.where), note: rawOf(c.note) };
+      rows[c.id] = { state: c.state, value: editText(c.value), where: rawOf(c.where), note: rawOf(c.note) };
     }
   }
   return { step: 2, id: record.supplier_id, name: String(record.name ?? ''), part_no: record.part_no ?? null,
-    commodity: record.commodity ?? null, rows };
+    commodity: record.commodity ?? null, rows, packet: record.packet ?? null, read: null };
 }
 
-/** Part and commodity from a requirement sheet; rows rebuilt from checklist(), carrying rows whose id still applies. */
+/** Part and commodity from a requirement sheet; rows rebuilt from checklist(), carrying rows whose id still applies.
+ *  A packet belongs to one part, so the packet and its reading are dropped. */
 export function setPart(entry, sheet) {
   const rows = Object.fromEntries((checklist(sheet.commodity) ?? []).map((r) => [r.id, entry.rows[r.id] ?? blankRow()]));
-  return { ...entry, part_no: sheet.part_no, commodity: sheet.commodity, rows };
+  return { ...entry, part_no: sheet.part_no, commodity: sheet.commodity, rows, packet: null, read: null };
 }
 
 /** Immutable row update; patch keys state | value | where | note. Missing clears the value. */
@@ -94,6 +105,7 @@ export function toRecord(entry, { id, saved_at }) {
       return { id: cid, state: r.state, value: missing ? null : parseValue(types.get(cid), r.value),
         where: missing ? null : text(r.where), note: text(r.note) };
     }),
+    ...(entry.packet ? { packet: entry.packet } : {}),  // only when held: records without one stay byte-identical
   };
 }
 
@@ -143,6 +155,27 @@ export const remove = (records, id) => records.filter((r) => r.supplier_id !== i
 /** One record per file (decision 170). */
 export const exportRecord = (r) => ({ filename: `manual-${r.supplier_id}.json`, text: JSON.stringify(r, null, 2) });
 
+/** A stored or imported `packet` field -> null when valid, else 'packet: ...' (refuse, never drop). */
+export function packetError(p) {
+  if (!isObj(p) || !Array.isArray(p.files) || !p.files.length) return 'packet: expected { files: [...] }';
+  const seen = new Set();
+  let total = 0;
+  for (const [i, f] of p.files.entries()) {
+    if (!isObj(f) || typeof f.name !== 'string') return `packet: files[${i}]: expected { name, text }`;
+    const no = (why) => `packet: ${f.name}: ${why}`;
+    if (!PACKET_FILES.includes(f.name)) return no(REFUSED.name);
+    if (seen.has(f.name)) return no('listed twice');
+    seen.add(f.name);
+    if (typeof f.text !== 'string') return no('expected text');
+    if (f.text === '') return no(REFUSED.empty);
+    if (f.text.includes('\0')) return no(REFUSED.text);
+    const bytes = new TextEncoder().encode(f.text).length;
+    if (bytes > MAX_FILE_BYTES) return no(REFUSED.big);
+    if ((total += bytes) > MAX_TOTAL_BYTES) return no(REFUSED.total);
+  }
+  return null;
+}
+
 /** JSON text -> { ok: true, record, records } | { ok: false, error }. The file's ID is kept when free, else the next
  *  free ID (decision 165). Anything evaluate() refuses is refused with the engine's message. */
 export function importRecord(json, records, { as_of, policy }) {
@@ -166,6 +199,9 @@ export function importRecord(json, records, { as_of, policy }) {
     if (c.state === 'verified' && text(c.where) === null) return no(`${c.id}: ${WHERE_REQUIRED.toLowerCase()}`);
   }
   try { evaluate(toExtraction(r), { as_of, policy }); } catch (e) { return no(String(e?.message ?? e)); }
+  const packetBad = r.packet === undefined ? null : packetError(r.packet);
+  if (packetBad) return no(packetBad);
+  const packet = r.packet === undefined ? null : { files: r.packet.files.map((f) => ({ name: f.name, text: f.text })) };
   // Import into the same closed record shape as Save, with every checklist row (issue 139).
   const imported = new Map(r.criteria.map((c) => [c.id, c]));
   r = { schema: r.schema, supplier_id: r.supplier_id, name: r.name, part_no: r.part_no,
@@ -174,8 +210,21 @@ export function importRecord(json, records, { as_of, policy }) {
       const c = imported.get(id), missing = !c || c.state === 'missing';
       return { id, state: c?.state ?? 'missing', value: missing ? null : c.value ?? null,
         where: missing ? null : text(c.where), note: text(c?.note) };
-    }) };
+    }),
+    ...(packet ? { packet } : {}) };
   const free = typeof r.supplier_id === 'string' && /^NEW-\d{2,}$/.test(r.supplier_id) && !records.some((x) => x.supplier_id === r.supplier_id);
   const record = free ? r : { ...r, supplier_id: nextId(records) };
   return { ok: true, record, records: [...records, record] };
+}
+
+/** Convert typed values to the plain text accepted by the checklist editor.
+ *  ponytail: maximumFractionDigits 20, so a value below 1e-20 reads "0"; no rubric value is anywhere near that. */
+export const editText = (value) => typeof value === 'number'
+  ? value.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 20 })
+  : rawOf(value);
+
+/** Reader rows -> the checklist editor's raw-text rows. Flags remain with the reader result. */
+export function entryRows(readerRows) {
+  return Object.fromEntries(Object.entries(readerRows).map(([id, x]) =>
+    [id, { state: x.state, value: editText(x.value), where: x.where, note: x.note }]));
 }

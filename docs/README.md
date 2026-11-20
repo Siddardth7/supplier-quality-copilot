@@ -54,6 +54,7 @@ IDs never get reused or renumbered. A dropped requirement is struck through and 
 | Doc | Purpose |
 |---|---|
 | [ROADMAP.md](ROADMAP.md) | Releases, milestones, workflow, decisions log (#13) |
+| [AI-READER-PLAN.md](AI-READER-PLAN.md) | Plan for the AI reader on the site (issue 173): known limitation of the rules reader, design, accuracy targets, phases |
 | [DEMO.md](DEMO.md) | The 3-minute demo script (issue 51): a deep link, what to say and a time per step |
 | [RELEASE-v1.0.md](RELEASE-v1.0.md) | v1.0 release notes: delivered requirement IDs per milestone, the measured result, known limits |
 | [HANDOUT.md](HANDOUT.md) | One-page interview handout (issue 52). `node scripts/handout.mjs` prints it to [HANDOUT.pdf](HANDOUT.pdf) and fails unless it is one page |

@@ -13,6 +13,8 @@ import {
   SCHEMA, STATES, WHERE_REQUIRED, checklist, nextId, parseValue, blankEntry, entryFromRecord, setPart, setRow, toRecord,
   toExtraction, scoreEntry, writeManual, upsert, remove, exportRecord, importRecord,
 } from './manual.js';
+import { MAX_FILE_BYTES, MAX_TOTAL_BYTES, REFUSED, packetError } from './manual.js';
+import { PACKET_FILES } from './packet.js';
 
 const AS_OF = '2026-11-01';
 const CTX = { as_of: AS_OF, policy: STARK_REFERENCE };
@@ -428,4 +430,97 @@ test('M6 review: imported where and note follow Save text normalization', () => 
   assert.equal(byId.get(blank.id).note, null);
   assert.equal(byId.get(missing.id).where, null);
   assert.equal(byId.get(missing.id).note, 'kept');
+});
+
+// ---- 10. uploaded packet on sqc-manual/1 (issue 172; PRD-05 UIQ-FR-23, UIQ-AC-16; spec 3.4) ----
+
+const PACKET = { files: [{ name: 'msa.md', text: '## 1.1 X\n\nRecorded result: 8.\n' }, { name: 'rfq.md', text: 'buyer text <b>é</b>\n' }] };
+const withPacket = (key = HIGH, id = 'NEW-01', packet = PACKET) => toRecord({ ...fullEntry(key), packet }, { id, saved_at: '2026-11-13' });
+
+test('10 UIQ-FR-23: blankEntry carries packet and read as null; entryFromRecord restores the packet, never the read', () => {
+  assert.deepEqual(blankEntry(), { step: 1, id: null, name: '', part_no: null, commodity: null, rows: {}, packet: null, read: null });
+  const e = entryFromRecord(withPacket());
+  assert.deepEqual(e.packet, PACKET);
+  assert.equal(e.read, null);
+  const plain = entryFromRecord(record());
+  assert.equal(plain.packet, null);
+  assert.equal(plain.read, null);
+});
+
+test('10 UIQ-FR-23: toRecord omits packet when null (key list unchanged) and includes it when held; read is never stored', () => {
+  const plain = record();
+  assert.deepEqual(Object.keys(plain), ['schema', 'supplier_id', 'name', 'part_no', 'commodity', 'saved_at', 'criteria']);
+  assert.equal(JSON.stringify(plain), JSON.stringify(toRecord({ ...fullEntry(HIGH), read: { flags: { x: 'y' } } }, { id: 'NEW-01', saved_at: '2026-11-13' })));
+  const held = withPacket();
+  assert.deepEqual(Object.keys(held), ['schema', 'supplier_id', 'name', 'part_no', 'commodity', 'saved_at', 'criteria', 'packet']);
+  assert.deepEqual(held.packet, PACKET);
+  assert.deepEqual({ ...held, packet: undefined }, { ...plain, packet: undefined }, 'criteria unchanged by the packet');
+});
+
+test('10: setPart clears packet and read (a packet belongs to one part)', () => {
+  const e = setPart({ ...fullEntry(HIGH), packet: PACKET, read: { flags: {} } }, { commodity: PROFILES[3].key, part_no: 'P2' });
+  assert.equal(e.packet, null);
+  assert.equal(e.read, null);
+});
+
+test('10 UIQ-AC-16: export -> delete -> import restores a deep-equal record including its packet; without one too', () => {
+  for (const r of [withPacket(HIGH, 'NEW-04'), record(HIGH, 'NEW-05')]) {
+    const left = remove([r], r.supplier_id);
+    assert.deepEqual(left, [], 'delete removes the record and its packet');
+    const back = importRecord(exportRecord(r).text, left, CTX);
+    assert.equal(back.ok, true, back.error);
+    assert.deepEqual(back.record, r);
+    assert.equal(Object.hasOwn(back.record, 'packet'), Object.hasOwn(r, 'packet'));
+  }
+});
+
+test('10 UIQ-FR-23: storage keeps the packet across a reload', async () => {
+  const mem = memoryStorage();
+  const recs = [withPacket(HIGH, 'NEW-01')];
+  assert.equal(writeManual(safeStorage(mem), recs), true);
+  const fetchText = async (rel) => readFileSync(new URL(`../data/${rel}`, import.meta.url), 'utf8');
+  const data = await loadData({ fetchText, storage: safeStorage(mem) });
+  assert.deepEqual(data.manual.records[0].packet, PACKET);
+  assert.equal(buildModel(data, STARK_REFERENCE).candidates.find((c) => c.id === 'NEW-01').status, 'scored');
+});
+
+test('10 spec 3.4: import strips unknown keys inside packet and its files', () => {
+  const r = withPacket();
+  const json = JSON.stringify({ ...r, packet: { files: r.packet.files.map((f) => ({ ...f, extra: 1 })), note: 'x' } });
+  assert.deepEqual(importRecord(json, [], CTX).record.packet, PACKET);
+});
+
+test('10 UIQ-FR-23: import refuses each malformed packet with a named message', () => {
+  const r = record();
+  const imp = (packet) => importRecord(JSON.stringify({ ...r, packet }), [], CTX);
+  const big = 'a'.repeat(MAX_FILE_BYTES);
+  const cases = [
+    [null, 'packet: expected { files: [...] }'], [[], 'packet: expected { files: [...] }'], ['x', 'packet: expected { files: [...] }'],
+    [{}, 'packet: expected { files: [...] }'], [{ files: [] }, 'packet: expected { files: [...] }'], [{ files: 'x' }, 'packet: expected { files: [...] }'],
+    [{ files: [null] }, 'packet: files[0]: expected { name, text }'], [{ files: [{ name: 5, text: 'x' }] }, 'packet: files[0]: expected { name, text }'],
+    [{ files: [{ name: 'evil.md', text: 'x' }] }, `packet: evil.md: ${REFUSED.name}`],
+    [{ files: [{ name: 'Msa.md', text: 'x' }] }, `packet: Msa.md: ${REFUSED.name}`],
+    [{ files: [{ name: 'msa.md', text: 'x' }, { name: 'msa.md', text: 'y' }] }, 'packet: msa.md: listed twice'],
+    [{ files: [{ name: 'msa.md', text: 5 }] }, 'packet: msa.md: expected text'],
+    [{ files: [{ name: 'msa.md' }] }, 'packet: msa.md: expected text'],
+    [{ files: [{ name: 'msa.md', text: '' }] }, 'packet: msa.md: empty file'],
+    [{ files: [{ name: 'msa.md', text: 'a\0b' }] }, 'packet: msa.md: not UTF-8 text'],
+    [{ files: [{ name: 'msa.md', text: `${big}a` }] }, 'packet: msa.md: larger than 64 KB'],
+    // Measured in UTF-8 bytes: 32769 two-byte characters are 65538 bytes.
+    [{ files: [{ name: 'msa.md', text: '\u00e9'.repeat(MAX_FILE_BYTES / 2 + 1) }] }, 'packet: msa.md: larger than 64 KB'],
+    [{ files: PACKET_FILES.slice(0, 5).map((name) => ({ name, text: big })) }, `packet: ${PACKET_FILES[4]}: the files together are larger than 256 KB`],
+  ];
+  for (const [packet, error] of cases) assert.deepEqual(imp(packet), { ok: false, error }, error);
+});
+
+test('10 UIQ-FR-23: caps at the edge: one 64 KB file and four files totalling exactly 256 KB import', () => {
+  const big = 'a'.repeat(MAX_FILE_BYTES);
+  assert.equal(MAX_TOTAL_BYTES, 4 * MAX_FILE_BYTES);
+  assert.equal(packetError({ files: [{ name: 'msa.md', text: big }] }), null);
+  assert.equal(packetError({ files: [{ name: 'msa.md', text: '\u00e9'.repeat(MAX_FILE_BYTES / 2) }] }), null);
+  const four = { files: PACKET_FILES.slice(0, 4).map((name) => ({ name, text: big })) };
+  assert.equal(packetError(four), null);
+  const got = importRecord(JSON.stringify({ ...record(), packet: four }), [], CTX);
+  assert.equal(got.ok, true, got.error);
+  assert.deepEqual(got.record.packet, four);
 });

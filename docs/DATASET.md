@@ -30,6 +30,8 @@ Everything is fictional. **Since 2026-11-09 the data comes from a seeded simulat
 
 Active suppliers' commodities are set in `data/suppliers.json`.
 
+The Brand Corporation sample under `data/samples/brand-corporation/` is a demo upload for + New supplier (issue 172), not a candidate in the queue; it is derived from the SUP-07 packet, and its planned mix and expected result are in its README.
+
 ## Qualification queue: 9 candidate suppliers
 
 Each lives at `data/suppliers/<id>/` as a packet of markdown "documents".

@@ -8,7 +8,7 @@
 | Milestone | v1.0 · M5 Workbench UI |
 | ID prefix | `UIQ` |
 | Specs referenced | `docs/product/DESIGN-SPEC.md` (components, layout, a11y), PRD-01 output shape, PRD-04 extraction shape, PRD-12 (active policy, requirement sheets) |
-| Last updated | 2026-11-13 |
+| Last updated | 2026-11-19 |
 
 ## 1. Problem
 
@@ -78,6 +78,16 @@ The engine's output is a JSON object. An SQE needs to see the queue, open a supp
 | UIQ-FR-16 | Saving must store the supplier in the browser with the next free ID (`NEW-01`, `NEW-02`, …). It joins the queue, Today and Compare with the **Entered by hand** tag, rescored under the active policy like any candidate. It can be edited, deleted (confirmed in the page), exported and imported as JSON. If storage is blocked, scoring still works and a note reads "Can't save in this browser" | Must | manual check (incl. a private window) |
 | UIQ-FR-17 | The Drafts sub-tab for a hand-entered supplier must list the engine's RFI items and audit focus, with no email text | Must | manual check |
 
+**Upload packet in + New supplier (issue 172, rules reader, no AI)**
+
+| ID | Requirement | Priority | Verified by |
+|---|---|---|---|
+| UIQ-FR-21 | In + New supplier step 2, **Upload packet** (button, drop, and **Use the sample packet**) loads Markdown packet files named like `data/suppliers/<id>/*.md`. UTF-8 only; at most 64 KB per file and 256 KB per packet; names must be the ten packet file names. A refused file is listed with its reason and never silently dropped; unmatched numbered sections and unnumbered headings that name an applicable criterion are listed; a packet that matches nothing leaves the form untouched. The help text states: the reader only reads packets in this format; real PDFs, scans and free-form packets need the AI reader (planned) | Must | unit test + manual check |
+| UIQ-FR-22 | A pure, rules-based reader (no AI, no network) fills every checklist row from the files: a section titled like the requirement with a recorded result is Proven (value in the engine's type, `where` = `<file> §<section>`); a matching section with no result is Claimed (note quotes the sentence, no value); no matching section is Missing. The reader parses only plain body lines (never headings, quotes, tables or code) and only the first recorded-result line of a section. A nested checklist heading owns its evidence, while ordinary detail headings remain part of the parent criterion. Boolean fallback requires recorded or demonstrated result wording and skips descriptions of possible outcomes. "Proven" means the packet records a result, not independent proof, and the UI says so. A result the reader cannot read as the row's type, a second matching section, more than one result line in a section, carry a visible **Check** flag. A "true" next to a "does not meet" line becomes Claimed with no value and a visible **Check** flag; nothing is guessed. Repeated section numbers in one file make each affected row Claimed with no value. The citation is retained with a Check flag asking for renumbering. Matched sections with this flag stay out of Unmatched content. Every row stays editable, a person confirms before Save, and scores come only from `evaluate()` | Must | unit test |
+| UIQ-FR-23 | Saving stores the accepted packet files with the hand-entered record (`packet` in `sqc-manual/1`, optional); Export carries them, Import validates and restores a deep-equal record, Delete removes them; blocked or full storage shows the existing "Can't save in this browser" note and still scores | Must | unit test + manual check |
+| UIQ-FR-24 | For a hand-entered supplier with a saved packet, a citation `<file> §<section>` opens that uploaded file in the citation viewer (same renderer, same escaping, same cited-section highlight), not `data/suppliers/<id>/`. A repeated section number is ambiguous and flagged on the checklist before Save | Must | unit test + manual check |
+| UIQ-NFR-03 | Packet text is untrusted: it is escaped everywhere it is shown; the reader measured on every shipped packet with an answer key agrees on state, value and citation (target 100% on the shipped format, every disagreement listed in the PR) | Must | unit test |
+
 ## 5. Interfaces
 
 | Input | Shape |
@@ -85,15 +95,17 @@ The engine's output is a JSON object. An SQE needs to see the queue, open a supp
 | `data/suppliers.json` | PRD-03 §5 |
 | `data/extracted/<id>.json` | PRD-04 §5 |
 | `data/suppliers/<id>/<file>.md` | Fetched on demand by the citation viewer. Dev world: copied from `data/samples/` by `scripts/dev-world.mjs` |
+| `data/samples/brand-corporation/*.md` | The demo packet for + New supplier (issue 172): fetched only by the **Use the sample packet** button, never listed in the queue. Its `README.md` is not fetched |
 | `data/requirements/<commodity>.json` and uploaded sheets | PRD-12 §5. Loaded at startup, one per distinct candidate or active-supplier commodity (issue 110, so Standards lists every built-in sheet); the detail header's part number and the sheet link (UIQ-FR-20) come from the commodity's sheet `part_no` (the `suppliers.json` `part` is descriptive text) |
 | Engine | `evaluate(extraction, { as_of, policy })` (PRD-01 §5) |
 
-**Hand-entered supplier record** (`sqc-manual/1`, stored in the browser and exported as JSON). It is not a PRD-04 extraction: "where I found it" is free text, not a `file §section` citation, and there are no agent drafts.
+**Hand-entered supplier record** (`sqc-manual/1`, stored in the browser and exported as JSON). It is not a PRD-04 extraction: "where I found it" is free text or, when the packet reader filled the row, a `file §section` citation, and there are no agent drafts. The optional `packet` holds the accepted uploaded files exactly as decoded (UIQ-FR-23); a record without it is byte-identical to one saved before issue 172, and the schema string is unchanged.
 
 ```json
 { "schema": "sqc-manual/1", "supplier_id": "NEW-01", "name": "…", "part_no": "SI-CP-0007",
   "commodity": "cold_plate", "saved_at": "2026-11-11",
-  "criteria": [ { "id": "2.ctq_cpk", "state": "verified", "value": 1.41, "where": "capability study, p. 4", "note": null } ] }
+  "criteria": [ { "id": "2.ctq_cpk", "state": "verified", "value": 1.41, "where": "capability study, p. 4", "note": null } ],
+  "packet": { "files": [ { "name": "capability_study.md", "text": "> Synthetic document for a demo. …" } ] } }
 ```
 
 The app turns each record into the engine's input (`state`, `value`) and scores it exactly like an extraction.
@@ -129,6 +141,11 @@ The demo world is chosen by #74. These checks name each demo supplier's story ta
 - [ ] UIQ-AC-10: Changing the active policy rescores hand-entered suppliers too. Reload keeps them. Export → delete → import restores a deep-equal record. With storage blocked, scoring still works and the note shows. *(proves UIQ-FR-16)*
 - [ ] UIQ-AC-11: Proven with no "where I found it" is blocked inline. A bad number or date shows the engine's error on that row. *(proves UIQ-FR-15)*
 - [ ] UIQ-AC-12: A Cpk of 1.67 or more shows "excellent" and still scores 3. The sheet link opens the part in Standards. *(proves UIQ-FR-19, -20)*
+- [ ] UIQ-AC-13: `node scripts/reader-accuracy.mjs` reports 1440/1440 state, value and citation and 45/45 evaluation matches on worlds 93 and 101-104, and prints the extraction comparison with its disagreements. *(proves UIQ-FR-22, UIQ-NFR-03)*
+- [ ] UIQ-AC-14: The Brand Corporation sample packet, loaded in + New supplier for SI-CP-0007, reads to the expected mix and the engine shows its score, CONDITIONAL, the assumed knockout, routing, RFI items and audit focus; Save adds it to Qualify, Today and Compare tagged **Entered by hand**; reload keeps it. *(proves UIQ-FR-21, -22, -23)*
+- [ ] UIQ-AC-15: A non-UTF-8 file, an oversized file, a wrong file name and an empty file are each refused with a named reason; an unmatched section is listed; a packet that matches nothing changes nothing; a packet containing HTML is shown inert. *(proves UIQ-FR-21, UIQ-NFR-03)*
+- [ ] UIQ-AC-16: Export, delete, import restores a deep-equal record including its packet; with storage blocked the supplier still scores and the note shows. *(proves UIQ-FR-23)*
+- [ ] UIQ-AC-17: Clicking a citation on the saved sample supplier opens the uploaded page with the cited section highlighted; a record with no packet still shows "File not in packet". *(proves UIQ-FR-24)*
 
 ## 7. Open questions
 
@@ -147,12 +164,13 @@ The demo world is chosen by #74. These checks name each demo supplier's story ta
 | Sign-off recording, comments, assignment, employee logins | v2.0 / unscheduled |
 | Compare bidders side by side | PRD-11 |
 | Monitor view | PRD-06 |
-| Filling the checklist from an uploaded packet with the agent | v2.0 Live |
+| Filling the checklist from an uploaded packet with the agent (PDFs, scans, free-form packets) | v2.0 Live; the rules reader for the shipped Markdown format is UIQ-FR-21..24 |
 
 ## 9. Changelog
 
 | Date | Change |
 |---|---|
+| 2026-11-19 | Issue 172 packet upload (rules reader, no AI): UIQ-FR-21..24, UIQ-NFR-03, UIQ-AC-13..17. §5 adds the optional `packet` field on `sqc-manual/1` (no schema bump), reader-filled `file §section` citations and the `data/samples/brand-corporation/` demo packet. §8 narrows the v2.0 item to the AI reader. |
 | 2026-11-17 | Issue 163 viewer and navigation: UIQ-FR-09 the viewer shows numbers with more than 3 decimals rounded to 3 plus a note; files unchanged (decisions 240, 241). UIQ-FR-12 adds Not found for an Eval world/supplier pair not in the data (via PRD-13, decision 242). Acceptance boxes unchanged. |
 | 2026-11-17 | Issue 162 plain-language labels: UIQ-FR-02 adds the NOT APPROVED reason line on queue cards (Compare's string, decision 230). UIQ-FR-07/-08 add the ◐ Partial chip for a verified row scoring 1–2 and the "Fail or partial" group heading (decisions 231, 232). No engine change; acceptance boxes unchanged. |
 | 2026-11-13 | Issue 77: + New supplier shipped. Decisions 160-171. Hand-entered records are `sqc-manual/1`; `new=1` with `supplier=<id>` edits; the queue's pending note is removed. |
